@@ -1,658 +1,359 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hemachandras (Kandy) Limited - Gemological Laboratory</title>
-    <style>
-        :root {
-            --primary-orange: #d35400;
-            --text-main: #2c3e50;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hemachandras (Kandy) Limited - Gemological Laboratory</title>
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f6f9; color: var(--text-main); line-height: 1.4; overflow-x: hidden; }
+<style>
+:root{--primary-orange:#d35400;--text-main:#2c3e50}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden}
+#login-screen{position:fixed;inset:0;width:100%;height:100vh;background:#2c3e50;display:flex;justify-content:center;align-items:center;z-index:999999}
+.login-card{background:#fff;padding:40px;border-radius:12px;box-shadow:0 15px 35px #0006;width:min(360px,92vw);text-align:center;border-top:6px solid var(--primary-orange)}
+.login-card h2{margin-bottom:20px;color:var(--text-main);font-size:24px}
+.login-card input{width:100%;padding:12px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;font-size:16px}
+.login-card button{width:100%;padding:12px;background:var(--primary-orange);border:0;color:#fff;font-size:16px;font-weight:bold;border-radius:6px;cursor:pointer}
+.error-msg{color:#e74c3c;font-size:14px;margin-top:10px;display:none}
+#app-container{display:none;max-width:1450px;margin:0 auto;padding:15px}
+.action-bar{background:#fff;padding:12px 25px;border-radius:8px;box-shadow:0 2px 10px #0000000d;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px;flex-wrap:wrap}
+.action-bar h1{font-size:16px;color:var(--text-main)}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:8px 16px;border:0;border-radius:6px;font-weight:bold;cursor:pointer;color:#fff;font-size:14px}
+.btn-save{background:#27ae60}.btn-print{background:#2980b9}.btn-search-toggle{background:#8e44ad}.btn-logout{background:#c0392b}
+#search-panel{background:#fff;padding:20px;border-radius:8px;margin-bottom:15px;display:none;box-shadow:0 2px 10px #0000000d}
+.search-box{display:flex;gap:10px;margin-bottom:15px}
+.search-box input{flex:1;min-width:0;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:15px}
+.search-results{max-height:250px;overflow-y:auto;border:1px solid #eee;border-radius:6px}
+.search-item{padding:10px 15px;border-bottom:1px solid #f1f1f1;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.search-item button{padding:5px 10px;background:#2980b9;color:#fff;border:0;border-radius:4px;cursor:pointer;margin-left:5px}
+.certificate{background:#fff;width:297mm;min-height:210mm;padding:15mm 20mm;margin:0 auto;box-shadow:0 0 20px #0000001a;position:relative;border:1px solid #ccc;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.watermark{position:absolute;top:52%;left:32%;transform:translate(-50%,-50%);width:480px;opacity:.08;pointer-events:none;z-index:0}
+.cert-header{display:flex;justify-content:space-between;align-items:flex-start;z-index:1;margin-bottom:5px;gap:10px}
+.logo-area{display:flex;align-items:flex-start;gap:15px}.logo-area img{width:150px;object-fit:contain}
+.right-top-title{text-align:right}.right-top-title input{font-size:24px;font-weight:bold;border:1px solid #ddd;text-align:right;padding:3px 8px;border-radius:4px;max-width:100%}
+.cert-middle{display:flex;justify-content:space-between;align-items:flex-start;z-index:1;flex:1;margin-top:10px;gap:15px}
+.left-details{width:52%}.details-table{width:100%;border-collapse:collapse}
+.details-table th,.details-table td{padding:4px 6px;text-align:left;font-size:13px;border:0}
+.details-table th{width:100px;color:#333;font-weight:600}
+.details-table td input{width:100%;padding:3px 6px;border:1px solid #ddd;border-radius:3px;font-size:13px;background:#fff}
+.right-gem-area{width:42%;display:flex;flex-direction:column;align-items:center}
+.gem-photo-box{width:210px;height:210px;border:1px solid #333;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff;position:relative}
+.gem-photo-box img{width:100%;height:100%;object-fit:contain}
+.gem-photo-box input[type=file]{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer}
+.signatures-and-badges{display:flex;justify-content:space-between;align-items:flex-end;width:100%;margin-top:15px;z-index:1;gap:10px}
+.signatures-area{display:flex;gap:20px;font-size:11px;color:#222;flex-wrap:wrap}
+.sig-person p{line-height:1.3}.sig-person p:first-child{font-weight:bold}
+.badges-and-qr{display:flex;align-items:center;gap:15px}
+.lab-logos{display:flex;align-items:center;gap:10px}.lab-logos img{height:45px;object-fit:contain}
+#qrcode{background:#fff;padding:8px;border:1px solid #ccc;border-radius:4px;display:flex;justify-content:center;align-items:center;min-width:116px;min-height:116px}
+#qrcode img,#qrcode canvas{width:100px!important;height:100px!important;display:block}
+.cert-footer-bottom{border-top:2px solid var(--primary-orange);padding-top:8px;margin-top:10px;display:flex;justify-content:space-between;align-items:flex-end;z-index:1;gap:10px}
+.footer-disclaimer{font-size:10px;color:#555;max-width:65%;font-style:italic;line-height:1.3}
+.footer-disclaimer textarea{width:100%;height:35px;border:0;background:transparent;font-size:10px;font-style:italic;resize:none}
+.footer-company-info{text-align:right;font-size:10px;color:#333;line-height:1.3}.footer-company-info p b{color:var(--primary-orange)}
+#modal-overlay{position:fixed;inset:0;width:100%;height:100%;background:#0008;display:none;justify-content:center;align-items:center;z-index:1000000}
+.modal-card{background:#fff;padding:25px;border-radius:8px;width:300px;text-align:center}
+.modal-card input{width:100%;padding:10px;margin:15px 0;border:1px solid #ccc;border-radius:4px}
+.modal-btns{display:flex;gap:10px;justify-content:center}
+.modal-btns button{padding:8px 15px;border:0;border-radius:4px;cursor:pointer;font-weight:bold;color:#fff}
+.btn-confirm{background:#e74c3c}.btn-cancel{background:#7f8c8d}
+.public-note{display:none;text-align:center;background:#eef6ff;padding:8px;margin-bottom:10px;border-radius:6px}
+@media(max-width:800px){.certificate{transform-origin:top left;width:297mm;margin:0;}.action-bar{padding:12px}.signatures-and-badges{align-items:flex-start}}
+@media print{
+ @page{size:A4 landscape;margin:0}
+ body{background:#fff}
+ .action-bar,#search-panel,#login-screen,#modal-overlay,.gem-photo-box input[type=file],.public-note{display:none!important}
+ #app-container{display:block!important;padding:0!important;margin:0!important;max-width:none!important}
+ .certificate{border:0!important;box-shadow:none!important;width:297mm!important;height:210mm!important;min-height:210mm!important;padding:15mm 20mm!important;margin:0!important;transform:none!important}
+ .details-table input,.footer-disclaimer textarea,.right-top-title input{border:0!important;background:transparent!important;resize:none;padding:0!important;color:#000}
+}
+</style>
 
-        /* Login Screen */
-        #login-screen {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #2c3e50; display: flex; justify-content: center; align-items: center; z-index: 999999;
-        }
-        .login-card {
-            background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            width: 360px; text-align: center; border-top: 6px solid var(--primary-orange);
-        }
-        .login-card h2 { margin-bottom: 20px; color: var(--text-main); font-size: 24px; }
-        .login-card input {
-            width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px;
-        }
-        .login-card button {
-            width: 100%; padding: 12px; background: var(--primary-orange); border: none; color: #fff;
-            font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.3s;
-        }
-        .login-card button:hover { background: #b94000; }
-        .error-msg { color: #e74c3c; font-size: 14px; margin-top: 10px; display: none; }
-
-        /* App Container */
-        #app-container { display: none; max-width: 1450px; margin: 0 auto; padding: 15px; }
-
-        /* Top Action Bar */
-        .action-bar {
-            background: #fff; padding: 12px 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
-        }
-        .action-bar h1 { font-size: 16px; color: var(--text-main); }
-        .btn-group { display: flex; gap: 10px; }
-        .btn {
-            padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; color: #fff; font-size: 14px;
-        }
-        .btn-save { background: #27ae60; }
-        .btn-save:hover { background: #219653; }
-        .btn-print { background: #2980b9; }
-        .btn-print:hover { background: #1f618d; }
-        .btn-search-toggle { background: #8e44ad; }
-        .btn-search-toggle:hover { background: #732d91; }
-        .btn-logout { background: #c0392b; }
-        .btn-logout:hover { background: #962d22; }
-
-        /* Search Panel */
-        #search-panel {
-            background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 15px; display: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .search-box { display: flex; gap: 10px; margin-bottom: 15px; }
-        .search-box input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
-        .search-results { max-height: 250px; overflow-y: auto; border: 1px solid #eee; border-radius: 6px; }
-        .search-item {
-            padding: 10px 15px; border-bottom: 1px solid #f1f1f1; display: flex; justify-content: space-between; align-items: center;
-        }
-        .search-item:hover { background: #f9f9f9; }
-        .search-item button { padding: 5px 10px; background: #2980b9; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-
-        /* A4 Landscape Exact Original Layout */
-        .certificate {
-            background: #fff; width: 297mm; height: 210mm; padding: 15mm 20mm; margin: 0 auto;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1); position: relative; border: 1px solid #ccc;
-            display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
-        }
-
-        /* Watermark 'H' background */
-        .watermark {
-            position: absolute; top: 52%; left: 32%; transform: translate(-50%, -50%);
-            width: 480px; opacity: 0.08; pointer-events: none; z-index: 0;
-        }
-
-        /* Top Header */
-        .cert-header { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 5px; }
-        .logo-area { display: flex; align-items: flex-start; gap: 15px; }
-        .logo-area img { width: 150px; object-fit: contain; }
-        
-        .right-top-title { text-align: right; }
-        .right-top-title h2 { font-size: 26px; color: #111; font-weight: bold; margin-bottom: 5px; }
-
-        /* Middle Body */
-        .cert-middle { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; flex: 1; margin-top: 10px; }
-        
-        /* Left Column: Details Table */
-        .left-details { width: 52%; }
-        .details-table { width: 100%; border-collapse: collapse; }
-        .details-table th, .details-table td { padding: 4px 6px; text-align: left; font-size: 13px; border: none; }
-        .details-table th { width: 30px; color: #333; font-weight: 600; }
-        .details-table td input { width: 100%; padding: 3px 6px; border: 1px solid #ddd; border-radius: 3px; font-size: 13px; background: #fff; }
-
-        /* Right Column: Image Box */
-        .right-gem-area { width: 42%; display: flex; flex-direction: column; align-items: center; }
-        
-        .gem-photo-box {
-            width: 210px; height: 210px; border: 1px solid #333; border-radius: 4px;
-            display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; position: relative;
-        }
-        .gem-photo-box img { width: 100%; height: 100%; object-fit: contain; }
-        .gem-photo-box input[type="file"] { position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-
-        /* Signatures & Badges Row */
-        .signatures-and-badges {
-            display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-top: 15px; z-index: 1;
-        }
-        
-        .signatures-area { display: flex; gap: 20px; font-size: 11px; color: #222; }
-        .sig-person p { line-height: 1.3; }
-        .sig-person p:first-child { font-weight: bold; }
-
-        .badges-and-qr { display: flex; align-items: center; gap: 15px; }
-        .lab-logos { display: flex; align-items: center; gap: 10px; }
-        .lab-logos img { height: 45px; object-fit: contain; }
-        
-        /* QR Code Container styling for 100% scan perfection */
-        #qrcode { 
-            background: #ffffff; 
-            padding: 6px; 
-            border: 1px solid #ccc; 
-            border-radius: 4px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        #qrcode img { width: 85px !important; height: 85px !important; display: block; }
-
-        /* Bottom Footer */
-        .cert-footer-bottom { border-top: 2px solid var(--primary-orange); padding-top: 8px; margin-top: 10px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; }
-        .footer-disclaimer { font-size: 10px; color: #555; max-width: 65%; font-style: italic; line-height: 1.3; }
-        .footer-disclaimer textarea { width: 100%; height: 35px; border: none; background: transparent; font-size: 10px; font-style: italic; resize: none; }
-        
-        .footer-company-info { text-align: right; font-size: 10px; color: #333; line-height: 1.3; }
-        .footer-company-info p b { color: var(--primary-orange); }
-
-        /* Custom Modal for Password */
-        #modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
-            display: none; justify-content: center; align-items: center; z-index: 1000000;
-        }
-        .modal-card { background: #fff; padding: 25px; border-radius: 8px; width: 300px; text-align: center; }
-        .modal-card input { width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ccc; border-radius: 4px; }
-        .modal-btns { display: flex; gap: 10px; justify-content: center; }
-        .modal-btns button { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; color: #fff; }
-        .btn-confirm { background: #e74c3c; }
-        .btn-cancel { background: #7f8c8d; }
-
-        /* Print Media Query */
-        @media print {
-            body { background: #fff; }
-            .action-bar, #search-panel, input[type="file"] { display: none !important; }
-            .certificate { border: none !important; box-shadow: none !important; width: 297mm !important; height: 210mm !important; padding: 15mm 20mm !important; margin: 0 !important; }
-            .details-table input, .footer-disclaimer textarea { border: none !important; background: transparent !important; resize: none; padding: 0 !important; font-weight: 500; color: #000; }
-        }
-    </style>
+<!-- QR Code library: loaded before the application code -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
-    <!-- Login Screen -->
-    <div id="login-screen">
-        <div class="login-card">
-            <h2>Lab Login</h2>
-            <input type="text" id="user-id" placeholder="User ID (SASIKA)" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
-            <input type="password" id="password" placeholder="Password (123)" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
-            <button onclick="handleLogin()">Login</button>
-            <p id="error-msg" class="error-msg">වැරදි User ID එකක් හෝ මුරපදයකි!</p>
-        </div>
+<div id="login-screen">
+ <div class="login-card">
+  <h2>Lab Login</h2>
+  <input type="text" id="user-id" placeholder="User ID (SASIKA)" autocomplete="off">
+  <input type="password" id="password" placeholder="Password" autocomplete="new-password">
+  <button onclick="handleLogin()">Login</button>
+  <p id="error-msg" class="error-msg">වැරදි User ID එකක් හෝ මුරපදයකි!</p>
+ </div>
+</div>
+
+<div id="app-container">
+ <div class="action-bar">
+  <h1>Hemachandras (Kandy) Limited - Admin Portal</h1>
+  <div class="btn-group">
+   <button class="btn btn-search-toggle" onclick="toggleSearch()">Search Reports</button>
+   <button class="btn btn-save" onclick="saveReportToFirebase()">Save Report</button>
+   <button class="btn btn-print" onclick="window.print()">Print Certificate</button>
+   <button class="btn btn-logout" onclick="logout()">Logout</button>
+  </div>
+ </div>
+
+ <div id="public-note" class="public-note">Verified Gemstone Report – Hemachandras (Kandy) Limited</div>
+
+ <div id="search-panel">
+  <div class="search-box"><input type="text" id="search-input" placeholder="වාර්තා අංකය හෝ නම ඇතුළත් කරන්න..." oninput="searchReports()"></div>
+  <div class="search-results" id="search-results-list"></div>
+ </div>
+
+ <div class="certificate">
+  <img src="watermark_logo.png" class="watermark" alt="Watermark">
+  <div class="cert-header">
+   <div class="logo-area"><img src="main_logo.png" alt="Main Logo"></div>
+   <div class="right-top-title"><input type="text" id="rep-title-name" value="Natural Blue Sapphire"></div>
+  </div>
+
+  <div class="cert-middle">
+   <div class="left-details">
+    <table class="details-table">
+     <tr><th>No.</th><td><input id="display-report-no" type="text" readonly style="background:#f8f9fa;font-family:monospace;font-weight:bold"></td></tr>
+     <tr><th>Date</th><td><input id="rep-date" type="text"></td></tr>
+     <tr><th>Object</th><td><input id="rep-object" type="text" value="One Faceted Gemstone"></td></tr>
+     <tr><th>Weight</th><td><input id="rep-weight" type="text" value="5.24 ct"></td></tr>
+     <tr><th>Measurement</th><td><input id="rep-measurement" type="text" value="10.50 x 8.20 x 5.10 mm"></td></tr>
+     <tr><th>Shape</th><td><input id="rep-shape" type="text" value="Cushion Mixed Cut"></td></tr>
+     <tr><th>Color</th><td><input id="rep-color" type="text" value="Blue"></td></tr>
+     <tr><th>Colour Code</th><td><input id="rep-colour-code" type="text" value="Royal Blue"></td></tr>
+     <tr><th>RI</th><td><input id="rep-ri" type="text" value="1.762-1.770 DR"></td></tr>
+     <tr><th>SG</th><td><input id="rep-sg" type="text" value="3.95 - 4.00"></td></tr>
+     <tr><th>Hardness</th><td><input id="rep-hardness" type="text" value="9 (Moh)"></td></tr>
+     <tr><th>Origin</th><td><input id="rep-origin" type="text" value="Sri Lanka"></td></tr>
+     <tr><th>Comment</th><td><input id="rep-comments-field" type="text" value="Indication of thermal enhancement (Heated)."></td></tr>
+    </table>
+   </div>
+   <div class="right-gem-area">
+    <div class="gem-photo-box" id="image-box-container">
+     <span id="img-placeholder-text" style="color:#aaa;font-size:13px">ඡායාරූපයක් එකතු කරන්න</span>
+     <input type="file" id="gem-image-input" accept="image/*" onchange="previewImage(event)">
     </div>
+   </div>
+  </div>
 
-    <!-- Main Application Container -->
-    <div id="app-container">
-        <!-- Top Action Bar -->
-        <div class="action-bar">
-            <h1>Hemachandras (Kandy) Limited - Admin Portal</h1>
-            <div class="btn-group">
-                <button class="btn btn-search-toggle" onclick="toggleSearch()">Search Reports</button>
-                <button class="btn btn-save" onclick="saveReportToFirebase()">Save Report</button>
-                <button class="btn btn-print" onclick="window.print()">Print Certificate</button>
-                <button class="btn btn-logout" onclick="location.href=window.location.pathname">Logout</button>
-            </div>
-        </div>
+  <div class="signatures-and-badges">
+   <div class="signatures-area">
+    <div class="sig-person"><p>N. Senanayake G.G, G.J, A.J.A, GIA</p><p>Graduate Gemmologist,</p><p>Gemmological Institute of America (GIA).</p></div>
+    <div class="sig-person"><p>S. Senanayake F.G.A, M.G.A.</p><p>Gem-A Gemmological Association of Great Britain,</p><p>Member Of the Gemmological Association.</p></div>
+   </div>
+   <div class="badges-and-qr">
+    <div class="lab-logos"><img src="gia_logo.png" alt="GIA"><img src="gema_logo.png" alt="Gem-A"></div>
+    <div id="qrcode" aria-label="Report QR code"></div>
+   </div>
+  </div>
 
-        <!-- Search Panel -->
-        <div id="search-panel">
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="වාර්තා අංකය හෝ නම ඇතුළත් කරන්න..." oninput="searchReports()">
-            </div>
-            <div class="search-results" id="search-results-list"></div>
-        </div>
+  <div class="cert-footer-bottom">
+   <div class="footer-disclaimer"><textarea id="rep-remarks">This report is issued based on the examination of the gemstone submitted and represents our professional opinion at the time of testing. The results may vary with different methods and conditions.</textarea></div>
+   <div class="footer-company-info">
+    <p><b>Hemachandra's (Kandy) Limited</b></p><p>939, Peradeniya Rd, Kandy, Sri Lanka.</p>
+    <p>Tel : +94 081 2387 387</p><p>Fax : +94 081 2387 125</p>
+    <p>E-mail : mail@hemachandras.com</p><p>Web : www.hemachandras.com</p>
+   </div>
+  </div>
+ </div>
+</div>
 
-        <!-- Certificate Layout -->
-        <div class="certificate">
-            <img src="watermark_logo.png" class="watermark" alt="Watermark">
+<div id="modal-overlay">
+ <div class="modal-card">
+  <h3>පාලක මුරපදය ඇතුළත් කරන්න</h3>
+  <input type="password" id="modal-pass" placeholder="Password">
+  <div class="modal-btns">
+   <button class="btn-confirm" onclick="executeModalAction()">තහවුරු කරන්න</button>
+   <button class="btn-cancel" onclick="closeModal()">අවලංගු කරන්න</button>
+  </div>
+ </div>
+</div>
 
-            <!-- Header -->
-            <div class="cert-header">
-                <div class="logo-area">
-                    <img src="main_logo.png" alt="Main Logo">
-                </div>
-                <div class="right-top-title">
-                    <input type="text" id="rep-title-name" value="Natural Blue Sapphire" class="auto-cap" style="font-size: 24px; font-weight: bold; border: 1px solid #ddd; text-align: right; padding: 3px 8px; border-radius: 4px;">
-                </div>
-            </div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import {getFirestore,collection,doc,setDoc,getDocs,deleteDoc,getDoc} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-            <!-- Middle Body -->
-            <div class="cert-middle">
-                <div class="left-details">
-                    <table class="details-table">
-                        <tr>
-                            <th>No.</th>
-                            <td><input type="text" id="display-report-no" readonly style="background:#f8f9fa; font-family:monospace; font-weight:bold;"></td>
-                        </tr>
-                        <tr>
-                            <th>Date</th>
-                            <td><input type="text" id="rep-date" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>Object</th>
-                            <td><input type="text" id="rep-object" value="One Faceted Gemstone" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>Weight</th>
-                            <td><input type="text" id="rep-weight" value="5.24 ct" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>Measurement</th>
-                            <td><input type="text" id="rep-measurement" value="10.50 x 8.20 x 5.10 mm" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>Shape</th>
-                            <td><input type="text" id="rep-shape" value="Cushion Mixed Cut" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>Color</th>
-                            <td><input type="text" id="rep-color" value="Blue" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>Colour Code</th>
-                            <td><input type="text" id="rep-colour-code" value="Royal Blue" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>RI</th>
-                            <td><input type="text" id="rep-ri" value="1.762-1.770 DR" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>SG</th>
-                            <td><input type="text" id="rep-sg" value="3.95 - 4.00" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>Hardness</th>
-                            <td><input type="text" id="rep-hardness" value="9 (Moh)" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>Origin</th>
-                            <td><input type="text" id="rep-origin" value="Sri Lanka" class="auto-cap"></td>
-                        </tr>
-                        <tr>
-                            <th>Comment</th>
-                            <td><input type="text" id="rep-comments-field" value="Indication of thermal enhancement (Heated)." class="auto-cap"></td>
-                        </tr>
-                    </table>
-                </div>
+const firebaseConfig = {
+ apiKey:"AIzaSyCLdE4uREug5mwRYdBVK8tcFfZlM-NAFAo",
+ authDomain:"hemachandra-report.firebaseapp.com",
+ projectId:"hemachandra-report",
+ storageBucket:"hemachandra-report.firebasestorage.app",
+ messagingSenderId:"26079592797",
+ appId:"1:26079592797:web:5c29949a052f14828028b4"
+};
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+let currentImageData="";
+let reportToDelete="";
 
-                <div class="right-gem-area">
-                    <div class="gem-photo-box" id="image-box-container">
-                        <span id="img-placeholder-text" style="color: #aaa; font-size: 13px;">ඡායාරූපයක් එකතු කරන්න</span>
-                        <input type="file" id="gem-image-input" accept="image/*" onchange="previewImage(event)">
-                    </div>
-                </div>
-            </div>
+const $=id=>document.getElementById(id);
+const reportFields={
+ titleName:"rep-title-name",date:"rep-date",object:"rep-object",weight:"rep-weight",
+ measurement:"rep-measurement",shape:"rep-shape",color:"rep-color",colourCode:"rep-colour-code",
+ ri:"rep-ri",sg:"rep-sg",hardness:"rep-hardness",origin:"rep-origin",
+ commentsField:"rep-comments-field",remarks:"rep-remarks"
+};
 
-            <!-- Signatures and Badges Row -->
-            <div class="signatures-and-badges">
-                <div class="signatures-area">
-                    <div class="sig-person">
-                        <p>N. Senanayake G.G, G.J, A.J.A, GIA</p>
-                        <p>Graduate Gemmologist,</p>
-                        <p>Gemmological Institute of America (GIA).</p>
-                    </div>
-                    <div class="sig-person">
-                        <p>S.Senanayake F.G.A, M.G.A.</p>
-                        <p>Gem-A Gemmological Association of Great Britain,</p>
-                        <p>Member Of the Gemmological Association.</p>
-                    </div>
-                </div>
+function setTodayDate(){
+ const d=new Date(),months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+ $("rep-date").value=`${String(d.getDate()).padStart(2,"0")}th ${months[d.getMonth()]}, ${d.getFullYear()}`;
+}
+function makeReportNumber(){
+ const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+ let savedDate=localStorage.getItem("hgl_main_date");
+ let seq=parseInt(localStorage.getItem("hgl_sequence")||"0",10);
+ if(savedDate!==dateStr)seq=1;else seq=Math.max(seq,1);
+ return `HGL-${dateStr}-001-${String(seq).padStart(2,"0")}`;
+}
+function generateNextReportNumber(){
+ const reportNo=makeReportNumber();
+ $("display-report-no").value=reportNo;
+ updateQRCode(reportNo);
+}
+function updateQRCode(reportNo){
+ const box=$("qrcode");
+ box.innerHTML="";
+ if(typeof QRCode==="undefined"){
+  box.textContent="QR library unavailable";
+  console.error("QRCode library did not load. Check internet/CDN access.");
+  return;
+ }
+ // GitHub Pages project sites need the full current path, including /repository/.
+ const publicUrl=new URL(window.location.pathname,window.location.origin);
+ publicUrl.searchParams.set("report",reportNo);
+ new QRCode(box,{text:publicUrl.href,width:240,height:240,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
+}
+function getReportData(){
+ const data={reportNo:$("display-report-no").value,image:currentImageData};
+ Object.entries(reportFields).forEach(([key,id])=>data[key]=$(id).value);
+ return data;
+}
+function fillReport(data,readOnly=false){
+ $("display-report-no").value=data.reportNo||"";
+ Object.entries(reportFields).forEach(([key,id])=>$(id).value=data[key]||"");
+ currentImageData=data.image||"";
+ const box=$("image-box-container");
+ box.innerHTML="";
+ if(currentImageData){
+  const img=document.createElement("img");img.src=currentImageData;img.alt="Gemstone photo";box.appendChild(img);
+ }else{
+  const span=document.createElement("span");span.id="img-placeholder-text";span.style.cssText="color:#aaa;font-size:13px";span.textContent="ඡායාරූපයක් එකතු කරන්න";box.appendChild(span);
+ }
+ if(!readOnly){
+  const file=document.createElement("input");file.type="file";file.id="gem-image-input";file.accept="image/*";file.onchange=previewImage;box.appendChild(file);
+ }
+ document.querySelectorAll(".certificate input:not([type=file]),.certificate textarea").forEach(el=>{
+  if(el.id==="display-report-no")el.readOnly=true;else el.readOnly=readOnly;
+ });
+ updateQRCode(data.reportNo);
+}
+async function compressImage(file){
+ // Keep the photo small enough for a Firestore document (Firestore limit is 1 MiB/document).
+ const img=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=URL.createObjectURL(file)});
+ const max=900,scale=Math.min(1,max/Math.max(img.width,img.height));
+ const canvas=document.createElement("canvas");canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);
+ canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+ URL.revokeObjectURL(img.src);
+ return canvas.toDataURL("image/jpeg",0.72);
+}
+window.previewImage=async function(event){
+ const file=event.target.files&&event.target.files[0];if(!file)return;
+ try{currentImageData=await compressImage(file);fillReport(getReportData(),false);}
+ catch(e){alert("Photo එක කියවීමට නොහැකි විය. වෙනත් Photo එකක් තෝරන්න.");console.error(e)}
+};
+window.handleLogin=function(){
+ const user=$("user-id").value.trim().toUpperCase(),pass=$("password").value.trim();
+ if(user==="SASIKA"&&pass==="123"){
+  $("login-screen").style.display="none";$("app-container").style.display="block";
+  document.querySelector(".action-bar").style.display="flex";
+  document.querySelector(".certificate").style.display="flex";
+  setTodayDate();generateNextReportNumber();
+ }else $("error-msg").style.display="block";
+};
+window.logout=function(){window.location.href=window.location.pathname};
+window.saveReportToFirebase=async function(){
+ const reportNo=$("display-report-no").value;
+ if(!reportNo){alert("වාර්තා අංකයක් නැත.");return}
+ const data=getReportData();
+ try{
+  await setDoc(doc(db,"gem_reports",reportNo),data);
+  const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+  let seq=parseInt(localStorage.getItem("hgl_sequence")||"0",10);
+  if(localStorage.getItem("hgl_main_date")!==dateStr)seq=0;
+  localStorage.setItem("hgl_main_date",dateStr);
+  localStorage.setItem("hgl_sequence",String(Math.max(seq,1)+1));
+  alert("වාර්තාව Online Save විය. QR Code එක Scan කර පරීක්ෂා කරන්න.");
+  generateNextReportNumber();
+ }catch(e){
+  console.error(e);
+  alert("Save කිරීම අසාර්ථකයි. Firebase Firestore Rules සහ Internet connection පරීක්ෂා කරන්න. "+e.message);
+ }
+};
+window.toggleSearch=function(){
+ const p=$("search-panel");p.style.display=p.style.display==="block"?"none":"block";
+ if(p.style.display==="block")loadAllReportsList();
+};
+async function loadAllReportsList(){
+ const list=$("search-results-list");list.innerHTML="<div style='padding:10px'>වාර්තා සොයමින්...</div>";
+ try{
+  const snap=await getDocs(collection(db,"gem_reports"));let rows=[];
+  snap.forEach(s=>rows.push(s.data()));
+  renderSearchRows(rows);
+ }catch(e){list.innerHTML="<div style='padding:10px'>Firebase වෙතින් වාර්තා ලබාගත නොහැක. "+e.message+"</div>"}
+}
+function renderSearchRows(rows){
+ const list=$("search-results-list");list.innerHTML="";
+ if(!rows.length){list.textContent="වාර්තා හමු නොවීය.";return}
+ rows.forEach(data=>{
+  const row=document.createElement("div");row.className="search-item";
+  const label=document.createElement("span");label.textContent=`${data.reportNo||""} - ${data.titleName||""} (${data.weight||""})`;
+  const actions=document.createElement("div");
+  const view=document.createElement("button");view.textContent="View";view.onclick=()=>viewReport(data.reportNo);
+  const del=document.createElement("button");del.textContent="Delete";del.style.background="#e74c3c";del.onclick=()=>promptDelete(data.reportNo);
+  actions.append(view,del);row.append(label,actions);list.appendChild(row);
+ });
+}
+window.searchReports=function(){
+ const term=$("search-input").value.toLowerCase();
+ getDocs(collection(db,"gem_reports")).then(snap=>{
+  const rows=[];snap.forEach(s=>{const d=s.data();if((d.reportNo||"").toLowerCase().includes(term)||(d.titleName||"").toLowerCase().includes(term))rows.push(d)});
+  renderSearchRows(rows);
+ }).catch(e=>{$("search-results-list").textContent="Search error: "+e.message});
+};
+async function viewReport(reportNo){
+ try{const snap=await getDoc(doc(db,"gem_reports",reportNo));if(snap.exists()){fillReport(snap.data(),false);$("search-panel").style.display="none"}else alert("වාර්තාව හමු නොවීය!")}
+ catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
+}
+async function loadPublicReport(reportNo){
+ $("login-screen").style.display="none";$("app-container").style.display="block";
+ document.querySelector(".action-bar").style.display="none";
+ $("search-panel").style.display="none";$("public-note").style.display="block";
+ try{
+  const snap=await getDoc(doc(db,"gem_reports",reportNo));
+  if(snap.exists()){fillReport(snap.data(),true);return}
+  $("app-container").innerHTML="<h2 style='background:white;padding:25px;border-radius:8px;text-align:center'>අදාළ වාර්තාව හමු නොවීය. Report No: "+reportNo+"</h2>";
+ }catch(e){
+  console.error(e);
+  $("app-container").innerHTML="<h2 style='background:white;padding:25px;border-radius:8px;text-align:center'>වාර්තාව ලබාගත නොහැක. Firebase Firestore Rules පරීක්ෂා කරන්න.</h2>";
+ }
+}
+window.promptDelete=function(reportNo){reportToDelete=reportNo;$("modal-overlay").style.display="flex";$("modal-pass").value=""};
+window.closeModal=function(){$("modal-overlay").style.display="none";reportToDelete=""};
+window.executeModalAction=async function(){
+ if($("modal-pass").value!=="123"){alert("වැරදි මුරපදයකි!");return}
+ try{await deleteDoc(doc(db,"gem_reports",reportToDelete));alert("වාර්තාව ඉවත් කරන ලදී!");window.closeModal();loadAllReportsList()}
+ catch(e){alert("Delete කිරීම අසාර්ථකයි: "+e.message)}
+};
 
-                <div class="badges-and-qr">
-                    <div class="lab-logos">
-                        <img src="gia_logo.png" alt="GIA">
-                        <img src="gema_logo.png" alt="Gem-A">
-                    </div>
-                    <div id="qrcode"></div>
-                </div>
-            </div>
-
-            <!-- Bottom Footer -->
-            <div class="cert-footer-bottom">
-                <div class="footer-disclaimer">
-                    <textarea id="rep-remarks">This report is issued based on the examination of the gemstone submitted and represents our professional opinion at the time of testing. The results may vary with different methods and conditions.</textarea>
-                </div>
-                <div class="footer-company-info">
-                    <p><b>Hemachandra's (Kandy) Limited</b></p>
-                    <p>939, Peradeniya Rd, Kandy, Sri Lanka.</p>
-                    <p>Tel : +94 081 2387 387</p>
-                    <p>Fax : +94 081 2387 125</p>
-                    <p>E-mail : mail@hemachandras.com</p>
-                    <p>Web : www.hemachandras.com</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Custom Modal for Password -->
-    <div id="modal-overlay">
-        <div class="modal-card">
-            <h3 id="modal-title">පාලක මුරපදය ඇතුළත් කරන්න</h3>
-            <input type="password" id="modal-pass" placeholder="Password (123)">
-            <div class="modal-btns">
-                <button class="btn-confirm" onclick="executeModalAction()">තහවුරු කරන්න</button>
-                <button class="btn-cancel" onclick="closeModal()">අවලංගු කරන්න</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCLdE4uREug5mwRYdBVK8tcFfZlM-NAFAo",
-            authDomain: "hemachandra-report.firebaseapp.com",
-            projectId: "hemachandra-report",
-            storageBucket: "hemachandra-report.firebasestorage.app",
-            messagingSenderId: "26079592797",
-            appId: "1:26079592797:web:5c29949a052f14828028b4"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window.db = db;
-        window.collection = collection;
-        window.doc = doc;
-        window.setDoc = setDoc;
-        window.getDocs = getDocs;
-        window.deleteDoc = deleteDoc;
-        window.getDoc = getDoc;
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const viewReportId = urlParams.get('report');
-        if (viewReportId) {
-            loadPublicReport(viewReportId);
-        } else {
-            generateNextReportNumber();
-            document.getElementById('login-screen').style.display = 'flex';
-        }
-    </script>
-
-    <script>
-        document.addEventListener('input', function (e) {
-            if (e.target.classList.contains('auto-cap') || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-                if(e.target.id === 'user-id' || e.target.id === 'password' || e.target.id === 'modal-pass') return;
-                let start = e.target.selectionStart;
-                let end = e.target.selectionEnd;
-                e.target.value = e.target.value.replace(/\b\w/g, l => l.toUpperCase());
-                e.target.setSelectionRange(start, end);
-            }
-        });
-
-        function setTodayDate() {
-            const today = new Date();
-            const dd = String(today.getDate()).padStart(2, '0');
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const yyyy = today.getFullYear();
-            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            document.getElementById('rep-date').value = `${dd}th ${months[today.getMonth()]}, ${yyyy}`;
-        }
-
-        function handleLogin() {
-            const userInput = document.getElementById('user-id');
-            const passInput = document.getElementById('password');
-            const user = userInput.value ? userInput.value.trim() : '';
-            const pass = passInput.value ? passInput.value.trim() : '';
-
-            if (user.toUpperCase() === 'SASIKA' && pass === '123') {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app-container').style.display = 'block';
-                setTodayDate();
-                generateNextReportNumber();
-            } else {
-                document.getElementById('error-msg').style.display = 'block';
-            }
-        }
-
-        function generateNextReportNumber() {
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            const dateStr = `${yyyy}${mm}${dd}`;
-
-            let storedMainNo = localStorage.getItem('hgl_main_date');
-            let storedSeq = parseInt(localStorage.getItem('hgl_sequence') || '0');
-
-            if (storedMainNo !== dateStr) {
-                storedMainNo = dateStr;
-                storedSeq = 1;
-            }
-
-            const formattedSeq = String(storedSeq).padStart(2, '0');
-            const reportNo = `HGL-${storedMainNo}-001-${formattedSeq}`;
-            
-            document.getElementById('display-report-no').value = reportNo;
-            updateQRCode(reportNo);
-        }
-
-        let currentImageData = '';
-        function previewImage(event) {
-            const reader = new FileReader();
-            reader.onload = function(){
-                currentImageData = reader.result;
-                const container = document.getElementById('image-box-container');
-                container.innerHTML = `<img src="${currentImageData}"><input type="file" id="gem-image-input" accept="image/*" onchange="previewImage(event)">`;
-            }
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
-        // 100% Reliable QR Generator using Google Chart API Image
-        function updateQRCode(reportNo) {
-            const qrContainer = document.getElementById('qrcode');
-            qrContainer.innerHTML = "";
-            const cleanDomain = window.location.origin + window.location.pathname;
-            const publicLink = `${cleanDomain}?report=${reportNo}`;
-            
-            const encodedUrl = encodeURIComponent(publicLink);
-            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodedUrl}`;
-            
-            const qrImg = document.createElement('img');
-            qrImg.src = qrApiUrl;
-            qrImg.alt = "QR Code";
-            qrImg.style.width = "85px";
-            qrImg.style.height = "85px";
-            qrImg.style.display = "block";
-            
-            qrContainer.appendChild(qrImg);
-        }
-
-        window.saveReportToFirebase = async function() {
-            const reportNo = document.getElementById('display-report-no').value;
-            const reportData = {
-                reportNo: reportNo,
-                titleName: document.getElementById('rep-title-name').value,
-                date: document.getElementById('rep-date').value,
-                object: document.getElementById('rep-object').value,
-                weight: document.getElementById('rep-weight').value,
-                measurement: document.getElementById('rep-measurement').value,
-                shape: document.getElementById('rep-shape').value,
-                color: document.getElementById('rep-color').value,
-                colourCode: document.getElementById('rep-colour-code').value,
-                ri: document.getElementById('rep-ri').value,
-                sg: document.getElementById('rep-sg').value,
-                hardness: document.getElementById('rep-hardness').value,
-                origin: document.getElementById('rep-origin').value,
-                commentsField: document.getElementById('rep-comments-field').value,
-                remarks: document.getElementById('rep-remarks').value,
-                image: currentImageData
-            };
-
-            localStorage.setItem(`report_${reportNo}`, JSON.stringify(reportData));
-
-            let storedSeq = parseInt(localStorage.getItem('hgl_sequence') || '0') + 1;
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            localStorage.setItem('hgl_main_date', `${yyyy}${mm}${dd}`);
-            localStorage.setItem('hgl_sequence', storedSeq);
-
-            try {
-                await window.setDoc(window.doc(window.db, "gem_reports", reportNo), reportData);
-                alert("වාර්තාව සාර්ථකව Online සහ Local වෙත Save විය!");
-                generateNextReportNumber();
-            } catch (e) {
-                console.error("Error writing document: ", e);
-                alert("වාර්තාව Save කිරීමේදී දෝෂයක් ඇති විය!");
-            }
-        }
-
-        function toggleSearch() {
-            const panel = document.getElementById('search-panel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-            if(panel.style.display === 'block') loadAllReportsList();
-        }
-
-        async function loadAllReportsList() {
-            const listEl = document.getElementById('search-results-list');
-            listEl.innerHTML = "<div style='padding:10px;'>සොයමින් පවතී...</div>";
-            
-            let html = "";
-            try {
-                const querySnapshot = await window.getDocs(window.collection(window.db, "gem_reports"));
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    html += `<div class="search-item">
-                        <span><b>${data.reportNo}</b> - ${data.titleName} (${data.weight})</span>
-                        <div>
-                            <button onclick="viewReport('${data.reportNo}')">View</button>
-                            <button onclick="promptDelete('${data.reportNo}')" style="background:#e74c3c;">Delete</button>
-                        </div>
-                    </div>`;
-                });
-            } catch(e) {
-                for (let i = 0; i < localStorage.length; i++) {
-                    let key = localStorage.key(i);
-                    if (key.startsWith('report_')) {
-                        let data = JSON.parse(localStorage.getItem(key));
-                        html += `<div class="search-item">
-                            <span><b>${data.reportNo}</b> - ${data.titleName} (${data.weight})</span>
-                            <div>
-                                <button onclick="viewReport('${data.reportNo}')">View</button>
-                                <button onclick="promptDelete('${data.reportNo}')" style="background:#e74c3c;">Delete</button>
-                            </div>
-                        </div>`;
-                    }
-                }
-            }
-            listEl.innerHTML = html || "<div style='padding:10px;'>වාර්තා හමු නොවීය.</div>";
-        }
-
-        async function viewReport(reportNo) {
-            let data = null;
-            try {
-                const docRef = window.doc(window.db, "gem_reports", reportNo);
-                const docSnap = await window.getDoc(docRef);
-                if (docSnap.exists()) {
-                    data = docSnap.data();
-                }
-            } catch(e) {}
-
-            if(!data) {
-                let local = localStorage.getItem(`report_${reportNo}`);
-                if(local) data = JSON.parse(local);
-            }
-
-            if(data) {
-                document.getElementById('display-report-no').value = data.reportNo;
-                document.getElementById('rep-title-name').value = data.titleName || '';
-                document.getElementById('rep-date').value = data.date;
-                document.getElementById('rep-object').value = data.object;
-                document.getElementById('rep-weight').value = data.weight;
-                document.getElementById('rep-measurement').value = data.measurement;
-                document.getElementById('rep-shape').value = data.shape;
-                document.getElementById('rep-color').value = data.color;
-                document.getElementById('rep-colour-code').value = data.colourCode;
-                document.getElementById('rep-ri').value = data.ri;
-                document.getElementById('rep-sg').value = data.sg;
-                document.getElementById('rep-hardness').value = data.hardness;
-                document.getElementById('rep-origin').value = data.origin;
-                document.getElementById('rep-comments-field').value = data.commentsField;
-                document.getElementById('rep-remarks').value = data.remarks;
-                if(data.image) {
-                    currentImageData = data.image;
-                    document.getElementById('image-box-container').innerHTML = `<img src="${currentImageData}"><input type="file" id="gem-image-input" accept="image/*" onchange="previewImage(event)">`;
-                }
-                updateQRCode(data.reportNo);
-                document.getElementById('search-panel').style.display = 'none';
-            }
-        }
-
-        async function loadPublicReport(reportNo) {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('app-container').style.display = 'block';
-            document.querySelector('.action-bar').style.display = 'none';
-
-            let data = null;
-            try {
-                const docRef = window.doc(window.db, "gem_reports", reportNo);
-                const docSnap = await window.getDoc(docRef);
-                if (docSnap.exists()) {
-                    data = docSnap.data();
-                }
-            } catch(e) {}
-
-            if(!data) {
-                let local = localStorage.getItem(`report_${reportNo}`);
-                if(local) data = JSON.parse(local);
-            }
-
-            if(data) {
-                document.getElementById('display-report-no').value = data.reportNo;
-                document.getElementById('rep-title-name').value = data.titleName || '';
-                document.getElementById('rep-date').value = data.date;
-                document.getElementById('rep-object').value = data.object;
-                document.getElementById('rep-weight').value = data.weight;
-                document.getElementById('rep-measurement').value = data.measurement;
-                document.getElementById('rep-shape').value = data.shape;
-                document.getElementById('rep-color').value = data.color;
-                document.getElementById('rep-colour-code').value = data.colourCode;
-                document.getElementById('rep-ri').value = data.ri;
-                document.getElementById('rep-sg').value = data.sg;
-                document.getElementById('rep-hardness').value = data.hardness;
-                document.getElementById('rep-origin').value = data.origin;
-                document.getElementById('rep-comments-field').value = data.commentsField;
-                document.getElementById('rep-remarks').value = data.remarks;
-                
-                const inputs = document.querySelectorAll('input, textarea');
-                inputs.forEach(inp => inp.setAttribute('readonly', true));
-
-                if(data.image) {
-                    document.getElementById('image-box-container').innerHTML = `<img src="${data.image}">`;
-                }
-                updateQRCode(data.reportNo);
-            } else {
-                alert("අදාළ වාර්තාව හමු නොවීය!");
-            }
-        }
-
-        let reportToDelete = "";
-        function promptDelete(reportNo) {
-            reportToDelete = reportNo;
-            document.getElementById('modal-overlay').style.display = 'flex';
-            document.getElementById('modal-pass').value = "";
-        }
-
-        function closeModal() {
-            document.getElementById('modal-overlay').style.display = 'none';
-            reportToDelete = "";
-        }
-
-        async function executeModalAction() {
-            if(document.getElementById('modal-pass').value === '123') {
-                try {
-                    await window.deleteDoc(window.doc(window.db, "gem_reports", reportToDelete));
-                    localStorage.removeItem(`report_${reportToDelete}`);
-                    alert("වාර්තාව සාර්ථකව ඉවත් කරන ලදී!");
-                    closeModal();
-                    loadAllReportsList();
-                } catch(e) {
-                    alert("ඉවත් කිරීමේදී දෝෂයක් ඇති විය!");
-                }
-            } else {
-                alert("වැරදි මුරපදයකි!");
-            }
-        }
-    </script>
+// QR links open this same GitHub Pages site with ?report=REPORT_NUMBER.
+const params=new URLSearchParams(window.location.search);
+const publicReport=params.get("report");
+if(publicReport){await loadPublicReport(publicReport)}
+else{
+ $("login-screen").style.display="flex";
+ $("app-container").style.display="none";
+ generateNextReportNumber();
+}
+</script>
 </body>
 </html>
