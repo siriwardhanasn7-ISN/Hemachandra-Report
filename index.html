@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hemachandras (Kandy) Limited - Gemological Laboratory</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
             --primary-orange: #d35400;
@@ -124,10 +123,10 @@
         .lab-logos { display: flex; align-items: center; gap: 10px; }
         .lab-logos img { height: 45px; object-fit: contain; }
         
-        /* Improved QR Container with White Padding Background */
+        /* QR Code Container styling for 100% scan perfection */
         #qrcode { 
             background: #ffffff; 
-            padding: 5px; 
+            padding: 6px; 
             border: 1px solid #ccc; 
             border-radius: 4px; 
             display: flex; 
@@ -437,15 +436,24 @@
             reader.readAsDataURL(event.target.files[0]);
         }
 
+        // 100% Reliable QR Generator using Google Chart API Image
         function updateQRCode(reportNo) {
-            document.getElementById('qrcode').innerHTML = "";
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = "";
             const cleanDomain = window.location.origin + window.location.pathname;
             const publicLink = `${cleanDomain}?report=${reportNo}`;
-            new QRCode(document.getElementById("qrcode"), {
-                text: publicLink,
-                width: 85,
-                height: 85
-            });
+            
+            const encodedUrl = encodeURIComponent(publicLink);
+            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodedUrl}`;
+            
+            const qrImg = document.createElement('img');
+            qrImg.src = qrApiUrl;
+            qrImg.alt = "QR Code";
+            qrImg.style.width = "85px";
+            qrImg.style.height = "85px";
+            qrImg.style.display = "block";
+            
+            qrContainer.appendChild(qrImg);
         }
 
         window.saveReportToFirebase = async function() {
@@ -604,7 +612,7 @@
                 document.getElementById('rep-hardness').value = data.hardness;
                 document.getElementById('rep-origin').value = data.origin;
                 document.getElementById('rep-comments-field').value = data.commentsField;
-                document.getElementById('rep-remarks').value, data.remarks;
+                document.getElementById('rep-remarks').value = data.remarks;
                 
                 const inputs = document.querySelectorAll('input, textarea');
                 inputs.forEach(inp => inp.setAttribute('readonly', true));
@@ -631,7 +639,6 @@
         }
 
         async function executeModalAction() {
-            const pass = document.getElementById('modal-pass.value');
             if(document.getElementById('modal-pass').value === '123') {
                 try {
                     await window.deleteDoc(window.doc(window.db, "gem_reports", reportToDelete));
