@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemachandras (Kandy) Limited - Gemological Laboratory</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary-orange: #d35400;
+            --text-main: #2c3e50;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f6f9; color: var(--text-main); line-height: 1.4; overflow-x: hidden; }
+
+        /* Login Screen */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #2c3e50; display: flex; justify-content: center; align-items: center; z-index: 999999;
+        }
+        .login-card {
+            background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            width: 360px; text-align: center; border-top: 6px solid var(--primary-orange);
+        }
+        .login-card h2 { margin-bottom: 20px; color: var(--text-main); font-size: 24px; }
+        .login-card input {
+            width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px;
+        }
+        .login-card button {
+            width: 100%; padding: 12px; background: var(--primary-orange); border: none; color: #fff;
+            font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.3s;
+        }
+        .login-card button:hover { background: #b94000; }
+        .error-msg { color: #e74c3c; font-size: 14px; margin-top: 10px; display: none; }
+
+        /* App Container */
+        #app-container { display: none; max-width: 1450px; margin: 0 auto; padding: 15px; }
+
+        /* Top Action Bar */
+        .action-bar {
+            background: #fff; padding: 12px 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
+        }
+        .action-bar h1 { font-size: 16px; color: var(--text-main); }
+        .btn-group { display: flex; gap: 10px; }
+        .btn {
+            padding: 8px 16px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; color: #fff; font-size: 14px;
+        }
+        .btn-save { background: #27ae60; }
+        .btn-save:hover { background: #219653; }
+        .btn-print { background: #2980b9; }
+        .btn-print:hover { background: #1f618d; }
+        .btn-search-toggle { background: #8e44ad; }
+        .btn-search-toggle:hover { background: #732d91; }
+        .btn-logout { background: #c0392b; }
+        .btn-logout:hover { background: #962d22; }
+
+        /* Search Panel */
+        #search-panel {
+            background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 15px; display: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .search-box { display: flex; gap: 10px; margin-bottom: 15px; }
+        .search-box input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
+        .search-results { max-height: 250px; overflow-y: auto; border: 1px solid #eee; border-radius: 6px; }
+        .search-item {
+            padding: 10px 15px; border-bottom: 1px solid #f1f1f1; display: flex; justify-content: space-between; align-items: center;
+        }
+        .search-item:hover { background: #f9f9f9; }
+        .search-item button { padding: 5px 10px; background: #2980b9; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+
+        /* A4 Landscape Exact Original Layout */
+        .certificate {
+            background: #fff; width: 297mm; height: 210mm; padding: 15mm 20mm; margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1); position: relative; border: 1px solid #ccc;
+            display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
+        }
+
+        /* Watermark 'H' background */
+        .watermark {
+            position: absolute; top: 52%; left: 32%; transform: translate(-50%, -50%);
+            width: 480px; opacity: 0.08; pointer-events: none; z-index: 0;
+        }
+
+        /* Top Header */
+        .cert-header { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 5px; }
+        .logo-area { display: flex; align-items: flex-start; gap: 15px; }
+        .logo-area img { width: 150px; object-fit: contain; }
+        
+        .right-top-title { text-align: right; }
+        .right-top-title h2 { font-size: 26px; color: #111; font-weight: bold; margin-bottom: 5px; }
+
+        /* Middle Body */
+        .cert-middle { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; flex: 1; margin-top: 10px; }
+        
+        /* Left Column: Details Table */
+        .left-details { width: 52%; }
+        .details-table { width: 100%; border-collapse: collapse; }
+        .details-table th, .details-table td { padding: 4px 6px; text-align: left; font-size: 13px; border: none; }
+        .details-table th { width: 30px; color: #333; font-weight: 600; }
+        .details-table td input { width: 100%; padding: 3px 6px; border: 1px solid #ddd; border-radius: 3px; font-size: 13px; background: #fff; }
+
+        /* Right Column: Image Box */
+        .right-gem-area { width: 42%; display: flex; flex-direction: column; align-items: center; }
+        
+        .gem-photo-box {
+            width: 210px; height: 210px; border: 1px solid #333; border-radius: 4px;
+            display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; position: relative;
+        }
+        .gem-photo-box img { width: 100%; height: 100%; object-fit: contain; }
+        .gem-photo-box input[type="file"] { position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+
+        /* Signatures & Badges Row */
+        .signatures-and-badges {
+            display: flex; justify-content: space-between; align-items: flex-end; width: 100%; margin-top: 15px; z-index: 1;
+        }
+        
+        .signatures-area { display: flex; gap: 20px; font-size: 11px; color: #222; }
+        .sig-person p { line-height: 1.3; }
+        .sig-person p:first-child { font-weight: bold; }
+
+        .badges-and-qr { display: flex; align-items: center; gap: 15px; }
+        .lab-logos { display: flex; align-items: center; gap: 10px; }
+        .lab-logos img { height: 45px; object-fit: contain; }
+        #qrcode { width: 75px; height: 75px; display: flex; justify-content: center; align-items: center; }
+        #qrcode img { width: 75px !important; height: 75px !important; }
+
+        /* Bottom Footer */
+        .cert-footer-bottom { border-top: 2px solid var(--primary-orange); padding-top: 8px; margin-top: 10px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; }
+        .footer-disclaimer { font-size: 10px; color: #555; max-width: 65%; font-style: italic; line-height: 1.3; }
+        .footer-disclaimer textarea { width: 100%; height: 35px; border: none; background: transparent; font-size: 10px; font-style: italic; resize: none; }
+        
+        .footer-company-info { text-align: right; font-size: 10px; color: #333; line-height: 1.3; }
+        .footer-company-info p b { color: var(--primary-orange); }
+
+        /* Custom Modal for Password */
+        #modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
+            display: none; justify-content: center; align-items: center; z-index: 1000000;
+        }
+        .modal-card { background: #fff; padding: 25px; border-radius: 8px; width: 300px; text-align: center; }
+        .modal-card input { width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ccc; border-radius: 4px; }
+        .modal-btns { display: flex; gap: 10px; justify-content: center; }
+        .modal-btns button { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; color: #fff; }
+        .btn-confirm { background: #e74c3c; }
+        .btn-cancel { background: #7f8c8d; }
+
+        /* Print Media Query */
+        @media print {
+            body { background: #fff; }
+            .action-bar, #search-panel, input[type="file"] { display: none !important; }
+            .certificate { border: none !important; box-shadow: none !important; width: 297mm !important; height: 210mm !important; padding: 15mm 20mm !important; margin: 0 !important; }
+            .details-table input, .footer-disclaimer textarea { border: none !important; background: transparent !important; resize: none; padding: 0 !important; font-weight: 500; color: #000; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="login-card">
+            <h2>Lab Login</h2>
+            <input type="text" id="user-id" placeholder="User ID (SASIKA)" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+            <input type="password" id="password" placeholder="Password (123)" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
+            <button onclick="handleLogin()">Login</button>
+            <p id="error-msg" class="error-msg">වැරදි User ID එකක් හෝ මුරපදයකි!</p>
+        </div>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="app-container">
+        <!-- Top Action Bar -->
+        <div class="action-bar">
+            <h1>Hemachandras (Kandy) Limited - Admin Portal</h1>
+            <div class="btn-group">
+                <button class="btn btn-search-toggle" onclick="toggleSearch()">Search Reports</button>
+                <button class="btn btn-save" onclick="saveReportToFirebase()">Save Report</button>
+                <button class="btn btn-print" onclick="window.print()">Print Certificate</button>
+                <button class="btn btn-logout" onclick="location.href=window.location.pathname">Logout</button>
+            </div>
+        </div>
+
+        <!-- Search Panel -->
+        <div id="search-panel">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="වාර්තා අංකය හෝ නම ඇතුළත් කරන්න..." oninput="searchReports()">
+            </div>
+            <div class="search-results" id="search-results-list"></div>
+        </div>
+
+        <!-- Certificate Layout -->
+        <div class="certificate">
+            <img src="Watermark_logo.png" class="watermark" alt="Watermark">
+
+            <!-- Header -->
+            <div class="cert-header">
+                <div class="logo-area">
+                    <img src="main_logo.png" alt="Main Logo">
+                </div>
+                <div class="right-top-title">
+                    <input type="text" id="rep-title-name" value="Natural Blue Sapphire" class="auto-cap" style="font-size: 24px; font-weight: bold; border: 1px solid #ddd; text-align: right; padding: 3px 8px; border-radius: 4px;">
+                </div>
+            </div>
+
+            <!-- Middle Body -->
+            <div class="cert-middle">
+                <div class="left-details">
+                    <table class="details-table">
+                        <tr>
+                            <th>No.</th>
+                            <td><input type="text" id="display-report-no" readonly style="background:#f8f9fa; font-family:monospace; font-weight:bold;"></td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td><input type="text" id="rep-date" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>Object</th>
+                            <td><input type="text" id="rep-object" value="One Faceted Gemstone" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>Weight</th>
+                            <td><input type="text" id="rep-weight" value="5.24 ct" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>Measurement</th>
+                            <td><input type="text" id="rep-measurement" value="10.50 x 8.20 x 5.10 mm" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>Shape</th>
+                            <td><input type="text" id="rep-shape" value="Cushion Mixed Cut" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>Color</th>
+                            <td><input type="text" id="rep-color" value="Blue" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>Colour Code</th>
+                            <td><input type="text" id="rep-colour-code" value="Royal Blue" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>RI</th>
+                            <td><input type="text" id="rep-ri" value="1.762-1.770 DR" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>SG</th>
+                            <td><input type="text" id="rep-sg" value="3.95 - 4.00" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>Hardness</th>
+                            <td><input type="text" id="rep-hardness" value="9 (Moh)" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>Origin</th>
+                            <td><input type="text" id="rep-origin" value="Sri Lanka" class="auto-cap"></td>
+                        </tr>
+                        <tr>
+                            <th>Comment</th>
+                            <td><input type="text" id="rep-comments-field" value="Indication of thermal enhancement (Heated)." class="auto-cap"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="right-gem-area">
+                    <div class="gem-photo-box" id="image-box-container">
+                        <span id="img-placeholder-text" style="color: #aaa; font-size: 13px;">ඡායාරූපයක් එකතු කරන්න</span>
+                        <input type="file" id="gem-image-input" accept="image/*" onchange="previewImage(event)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signatures and Badges Row -->
+            <div class="signatures-and-badges">
+                <div class="signatures-area">
+                    <div class="sig-person">
+                        <p>N. Senanayake G.G, G.J, A.J.A, GIA</p>
+                        <p>Graduate Gemmologist,</p>
+                        <p>Gemmological Institute of America (GIA).</p>
+                    </div>
+                    <div class="sig-person">
+                        <p>S.Senanayake F.G.A, M.G.A.</p>
+                        <p>Gem-A Gemmological Association of Great Britain,</p>
+                        <p>Member Of the Gemmological Association.</p>
+                    </div>
+                </div>
+
+                <div class="badges-and-qr">
+                    <div class="lab-logos">
+                        <img src="gia_logo.png" alt="GIA">
+                        <img src="gema_logo.png" alt="Gem-A">
+                    </div>
+                    <div id="qrcode"></div>
+                </div>
+            </div>
+
+            <!-- Bottom Footer -->
+            <div class="cert-footer-bottom">
+                <div class="footer-disclaimer">
+                    <textarea id="rep-remarks">This report is issued based on the examination of the gemstone submitted and represents our professional opinion at the time of testing. The results may vary with different methods and conditions.</textarea>
+                </div>
+                <div class="footer-company-info">
+                    <p><b>Hemachandra's (Kandy) Limited</b></p>
+                    <p>939, Peradeniya Rd, Kandy, Sri Lanka.</p>
+                    <p>Tel : +94 081 2387 387</p>
+                    <p>Fax : +94 081 2387 125</p>
+                    <p>E-mail : mail@hemachandras.com</p>
+                    <p>Web : www.hemachandras.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal for Password -->
+    <div id="modal-overlay">
+        <div class="modal-card">
+            <h3 id="modal-title">පාලක මුරපදය ඇතුළත් කරන්න</h3>
+            <input type="password" id="modal-pass" placeholder="Password (123)">
+            <div class="modal-btns">
+                <button class="btn-confirm" onclick="executeModalAction()">තහවුරු කරන්න</button>
+                <button class="btn-cancel" onclick="closeModal()">අවලංගු කරන්න</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLdE4uREug5mwRYdBVK8tcFfZlM-NAFAo",
+            authDomain: "hemachandra-report.firebaseapp.com",
+            projectId: "hemachandra-report",
+            storageBucket: "hemachandra-report.firebasestorage.app",
+            messagingSenderId: "26079592797",
+            appId: "1:26079592797:web:5c29949a052f14828028b4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.collection = collection;
+        window.doc = doc;
+        window.setDoc = setDoc;
+        window.getDocs = getDocs;
+        window.deleteDoc = deleteDoc;
+        window.getDoc = getDoc;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const viewReportId = urlParams.get('report');
+        if (viewReportId) {
+            loadPublicReport(viewReportId);
+        } else {
+            generateNextReportNumber();
+            document.getElementById('login-screen').style.display = 'flex';
+        }
+    </script>
+
+    <script>
+        document.addEventListener('input', function (e) {
+            if (e.target.classList.contains('auto-cap') || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                if(e.target.id === 'user-id' || e.target.id === 'password' || e.target.id === 'modal-pass') return;
+                let start = e.target.selectionStart;
+                let end = e.target.selectionEnd;
+                e.target.value = e.target.value.replace(/\b\w/g, l => l.toUpperCase());
+                e.target.setSelectionRange(start, end);
+            }
+        });
+
+        function setTodayDate() {
+            const today = new Date();
+            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const yyyy = today.getFullYear();
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            document.getElementById('rep-date').value = `${dd}th ${months[today.getMonth()]}, ${yyyy}`;
+        }
+
+        function handleLogin() {
+            const userInput = document.getElementById('user-id');
+            const passInput = document.getElementById('password');
+            const user = userInput.value ? userInput.value.trim() : '';
+            const pass = passInput.value ? passInput.value.trim() : '';
+
+            if (user.toUpperCase() === 'SASIKA' && pass === '123') {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-container').style.display = 'block';
+                setTodayDate();
+                generateNextReportNumber(); // Generate fresh correct number on login
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        // Exact Dynamic Report Number Generation (HGL-YYYYMMDD-001-XX format)
+        function generateNextReportNumber() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const dateStr = `${yyyy}${mm}${dd}`;
+
+            let storedMainNo = localStorage.getItem('hgl_main_date');
+            let storedSeq = parseInt(localStorage.getItem('hgl_sequence') || '0');
+
+            if (storedMainNo !== dateStr) {
+                storedMainNo = dateStr;
+                storedSeq = 1;
+            } else {
+                // Keep current sequence if not saved yet, or increment if requested
+            }
+
+            const formattedSeq = String(storedSeq).padStart(2, '0');
+            const reportNo = `HGL-${storedMainNo}-001-${formattedSeq}`;
+            
+            document.getElementById('display-report-no').value = reportNo;
+            updateQRCode(reportNo);
+        }
+
+        let currentImageData = '';
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                currentImageData = reader.result;
+                const container = document.getElementById('image-box-container');
+                container.innerHTML = `<img src="${currentImageData}"><input type="file" id="gem-image-input" accept="image/*" onchange="previewImage(event)">`;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function updateQRCode(reportNo) {
+            document.getElementById('qrcode').innerHTML = "";
+            const cleanDomain = window.location.origin + window.location.pathname;
+            const publicLink = `${cleanDomain}?report=${reportNo}`;
+            new QRCode(document.getElementById("qrcode"), {
+                text: publicLink,
+                width: 75,
+                height: 75
+            });
+        }
+
+        window.saveReportToFirebase = async function() {
+            const reportNo = document.getElementById('display-report-no').value;
+            const reportData = {
+                reportNo: reportNo,
+                titleName: document.getElementById('rep-title-name').value,
+                date: document.getElementById('rep-date').value,
+                object: document.getElementById('rep-object').value,
+                weight: document.getElementById('rep-weight').value,
+                measurement: document.getElementById('rep-measurement').value,
+                shape: document.getElementById('rep-shape').value,
+                color: document.getElementById('rep-color').value,
+                colourCode: document.getElementById('rep-colour-code').value,
+                ri: document.getElementById('rep-ri').value,
+                sg: document.getElementById('rep-sg').value,
+                hardness: document.getElementById('rep-hardness').value,
+                origin: document.getElementById('rep-origin').value,
+                commentsField: document.getElementById('rep-comments-field').value,
+                remarks: document.getElementById('rep-remarks').value,
+                image: currentImageData
+            };
+
+            localStorage.setItem(`report_${reportNo}`, JSON.stringify(reportData));
+
+            // Increment sequence for the next report only after successful save
+            let storedSeq = parseInt(localStorage.getItem('hgl_sequence') || '0') + 1;
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            localStorage.setItem('hgl_main_date', `${yyyy}${mm}${dd}`);
+            localStorage.setItem('hgl_sequence', storedSeq);
+
+            try {
+                await window.setDoc(window.doc(window.db, "gem_reports", reportNo), reportData);
+                alert("වාර්තාව සාර්ථකව Online සහ Local වෙත Save විය! ඊළඟ වාර්තා අංකය සූදානම් වේ.");
+                generateNextReportNumber(); // Auto-load next number
+            } catch (e) {
+                console.error("Error writing document: ", e);
+                alert("වාර්තාව Save කිරීමේදී දෝෂයක් ඇති විය!");
+            }
+        }
+
+        function toggleSearch() {
+            const panel = document.getElementById('search-panel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            if(panel.style.display === 'block') loadAllReportsList();
+        }
+
+        async function loadAllReportsList() {
+            const listEl = document.getElementById('search-results-list');
+            listEl.innerHTML = "<div style='padding:10px;'>සොයමින් පවතී...</div>";
+            
+            let html = "";
+            try {
+                const querySnapshot = await window.getDocs(window.collection(window.db, "gem_reports"));
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    html += `<div class="search-item">
+                        <span><b>${data.reportNo}</b> - ${data.titleName} (${data.weight})</span>
+                        <div>
+                            <button onclick="viewReport('${data.reportNo}')">View</button>
+                            <button onclick="promptDelete('${data.reportNo}')" style="background:#e74c3c;">Delete</button>
+                        </div>
+                    </div>`;
+                });
+            } catch(e) {
+                for (let i = 0; i < localStorage.length; i++) {
+                    let key = localStorage.key(i);
+                    if (key.startsWith('report_')) {
+                        let data = JSON.parse(localStorage.getItem(key));
+                        html += `<div class="search-item">
+                            <span><b>${data.reportNo}</b> - ${data.titleName} (${data.weight})</span>
+                            <div>
+                                <button onclick="viewReport('${data.reportNo}')">View</button>
+                                <button onclick="promptDelete('${data.reportNo}')" style="background:#e74c3c;">Delete</button>
+                            </div>
+                        </div>`;
+                    }
+                }
+            }
+            listEl.innerHTML = html || "<div style='padding:10px;'>වාර්තා හමු නොවීය.</div>";
+        }
+
+        async function viewReport(reportNo) {
+            let data = null;
+            try {
+                const docRef = window.doc(window.db, "gem_reports", reportNo);
+                const docSnap = await window.getDoc(docRef);
+                if (docSnap.exists()) {
+                    data = docSnap.data();
+                }
+            } catch(e) {}
+
+            if(!data) {
+                let local = localStorage.getItem(`report_${reportNo}`);
+                if(local) data = JSON.parse(local);
+            }
+
+            if(data) {
+                document.getElementById('display-report-no').value = data.reportNo;
+                document.getElementById('rep-title-name').value = data.titleName || '';
+                document.getElementById('rep-date').value = data.date;
+                document.getElementById('rep-object').value = data.object;
+                document.getElementById('rep-weight').value = data.weight;
+                document.getElementById('rep-measurement').value = data.measurement;
+                document.getElementById('rep-shape').value = data.shape;
+                document.getElementById('rep-color').value = data.color;
+                document.getElementById('rep-colour-code').value = data.colourCode;
+                document.getElementById('rep-ri').value = data.ri;
+                document.getElementById('rep-sg').value = data.sg;
+                document.getElementById('rep-hardness').value = data.hardness;
+                document.getElementById('rep-origin').value = data.origin;
+                document.getElementById('rep-comments-field').value = data.commentsField;
+                document.getElementById('rep-remarks').value = data.remarks;
+                if(data.image) {
+                    currentImageData = data.image;
+                    document.getElementById('image-box-container').innerHTML = `<img src="${currentImageData}"><input type="file" id="gem-image-input" accept="image/*" onchange="previewImage(event)">`;
+                }
+                updateQRCode(data.reportNo);
+                document.getElementById('search-panel').style.display = 'none';
+            }
+        }
+
+        async function loadPublicReport(reportNo) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app-container').style.display = 'block';
+            document.querySelector('.action-bar').style.display = 'none';
+
+            let data = null;
+            try {
+                const docRef = window.doc(window.db, "gem_reports", reportNo);
+                const docSnap = await window.getDoc(docRef);
+                if (docSnap.exists()) {
+                    data = docSnap.data();
+                }
+            } catch(e) {}
+
+            if(!data) {
+                let local = localStorage.getItem(`report_${reportNo}`);
+                if(local) data = JSON.parse(local);
+            }
+
+            if(data) {
+                document.getElementById('display-report-no').value = data.reportNo;
+                document.getElementById('rep-title-name').value = data.titleName || '';
+                document.getElementById('rep-date').value = data.date;
+                document.getElementById('rep-object').value = data.object;
+                document.getElementById('rep-weight').value = data.weight;
+                document.getElementById('rep-measurement').value = data.measurement;
+                document.getElementById('rep-shape').value = data.shape;
+                document.getElementById('rep-color').value = data.color;
+                document.getElementById('rep-colour-code').value = data.colourCode;
+                document.getElementById('rep-ri').value = data.ri;
+                document.getElementById('rep-sg').value = data.sg;
+                document.getElementById('rep-hardness').value = data.hardness;
+                document.getElementById('rep-origin').value = data.origin;
+                document.getElementById('rep-comments-field').value = data.commentsField;
+                document.getElementById('rep-remarks').value = data.remarks;
+                
+                const inputs = document.querySelectorAll('input, textarea');
+                inputs.forEach(inp => inp.setAttribute('readonly', true));
+
+                if(data.image) {
+                    document.getElementById('image-box-container').innerHTML = `<img src="${data.image}">`;
+                }
+                updateQRCode(data.reportNo);
+            } else {
+                alert("අදාළ වාර්තාව හමු නොවීය!");
+            }
+        }
+
+        let reportToDelete = "";
+        function promptDelete(reportNo) {
+            reportToDelete = reportNo;
+            document.getElementById('modal-overlay').style.display = 'flex';
+            document.getElementById('modal-pass').value = "";
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').style.display = 'none';
+            reportToDelete = "";
+        }
+
+        async function executeModalAction() {
+            const pass = document.getElementById('modal-pass').value;
+            if(pass === '123') {
+                try {
+                    await window.deleteDoc(window.doc(window.db, "gem_reports", reportToDelete));
+                    localStorage.removeItem(`report_${reportToDelete}`);
+                    alert("වාර්තාව සාර්ථකව ඉවත් කරන ලදී!");
+                    closeModal();
+                    loadAllReportsList();
+                } catch(e) {
+                    alert("ඉවත් කිරීමේදී දෝෂයක් ඇති විය!");
+                }
+            } else {
+                alert("වැරදි මුරපදයකි!");
+            }
+        }
+    </script>
+</body>
+</html>
