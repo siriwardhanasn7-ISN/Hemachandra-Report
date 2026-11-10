@@ -123,8 +123,18 @@
         .badges-and-qr { display: flex; align-items: center; gap: 15px; }
         .lab-logos { display: flex; align-items: center; gap: 10px; }
         .lab-logos img { height: 45px; object-fit: contain; }
-        #qrcode { width: 75px; height: 75px; display: flex; justify-content: center; align-items: center; }
-        #qrcode img { width: 75px !important; height: 75px !important; }
+        
+        /* Improved QR Container with White Padding Background */
+        #qrcode { 
+            background: #ffffff; 
+            padding: 5px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        #qrcode img { width: 85px !important; height: 85px !important; display: block; }
 
         /* Bottom Footer */
         .cert-footer-bottom { border-top: 2px solid var(--primary-orange); padding-top: 8px; margin-top: 10px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; }
@@ -191,7 +201,7 @@
 
         <!-- Certificate Layout -->
         <div class="certificate">
-            <img src="Watermark_logo.png" class="watermark" alt="Watermark">
+            <img src="watermark_logo.png" class="watermark" alt="Watermark">
 
             <!-- Header -->
             <div class="cert-header">
@@ -388,13 +398,12 @@
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app-container').style.display = 'block';
                 setTodayDate();
-                generateNextReportNumber(); // Generate fresh correct number on login
+                generateNextReportNumber();
             } else {
                 document.getElementById('error-msg').style.display = 'block';
             }
         }
 
-        // Exact Dynamic Report Number Generation (HGL-YYYYMMDD-001-XX format)
         function generateNextReportNumber() {
             const today = new Date();
             const yyyy = today.getFullYear();
@@ -408,8 +417,6 @@
             if (storedMainNo !== dateStr) {
                 storedMainNo = dateStr;
                 storedSeq = 1;
-            } else {
-                // Keep current sequence if not saved yet, or increment if requested
             }
 
             const formattedSeq = String(storedSeq).padStart(2, '0');
@@ -436,8 +443,8 @@
             const publicLink = `${cleanDomain}?report=${reportNo}`;
             new QRCode(document.getElementById("qrcode"), {
                 text: publicLink,
-                width: 75,
-                height: 75
+                width: 85,
+                height: 85
             });
         }
 
@@ -464,7 +471,6 @@
 
             localStorage.setItem(`report_${reportNo}`, JSON.stringify(reportData));
 
-            // Increment sequence for the next report only after successful save
             let storedSeq = parseInt(localStorage.getItem('hgl_sequence') || '0') + 1;
             const today = new Date();
             const yyyy = today.getFullYear();
@@ -475,8 +481,8 @@
 
             try {
                 await window.setDoc(window.doc(window.db, "gem_reports", reportNo), reportData);
-                alert("වාර්තාව සාර්ථකව Online සහ Local වෙත Save විය! ඊළඟ වාර්තා අංකය සූදානම් වේ.");
-                generateNextReportNumber(); // Auto-load next number
+                alert("වාර්තාව සාර්ථකව Online සහ Local වෙත Save විය!");
+                generateNextReportNumber();
             } catch (e) {
                 console.error("Error writing document: ", e);
                 alert("වාර්තාව Save කිරීමේදී දෝෂයක් ඇති විය!");
@@ -598,7 +604,7 @@
                 document.getElementById('rep-hardness').value = data.hardness;
                 document.getElementById('rep-origin').value = data.origin;
                 document.getElementById('rep-comments-field').value = data.commentsField;
-                document.getElementById('rep-remarks').value = data.remarks;
+                document.getElementById('rep-remarks').value, data.remarks;
                 
                 const inputs = document.querySelectorAll('input, textarea');
                 inputs.forEach(inp => inp.setAttribute('readonly', true));
@@ -625,8 +631,8 @@
         }
 
         async function executeModalAction() {
-            const pass = document.getElementById('modal-pass').value;
-            if(pass === '123') {
+            const pass = document.getElementById('modal-pass.value');
+            if(document.getElementById('modal-pass').value === '123') {
                 try {
                     await window.deleteDoc(window.doc(window.db, "gem_reports", reportToDelete));
                     localStorage.removeItem(`report_${reportToDelete}`);
