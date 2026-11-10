@@ -68,6 +68,49 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  .certificate{border:0!important;box-shadow:none!important;width:297mm!important;height:210mm!important;min-height:210mm!important;padding:15mm 20mm!important;margin:0!important;transform:none!important}
  .details-table input,.footer-disclaimer textarea,.right-top-title input{border:0!important;background:transparent!important;resize:none;padding:0!important;color:#000}
 }
+
+/* Reference design: exact A4 landscape print canvas */
+body{font-family:"Times New Roman",Times,serif;color:#111;background:#f4f6f9}
+.certificate{width:297mm!important;height:210mm!important;min-height:210mm!important;padding:7mm 12mm 5mm!important;margin:0 auto!important;border:0!important;box-shadow:0 0 12px #00000014!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;overflow:hidden!important;background:#fff!important;position:relative}
+.watermark{top:57%;left:29%;width:120mm;opacity:.075}
+.cert-header{height:48mm;min-height:48mm;align-items:flex-start;margin:0!important;gap:8mm}
+.logo-area{display:flex;flex-direction:column;align-items:flex-start;gap:1mm}
+.logo-area img{width:91mm!important;height:30mm;object-fit:contain;object-position:left top}
+.report-label{font-family:"Times New Roman",serif;font-size:19pt;font-weight:bold;margin-left:3mm;line-height:1.1}
+.right-top-title{padding-top:35mm;margin-right:17mm}
+.right-top-title input{font-family:"Times New Roman",serif;font-size:21pt!important;font-weight:bold;border:0!important;background:transparent!important;color:#111;text-align:right;padding:0!important;width:100mm;max-width:100mm}
+.cert-middle{height:94mm;min-height:94mm;flex:none;margin:0!important;gap:7mm;align-items:flex-start}
+.left-details{width:47%!important;height:100%;position:relative;padding:0 0 0 3mm}
+.details-table{width:100%;border-collapse:collapse}
+.details-table th,.details-table td{font-family:"Times New Roman",serif!important;font-size:14pt!important;padding:2.05mm 1mm!important;line-height:1.15;border:0!important;color:#111}
+.details-table th{width:39mm!important;font-weight:normal!important}
+.details-table td input{font-family:"Times New Roman",serif!important;font-size:14pt!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#111;line-height:1.15}
+.right-gem-area{width:48%!important;height:100%;align-items:flex-end;padding-right:32mm;padding-top:0}
+.gem-photo-box{width:51mm!important;height:51mm!important;border:1px solid #333!important;border-radius:0!important;background:#fff}
+.gem-photo-box img{object-fit:contain}
+.signatures-and-badges{height:57mm;min-height:57mm;flex:none;width:100%;margin:0!important;position:relative;display:block!important;z-index:2}
+.signatures-area{position:absolute;left:55%;top:0;width:44%;display:flex;justify-content:space-between;gap:5mm;flex-wrap:nowrap;font-size:9pt!important}
+.sig-person{width:50%}
+.sig-person p{font-family:"Times New Roman",serif!important;font-size:9pt!important;line-height:1.12!important;color:#111}
+.badges-and-qr{position:absolute;right:0;bottom:0;display:flex;align-items:center;gap:8mm}
+.lab-logos{gap:5mm}
+.lab-logos img{height:22mm!important;max-width:43mm;object-fit:contain}
+#qrcode{width:29mm!important;height:29mm!important;min-width:29mm!important;min-height:29mm!important;padding:1mm!important;border:0!important;border-radius:0!important}
+#qrcode img,#qrcode canvas{width:27mm!important;height:27mm!important}
+.cert-footer-bottom{height:27mm;min-height:27mm;flex:none;margin-top:auto!important;padding-top:2mm!important;border-top:1.2mm solid #d35400!important;position:relative;align-items:flex-end}
+.cert-footer-bottom:before{content:"";position:absolute;left:0;right:0;top:1.6mm;border-top:.45mm solid #b7b7b7}
+.footer-disclaimer{font-family:"Times New Roman",serif!important;font-size:10pt!important;max-width:62%!important;color:#222}
+.footer-disclaimer textarea{font-family:"Times New Roman",serif!important;font-size:10pt!important;height:19mm!important;line-height:1.15!important;color:#222}
+.footer-company-info,.footer-company-info p{font-family:"Times New Roman",serif!important;font-size:9pt!important;line-height:1.12!important;color:#111}
+.footer-company-info p b{color:#111!important}
+@media(max-width:800px){#app-container{overflow-x:auto}.certificate{transform:none!important;margin:0!important}}
+@media print{
+ @page{size:A4 landscape;margin:0}
+ html,body{width:297mm!important;height:210mm!important;margin:0!important;padding:0!important;background:#fff!important}
+ .certificate{width:297mm!important;height:210mm!important;min-height:210mm!important;padding:7mm 12mm 5mm!important;margin:0!important;box-shadow:none!important;border:0!important;transform:none!important}
+ .details-table input,.footer-disclaimer textarea,.right-top-title input{border:0!important;background:transparent!important;color:#000!important}
+}
+
 </style>
 
 <!-- QR Code library: loaded before the application code -->
@@ -78,7 +121,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 <div id="login-screen">
  <div class="login-card">
   <h2>Lab Login</h2>
-  <input type="text" id="user-id" placeholder="User ID (SASIKA)" autocomplete="off">
+  <input type="text" id="user-id" placeholder="User name" autocomplete="off">
   <input type="password" id="password" placeholder="Password" autocomplete="new-password">
   <button onclick="handleLogin()">Login</button>
   <p id="error-msg" class="error-msg">වැරදි User ID එකක් හෝ මුරපදයකි!</p>
@@ -106,14 +149,14 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  <div class="certificate">
   <img src="watermark_logo.png" class="watermark" alt="Watermark">
   <div class="cert-header">
-   <div class="logo-area"><img src="main_logo.png" alt="Main Logo"></div>
+   <div class="logo-area"><img src="main_logo.png" alt="Main Logo"><div class="report-label">GEMSTONE REPORT</div></div>
    <div class="right-top-title"><input type="text" id="rep-title-name" value="Natural Blue Sapphire"></div>
   </div>
 
   <div class="cert-middle">
    <div class="left-details">
     <table class="details-table">
-     <tr><th>No.</th><td><input id="display-report-no" type="text" readonly style="background:#f8f9fa;font-family:monospace;font-weight:bold"></td></tr>
+     <tr><th>No.</th><td><input id="display-report-no" type="text" autocomplete="off" oninput="updateQRFromField()" style="background:#fff;font-family:monospace;font-weight:bold"></td></tr>
      <tr><th>Date</th><td><input id="rep-date" type="text"></td></tr>
      <tr><th>Object</th><td><input id="rep-object" type="text" value="One Faceted Gemstone"></td></tr>
      <tr><th>Weight</th><td><input id="rep-weight" type="text" value="5.24 ct"></td></tr>
@@ -198,18 +241,26 @@ function setTodayDate(){
  const d=new Date(),months=["January","February","March","April","May","June","July","August","September","October","November","December"];
  $("rep-date").value=`${String(d.getDate()).padStart(2,"0")}th ${months[d.getMonth()]}, ${d.getFullYear()}`;
 }
+function getTodayStamp(){
+ const d=new Date();
+ return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+}
 function makeReportNumber(){
- const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
- let savedDate=localStorage.getItem("hgl_main_date");
- let seq=parseInt(localStorage.getItem("hgl_sequence")||"0",10);
- if(savedDate!==dateStr)seq=1;else seq=Math.max(seq,1);
- return `HGL-${dateStr}-001-${String(seq).padStart(2,"0")}`;
+ return `HGL-${getTodayStamp()}-XXX-XX`;
 }
 function generateNextReportNumber(){
- const reportNo=makeReportNumber();
- $("display-report-no").value=reportNo;
- updateQRCode(reportNo);
+ const field=$("display-report-no");
+ if(!field.value || !/^HGL-\d{8}-\d{3}-\d{2}$/.test(field.value)) field.value=makeReportNumber();
+ if(/^HGL-\d{8}-\d{3}-\d{2}$/.test(field.value)) updateQRCode(field.value); else $("qrcode").innerHTML="";
 }
+function getFollowingReportNumber(reportNo){
+ const match=reportNo.match(/^HGL-(\d{8})-(\d{3})-(\d{2})$/);
+ if(!match)return "";
+ const main=parseInt(match[2],10),sub=parseInt(match[3],10);
+ if(sub<99)return `HGL-${match[1]}-${String(main).padStart(3,"0")}-${String(sub+1).padStart(2,"0")}`;
+ return `HGL-${match[1]}-${String(main+1).padStart(3,"0")}-01`;
+}
+window.updateQRFromField=function(){const value=$("display-report-no").value.trim().toUpperCase();if(/^HGL-\d{8}-\d{3}-\d{2}$/.test(value))updateQRCode(value);};
 function updateQRCode(reportNo){
  const box=$("qrcode");
  box.innerHTML="";
@@ -243,7 +294,7 @@ function fillReport(data,readOnly=false){
   const file=document.createElement("input");file.type="file";file.id="gem-image-input";file.accept="image/*";file.onchange=previewImage;box.appendChild(file);
  }
  document.querySelectorAll(".certificate input:not([type=file]),.certificate textarea").forEach(el=>{
-  if(el.id==="display-report-no")el.readOnly=true;else el.readOnly=readOnly;
+  el.readOnly=readOnly;
  });
  updateQRCode(data.reportNo);
 }
@@ -267,23 +318,28 @@ window.handleLogin=function(){
   $("login-screen").style.display="none";$("app-container").style.display="block";
   document.querySelector(".action-bar").style.display="flex";
   document.querySelector(".certificate").style.display="flex";
-  setTodayDate();generateNextReportNumber();
+  setTodayDate();$("display-report-no").value=makeReportNumber();generateNextReportNumber();
  }else $("error-msg").style.display="block";
 };
 window.logout=function(){window.location.href=window.location.pathname};
 window.saveReportToFirebase=async function(){
- const reportNo=$("display-report-no").value;
- if(!reportNo){alert("වාර්තා අංකයක් නැත.");return}
- const data=getReportData();
+ const reportNo=$("display-report-no").value.trim().toUpperCase();
+ if(!/^HGL-\d{8}-\d{3}-\d{2}$/.test(reportNo)){
+  alert("වාර්තා අංකය HGL-YYYYMMDD-001-01 ආකාරයට ඇතුළත් කරන්න.");
+  $("display-report-no").focus();return;
+ }
+ const data=getReportData();data.reportNo=reportNo;
  try{
-  await setDoc(doc(db,"gem_reports",reportNo),data);
-  const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
-  let seq=parseInt(localStorage.getItem("hgl_sequence")||"0",10);
-  if(localStorage.getItem("hgl_main_date")!==dateStr)seq=0;
-  localStorage.setItem("hgl_main_date",dateStr);
-  localStorage.setItem("hgl_sequence",String(Math.max(seq,1)+1));
-  alert("වාර්තාව Online Save විය. QR Code එක Scan කර පරීක්ෂා කරන්න.");
-  generateNextReportNumber();
+  const reportRef=doc(db,"gem_reports",reportNo);
+  const existing=await getDoc(reportRef);
+  if(existing.exists()){
+   alert("මෙම වාර්තා අංකය දැනටමත් භාවිතා කර ඇත. වෙනත් අංකයක් ඇතුළත් කරන්න.");
+   $("display-report-no").focus();return;
+  }
+  await setDoc(reportRef,data);
+  $("display-report-no").value=getFollowingReportNumber(reportNo);
+  updateQRCode($("display-report-no").value);
+  alert("වාර්තාව Online Save විය. ඊළඟ වාර්තා අංකය ස්වයංක්‍රීයව සකස් කර ඇත. QR Code එක Scan කර පරීක්ෂා කරන්න.");
  }catch(e){
   console.error(e);
   alert("Save කිරීම අසාර්ථකයි. Firebase Firestore Rules සහ Internet connection පරීක්ෂා කරන්න. "+e.message);
