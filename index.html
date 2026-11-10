@@ -59,11 +59,21 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .modal-btns button{padding:8px 15px;border:0;border-radius:4px;cursor:pointer;font-weight:bold;color:#fff}
 .btn-confirm{background:#e74c3c}.btn-cancel{background:#7f8c8d}
 .public-note{display:none;text-align:center;background:#eef6ff;padding:8px;margin-bottom:10px;border-radius:6px}
+@media(max-width:800px){.certificate{transform-origin:top left;width:297mm;margin:0;}.action-bar{padding:12px}.signatures-and-badges{align-items:flex-start}}
+@media print{
+ @page{size:A4 landscape;margin:0}
+ body{background:#fff}
+ .action-bar,#search-panel,#login-screen,#modal-overlay,.gem-photo-box input[type=file],.public-note{display:none!important}
+ #app-container{display:block!important;padding:0!important;margin:0!important;max-width:none!important}
+ .certificate{border:0!important;box-shadow:none!important;width:297mm!important;height:210mm!important;min-height:210mm!important;padding:15mm 20mm!important;margin:0!important;transform:none!important}
+ .details-table input,.footer-disclaimer textarea,.right-top-title input{border:0!important;background:transparent!important;resize:none;padding:0!important;color:#000}
+}
 
-/* ===== FINAL CERTIFICATE LAYOUT — PRESERVED ===== */
+
+/* ===== FINAL CERTIFICATE LAYOUT — SAME ON SCREEN, QR VIEW AND PRINT ===== */
 .certificate{
  width:297mm!important;height:210mm!important;min-height:210mm!important;
- box-sizing:border-box!important;padding:5mm 12mm 5mm!important;margin:0 auto!important;
+ box-sizing:border-box!important;padding:7mm 12mm 5mm!important;margin:0 auto!important;
  background:#fff!important;border:0!important;box-shadow:none!important;
  display:flex!important;flex-direction:column!important;justify-content:flex-start!important;
  overflow:hidden!important;position:relative!important;color:#111!important;
@@ -71,66 +81,111 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 }
 .certificate *{box-sizing:border-box}
 .watermark{position:absolute!important;top:57%!important;left:29%!important;transform:translate(-50%,-50%)!important;width:120mm!important;max-width:none!important;opacity:.075!important;z-index:0!important;pointer-events:none}
-.cert-header{height:42mm!important;min-height:42mm!important;flex:0 0 42mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:8mm!important;margin:0!important;z-index:1!important}
+.cert-header{height:48mm!important;min-height:48mm!important;flex:0 0 48mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:8mm!important;margin:0!important;z-index:1!important}
 .logo-area{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:1mm!important}
-.logo-area img{width:91mm!important;height:27mm!important;object-fit:contain!important;object-position:left top!important}
+.logo-area img{width:91mm!important;height:30mm!important;object-fit:contain!important;object-position:left top!important}
 .report-label{font-family:"Times New Roman",Times,serif!important;font-size:19pt!important;font-weight:bold!important;margin-left:3mm!important;line-height:1.1!important;color:#111!important}
-.right-top-title{padding-top:29mm!important;margin:0 17mm 0 0!important;text-align:right!important}
+.right-top-title{padding-top:35mm!important;margin:0 17mm 0 0!important;text-align:right!important}
 .right-top-title input{width:100mm!important;max-width:100mm!important;font-family:"Times New Roman",Times,serif!important;font-size:21pt!important;font-weight:bold!important;text-align:right!important;color:#111!important;border:0!important;background:transparent!important;padding:0!important}
-.cert-middle{height:88mm!important;min-height:88mm!important;flex:0 0 88mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:7mm!important;margin:0!important;z-index:1!important}
+.cert-middle{height:94mm!important;min-height:94mm!important;flex:0 0 94mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:7mm!important;margin:0!important;z-index:1!important}
 .left-details{width:47%!important;height:100%!important;padding:0 0 0 3mm!important}
 .details-table{width:100%!important;border-collapse:collapse!important}
-.details-table th,.details-table td{padding:1.35mm 1mm!important;text-align:left!important;font-family:"Times New Roman",Times,serif!important;font-size:12.5pt!important;line-height:1.1!important;border:0!important;color:#111!important}
+.details-table th,.details-table td{padding:1.55mm 1mm!important;text-align:left!important;font-family:"Times New Roman",Times,serif!important;font-size:13.5pt!important;line-height:1.13!important;border:0!important;color:#111!important}
 .details-table th{width:39mm!important;font-weight:normal!important}
-.details-table td input{width:100%!important;font-family:"Times New Roman",Times,serif!important;font-size:12.5pt!important;line-height:1.1!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#111!important}
+.details-table td input{width:100%!important;font-family:"Times New Roman",Times,serif!important;font-size:13.5pt!important;line-height:1.13!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#111!important}
 .right-gem-area{width:48%!important;height:100%!important;display:flex!important;flex-direction:column!important;align-items:flex-end!important;padding:0 32mm 0 0!important}
-.gem-photo-box{width:49mm!important;height:49mm!important;min-width:49mm!important;min-height:49mm!important;border:1px solid #333!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;position:relative!important}
+.gem-photo-box{width:51mm!important;height:51mm!important;min-width:51mm!important;min-height:51mm!important;border:1px solid #333!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;position:relative!important}
 .gem-photo-box img{width:100%!important;height:100%!important;object-fit:contain!important}
-.signatures-and-badges{height:42mm!important;min-height:42mm!important;flex:0 0 42mm!important;width:100%!important;margin:0!important;position:relative!important;display:block!important;z-index:2!important}
+.signatures-and-badges{height:57mm!important;min-height:57mm!important;flex:0 0 57mm!important;width:100%!important;margin:0!important;position:relative!important;display:block!important;z-index:2!important}
 .signatures-area{position:absolute!important;left:55%!important;top:0!important;width:44%!important;display:flex!important;justify-content:space-between!important;gap:5mm!important;flex-wrap:nowrap!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;color:#111!important}
 .sig-person{width:50%!important}
 .sig-person p{font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.12!important;color:#111!important}
 .badges-and-qr{position:absolute!important;right:0!important;bottom:0!important;display:flex!important;align-items:center!important;gap:8mm!important}
 .lab-logos{display:flex!important;align-items:center!important;gap:5mm!important}
-.lab-logos img{height:18mm!important;max-width:43mm!important;object-fit:contain!important}
-#qrcode{width:26mm!important;height:26mm!important;min-width:26mm!important;min-height:26mm!important;padding:1mm!important;border:0!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important}
-#qrcode img,#qrcode canvas{width:24mm!important;height:24mm!important;max-width:24mm!important;max-height:24mm!important;display:block!important}
-.cert-footer-bottom{height:28mm!important;min-height:28mm!important;flex:0 0 28mm!important;margin:0!important;padding:2.5mm 0 0!important;border-top:1.2mm solid #d35400!important;position:relative!important;display:flex!important;justify-content:space-between!important;align-items:flex-end!important;gap:10mm!important;z-index:2!important;overflow:visible!important}
+.lab-logos img{height:22mm!important;max-width:43mm!important;object-fit:contain!important}
+#qrcode{width:29mm!important;height:29mm!important;min-width:29mm!important;min-height:29mm!important;padding:1mm!important;border:0!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important}
+#qrcode img,#qrcode canvas{width:27mm!important;height:27mm!important;max-width:27mm!important;max-height:27mm!important;display:block!important}
+.cert-footer-bottom{height:27mm!important;min-height:27mm!important;flex:0 0 27mm!important;margin:0!important;padding:2mm 0 0!important;border-top:1.2mm solid #d35400!important;position:relative!important;display:flex!important;justify-content:space-between!important;align-items:flex-end!important;gap:10mm!important;z-index:2!important}
 .cert-footer-bottom:before{content:""!important;position:absolute!important;left:0!important;right:0!important;top:1.6mm!important;border-top:.45mm solid #b7b7b7!important}
-.cert-footer-bottom:after{content:"Trusted Analysis, Authentic Value."!important;position:absolute!important;right:0!important;top:-8mm!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;font-weight:bold!important;color:#111!important;white-space:nowrap!important}
-.footer-disclaimer{font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.15!important;font-style:italic!important;max-width:61%!important;flex:0 0 61%!important;color:#222!important}
-.footer-disclaimer textarea{width:100%!important;height:22mm!important;min-height:22mm!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.15!important;font-style:italic!important;border:0!important;background:transparent!important;resize:none!important;color:#222!important;padding:0!important}
-.footer-company-info{text-align:right!important;font-family:"Times New Roman",Times,serif!important;font-size:8.5pt!important;line-height:1.08!important;color:#111!important;max-width:38%!important;flex:0 0 38%!important}
-.footer-company-info p{font-family:"Times New Roman",Times,serif!important;font-size:8.5pt!important;line-height:1.08!important;color:#111!important;margin:0!important}
+.footer-disclaimer{font-family:"Times New Roman",Times,serif!important;font-size:10pt!important;line-height:1.15!important;font-style:italic!important;max-width:62%!important;color:#222!important}
+.footer-disclaimer textarea{width:100%!important;height:19mm!important;font-family:"Times New Roman",Times,serif!important;font-size:10pt!important;line-height:1.15!important;font-style:italic!important;border:0!important;background:transparent!important;resize:none!important;color:#222!important;padding:0!important}
+.footer-company-info{text-align:right!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.12!important;color:#111!important}
+.footer-company-info p{font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.12!important;color:#111!important}
 .footer-company-info p b{color:#111!important}
-.details-table input,.right-top-title input,.footer-disclaimer textarea{pointer-events:auto!important;user-select:text!important;-webkit-user-select:text!important}
-
 @media screen and (max-width:800px){
  #app-container{overflow-x:auto!important}
  .certificate{margin:0 auto!important;transform:none!important}
- .action-bar{padding:12px}
- .signatures-and-badges{align-items:flex-start}
 }
 @media print{
- @page{size:A4 landscape;margin:0}
+ @page{size:A4 landscape!important;margin:0!important}
  html,body{width:297mm!important;height:210mm!important;margin:0!important;padding:0!important;overflow:hidden!important;background:#fff!important}
  body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
  #login-screen,.action-bar,#search-panel,#modal-overlay,.public-note{display:none!important}
- #app-container{display:block!important;width:297mm!important;height:210mm!important;max-width:none!important;margin:0!important;padding:0!important;overflow:hidden!important}
- .certificate{width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important;margin:0!important;padding:5mm 12mm 5mm!important;border:0!important;box-shadow:none!important;transform:none!important;overflow:hidden!important;break-after:avoid!important;page-break-after:avoid!important;display:flex!important;flex-direction:column!important}
+ #app-container{display:block!important;width:297mm!important;max-width:none!important;margin:0!important;padding:0!important;overflow:visible!important}
+ .certificate{width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important;margin:0!important;padding:7mm 12mm 5mm!important;border:0!important;box-shadow:none!important;transform:none!important;overflow:hidden!important;break-after:avoid!important;page-break-after:avoid!important}
  .certificate,.certificate *{visibility:visible!important}
+ .gem-photo-box input[type=file]{display:none!important}
+ .details-table input,.footer-disclaimer textarea,.right-top-title input{border:0!important;background:transparent!important;box-shadow:none!important;outline:0!important}
+}
+
+
+/* ===== Fit every reference-design element inside one A4 landscape page ===== */
+.certificate{
+ width:297mm!important;height:210mm!important;min-height:210mm!important;
+ padding:5mm 12mm 5mm!important;overflow:hidden!important;
+ display:flex!important;flex-direction:column!important
+}
+.cert-header{height:42mm!important;min-height:42mm!important;flex:0 0 42mm!important}
+.logo-area img{height:27mm!important;width:91mm!important}
+.right-top-title{padding-top:29mm!important}
+.cert-middle{height:88mm!important;min-height:88mm!important;flex:0 0 88mm!important}
+.details-table th,.details-table td{padding:1.35mm 1mm!important;font-size:12.5pt!important;line-height:1.1!important}
+.details-table td input{font-size:12.5pt!important;line-height:1.1!important}
+.right-gem-area{padding-right:32mm!important}
+.gem-photo-box{width:49mm!important;height:49mm!important;min-width:49mm!important;min-height:49mm!important}
+.signatures-and-badges{height:42mm!important;min-height:42mm!important;flex:0 0 42mm!important}
+.signatures-area{top:0!important}
+.badges-and-qr{bottom:0!important}
+.lab-logos img{height:18mm!important}
+#qrcode{width:26mm!important;height:26mm!important;min-width:26mm!important;min-height:26mm!important}
+#qrcode img,#qrcode canvas{width:24mm!important;height:24mm!important;max-width:24mm!important;max-height:24mm!important}
+.cert-footer-bottom{
+ height:28mm!important;min-height:28mm!important;flex:0 0 28mm!important;
+ margin:0!important;padding:2.5mm 0 0!important;overflow:visible!important;
+}
+.cert-footer-bottom:after{
+ content:"Trusted Analysis, Authentic Value."!important;
+ position:absolute!important;right:0!important;top:-8mm!important;
+ font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;
+ font-weight:bold!important;color:#111!important;white-space:nowrap!important
+}
+.footer-disclaimer{max-width:61%!important;flex:0 0 61%!important}
+.footer-disclaimer textarea{height:22mm!important;min-height:22mm!important;font-size:9pt!important}
+.footer-company-info{max-width:38%!important;flex:0 0 38%!important}
+.footer-company-info p{font-size:8.5pt!important;line-height:1.08!important;margin:0!important}
+.details-table input,.right-top-title input,.footer-disclaimer textarea{
+ pointer-events:auto!important;user-select:text!important;-webkit-user-select:text!important
+}
+@media print{
+ @page{size:A4 landscape;margin:0}
+ html,body{width:297mm!important;height:210mm!important;margin:0!important;padding:0!important;overflow:hidden!important}
+ #app-container{width:297mm!important;height:210mm!important;padding:0!important;margin:0!important;overflow:hidden!important}
+ .certificate{
+  width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important;
+  padding:5mm 12mm 5mm!important;margin:0!important;overflow:hidden!important;
+  display:flex!important;flex-direction:column!important
+ }
  .cert-header{height:42mm!important;min-height:42mm!important;flex:0 0 42mm!important}
  .cert-middle{height:88mm!important;min-height:88mm!important;flex:0 0 88mm!important}
  .signatures-and-badges{height:42mm!important;min-height:42mm!important;flex:0 0 42mm!important}
  .cert-footer-bottom{height:28mm!important;min-height:28mm!important;flex:0 0 28mm!important;display:flex!important;visibility:visible!important}
  .cert-footer-bottom,.cert-footer-bottom *{visibility:visible!important}
  .footer-company-info,.footer-company-info p,.footer-disclaimer,.footer-disclaimer textarea{display:block!important;visibility:visible!important}
- .gem-photo-box input[type=file]{display:none!important}
- .details-table input,.footer-disclaimer textarea,.right-top-title input{border:0!important;background:transparent!important;box-shadow:none!important;outline:0!important}
 }
+
 </style>
 
-<!-- QR Code library: kept as supplied -->
+<!-- QR Code library: loaded before the application code -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
@@ -245,7 +300,6 @@ const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 let currentImageData="";
 let reportToDelete="";
-let editingReportNo="";
 
 const $=id=>document.getElementById(id);
 const reportFields={
@@ -294,7 +348,7 @@ function updateQRCode(reportNo){
   console.error("QRCode library did not load. Check internet/CDN access.");
   return;
  }
- // QR code generation and URL logic retained as supplied.
+ // GitHub Pages project sites need the full current path, including /repository/.
  const publicUrl=new URL(window.location.pathname,window.location.origin);
  publicUrl.searchParams.set("report",reportNo);
  new QRCode(box,{text:publicUrl.href,width:240,height:240,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
@@ -322,6 +376,7 @@ function fillReport(data,readOnly=false){
   el.readOnly=!!readOnly;
   el.disabled=false;
  });
+ // Hardness, Origin and Comment are editable while creating/editing a report.
  ["rep-hardness","rep-origin","rep-comments-field"].forEach(id=>{
   const field=$(id);
   if(field){field.readOnly=!!readOnly;field.disabled=false;}
@@ -329,6 +384,7 @@ function fillReport(data,readOnly=false){
  updateQRCode(data.reportNo);
 }
 async function compressImage(file){
+ // Keep the photo small enough for a Firestore document (Firestore limit is 1 MiB/document).
  const img=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=URL.createObjectURL(file)});
  const max=900,scale=Math.min(1,max/Math.max(img.width,img.height));
  const canvas=document.createElement("canvas");canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);
@@ -351,43 +407,18 @@ window.handleLogin=function(){
  }else $("error-msg").style.display="block";
 };
 window.logout=function(){window.location.href=window.location.pathname};
-
 window.saveReportToFirebase=async function(){
- let reportNo;
-
- // If a report is being edited, update that same Firestore document.
- if(editingReportNo){
-  reportNo=editingReportNo;
-  $("display-report-no").value=reportNo;
- }else{
-  reportNo=$("display-report-no").value.trim().toUpperCase();
-  if(/^\d{3}-\d{2}$/.test(reportNo)) reportNo=`HGL-${getTodayStamp()}-${reportNo}`;
-  if(!/^HGL-\d{8}-\d{3}-\d{2}$/.test(reportNo)){
-   alert("වාර්තා අංකය HGL-YYYYMMDD-001-01 හෝ 001-01 ලෙස ඇතුළත් කරන්න.");
-   $("display-report-no").focus();return;
-  }
-  $("display-report-no").value=reportNo;
+ let reportNo=$("display-report-no").value.trim().toUpperCase();
+ // Accept either the full HGL date-number or only the sequence, e.g. 001-01.
+ if(/^\d{3}-\d{2}$/.test(reportNo)) reportNo=`HGL-${getTodayStamp()}-${reportNo}`;
+ if(!/^HGL-\d{8}-\d{3}-\d{2}$/.test(reportNo)){
+  alert("වාර්තා අංකය HGL-YYYYMMDD-001-01 හෝ 001-01 ලෙස ඇතුළත් කරන්න.");
+  $("display-report-no").focus();return;
  }
-
- const data=getReportData();
- data.reportNo=reportNo;
-
+ $("display-report-no").value=reportNo;
+ const data=getReportData();data.reportNo=reportNo;
  try{
   const reportRef=doc(db,"gem_reports",reportNo);
-
-  if(editingReportNo){
-   const existing=await getDoc(reportRef);
-   if(!existing.exists()){
-    alert("Update කිරීමට අවශ්‍ය පැරණි වාර්තාව හමු නොවීය.");
-    editingReportNo="";
-    return;
-   }
-   await setDoc(reportRef,data);
-   editingReportNo="";
-   alert("වාර්තාව සාර්ථකව Update කරන ලදී!");
-   return;
-  }
-
   const existing=await getDoc(reportRef);
   if(existing.exists()){
    alert("මෙම වාර්තා අංකය දැනටමත් භාවිතා කර ඇත. වෙනත් අංකයක් ඇතුළත් කරන්න.");
@@ -402,7 +433,6 @@ window.saveReportToFirebase=async function(){
   alert("Save කිරීම අසාර්ථකයි. Firebase Firestore Rules සහ Internet connection පරීක්ෂා කරන්න. "+e.message);
  }
 };
-
 window.toggleSearch=function(){
  const p=$("search-panel");p.style.display=p.style.display==="block"?"none":"block";
  if(p.style.display==="block")loadAllReportsList();
@@ -420,71 +450,24 @@ function renderSearchRows(rows){
  if(!rows.length){list.textContent="වාර්තා හමු නොවීය.";return}
  rows.forEach(data=>{
   const row=document.createElement("div");row.className="search-item";
-  const label=document.createElement("span");
-  label.textContent=`${data.reportNo||""} - ${data.titleName||""} (${data.weight||""})`;
+  const label=document.createElement("span");label.textContent=`${data.reportNo||""} - ${data.titleName||""} (${data.weight||""})`;
   const actions=document.createElement("div");
-
-  const view=document.createElement("button");
-  view.textContent="View";
-  view.onclick=()=>viewReport(data.reportNo);
-
-  const edit=document.createElement("button");
-  edit.textContent="Edit";
-  edit.style.background="#27ae60";
-  edit.onclick=()=>editReport(data.reportNo);
-
-  const del=document.createElement("button");
-  del.textContent="Delete";
-  del.style.background="#e74c3c";
-  del.onclick=()=>promptDelete(data.reportNo);
-
-  actions.append(view,edit,del);row.append(label,actions);list.appendChild(row);
+  const view=document.createElement("button");view.textContent="View";view.onclick=()=>viewReport(data.reportNo);
+  const del=document.createElement("button");del.textContent="Delete";del.style.background="#e74c3c";del.onclick=()=>promptDelete(data.reportNo);
+  actions.append(view,del);row.append(label,actions);list.appendChild(row);
  });
 }
 window.searchReports=function(){
  const term=$("search-input").value.toLowerCase();
  getDocs(collection(db,"gem_reports")).then(snap=>{
-  const rows=[];
-  snap.forEach(s=>{
-   const d=s.data();
-   if((d.reportNo||"").toLowerCase().includes(term)||(d.titleName||"").toLowerCase().includes(term))rows.push(d);
-  });
+  const rows=[];snap.forEach(s=>{const d=s.data();if((d.reportNo||"").toLowerCase().includes(term)||(d.titleName||"").toLowerCase().includes(term))rows.push(d)});
   renderSearchRows(rows);
  }).catch(e=>{$("search-results-list").textContent="Search error: "+e.message});
 };
 async function viewReport(reportNo){
- try{
-  const snap=await getDoc(doc(db,"gem_reports",reportNo));
-  if(snap.exists()){
-   editingReportNo="";
-   fillReport(snap.data(),false);
-   $("search-panel").style.display="none";
-  }else alert("වාර්තාව හමු නොවීය!");
- }catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
+ try{const snap=await getDoc(doc(db,"gem_reports",reportNo));if(snap.exists()){fillReport(snap.data(),false);$("search-panel").style.display="none"}else alert("වාර්තාව හමු නොවීය!")}
+ catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
 }
-
-// NEW: Search result Edit action. Loads the selected report in edit mode.
-window.editReport=async function(reportNo){
- try{
-  const snap=await getDoc(doc(db,"gem_reports",reportNo));
-  if(!snap.exists()){
-   alert("වාර්තාව හමු නොවීය!");
-   return;
-  }
-  editingReportNo=reportNo;
-  fillReport(snap.data(),false);
-  $("display-report-no").value=reportNo;
-  $("rep-comments-field").readOnly=false;
-  $("rep-comments-field").disabled=false;
-  $("search-panel").style.display="none";
-  window.scrollTo({top:0,behavior:"smooth"});
-  alert("Edit Mode සක්‍රියයි. අවශ්‍ය වෙනස්කම් කර Save Report කරන්න.");
- }catch(e){
-  console.error(e);
-  alert("Report එක Edit කිරීමට නොහැක: "+e.message);
- }
-};
-
 async function loadPublicReport(reportNo){
  $("login-screen").style.display="none";$("app-container").style.display="block";
  document.querySelector(".action-bar").style.display="none";
@@ -507,7 +490,6 @@ window.executeModalAction=async function(){
 };
 
 // QR links open this same GitHub Pages site with ?report=REPORT_NUMBER.
-// Existing QR query-parameter handling is retained.
 const params=new URLSearchParams(window.location.search);
 const publicReport=params.get("report");
 if(publicReport){await loadPublicReport(publicReport)}
