@@ -68,121 +68,6 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  .certificate{border:0!important;box-shadow:none!important;width:297mm!important;height:210mm!important;min-height:210mm!important;padding:15mm 20mm!important;margin:0!important;transform:none!important}
  .details-table input,.footer-disclaimer textarea,.right-top-title input{border:0!important;background:transparent!important;resize:none;padding:0!important;color:#000}
 }
-
-
-/* ===== FINAL CERTIFICATE LAYOUT — SAME ON SCREEN, QR VIEW AND PRINT ===== */
-.certificate{
- width:297mm!important;height:210mm!important;min-height:210mm!important;
- box-sizing:border-box!important;padding:7mm 12mm 5mm!important;margin:0 auto!important;
- background:#fff!important;border:0!important;box-shadow:none!important;
- display:flex!important;flex-direction:column!important;justify-content:flex-start!important;
- overflow:hidden!important;position:relative!important;color:#111!important;
- font-family:"Times New Roman",Times,serif!important
-}
-.certificate *{box-sizing:border-box}
-.watermark{position:absolute!important;top:57%!important;left:29%!important;transform:translate(-50%,-50%)!important;width:120mm!important;max-width:none!important;opacity:.075!important;z-index:0!important;pointer-events:none}
-.cert-header{height:48mm!important;min-height:48mm!important;flex:0 0 48mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:8mm!important;margin:0!important;z-index:1!important}
-.logo-area{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:1mm!important}
-.logo-area img{width:91mm!important;height:30mm!important;object-fit:contain!important;object-position:left top!important}
-.report-label{font-family:"Times New Roman",Times,serif!important;font-size:19pt!important;font-weight:bold!important;margin-left:3mm!important;line-height:1.1!important;color:#111!important}
-.right-top-title{padding-top:35mm!important;margin:0 17mm 0 0!important;text-align:right!important}
-.right-top-title input{width:100mm!important;max-width:100mm!important;font-family:"Times New Roman",Times,serif!important;font-size:21pt!important;font-weight:bold!important;text-align:right!important;color:#111!important;border:0!important;background:transparent!important;padding:0!important}
-.cert-middle{height:94mm!important;min-height:94mm!important;flex:0 0 94mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:7mm!important;margin:0!important;z-index:1!important}
-.left-details{width:47%!important;height:100%!important;padding:0 0 0 3mm!important}
-.details-table{width:100%!important;border-collapse:collapse!important}
-.details-table th,.details-table td{padding:1.55mm 1mm!important;text-align:left!important;font-family:"Times New Roman",Times,serif!important;font-size:13.5pt!important;line-height:1.13!important;border:0!important;color:#111!important}
-.details-table th{width:39mm!important;font-weight:normal!important}
-.details-table td input{width:100%!important;font-family:"Times New Roman",Times,serif!important;font-size:13.5pt!important;line-height:1.13!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#111!important}
-.right-gem-area{width:48%!important;height:100%!important;display:flex!important;flex-direction:column!important;align-items:flex-end!important;padding:0 32mm 0 0!important}
-.gem-photo-box{width:51mm!important;height:51mm!important;min-width:51mm!important;min-height:51mm!important;border:1px solid #333!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;position:relative!important}
-.gem-photo-box img{width:100%!important;height:100%!important;object-fit:contain!important}
-.signatures-and-badges{height:57mm!important;min-height:57mm!important;flex:0 0 57mm!important;width:100%!important;margin:0!important;position:relative!important;display:block!important;z-index:2!important}
-.signatures-area{position:absolute!important;left:55%!important;top:0!important;width:44%!important;display:flex!important;justify-content:space-between!important;gap:5mm!important;flex-wrap:nowrap!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;color:#111!important}
-.sig-person{width:50%!important}
-.sig-person p{font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.12!important;color:#111!important}
-.badges-and-qr{position:absolute!important;right:0!important;bottom:0!important;display:flex!important;align-items:center!important;gap:8mm!important}
-.lab-logos{display:flex!important;align-items:center!important;gap:5mm!important}
-.lab-logos img{height:22mm!important;max-width:43mm!important;object-fit:contain!important}
-#qrcode{width:29mm!important;height:29mm!important;min-width:29mm!important;min-height:29mm!important;padding:1mm!important;border:0!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important}
-#qrcode img,#qrcode canvas{width:27mm!important;height:27mm!important;max-width:27mm!important;max-height:27mm!important;display:block!important}
-.cert-footer-bottom{height:27mm!important;min-height:27mm!important;flex:0 0 27mm!important;margin:0!important;padding:2mm 0 0!important;border-top:1.2mm solid #d35400!important;position:relative!important;display:flex!important;justify-content:space-between!important;align-items:flex-end!important;gap:10mm!important;z-index:2!important}
-.cert-footer-bottom:before{content:""!important;position:absolute!important;left:0!important;right:0!important;top:1.6mm!important;border-top:.45mm solid #b7b7b7!important}
-.footer-disclaimer{font-family:"Times New Roman",Times,serif!important;font-size:10pt!important;line-height:1.15!important;font-style:italic!important;max-width:62%!important;color:#222!important}
-.footer-disclaimer textarea{width:100%!important;height:19mm!important;font-family:"Times New Roman",Times,serif!important;font-size:10pt!important;line-height:1.15!important;font-style:italic!important;border:0!important;background:transparent!important;resize:none!important;color:#222!important;padding:0!important}
-.footer-company-info{text-align:right!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.12!important;color:#111!important}
-.footer-company-info p{font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.12!important;color:#111!important}
-.footer-company-info p b{color:#111!important}
-@media screen and (max-width:800px){
- #app-container{overflow-x:auto!important}
- .certificate{margin:0 auto!important;transform:none!important}
-}
-@media print{
- @page{size:A4 landscape!important;margin:0!important}
- html,body{width:297mm!important;height:210mm!important;margin:0!important;padding:0!important;overflow:hidden!important;background:#fff!important}
- body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
- #login-screen,.action-bar,#search-panel,#modal-overlay,.public-note{display:none!important}
- #app-container{display:block!important;width:297mm!important;max-width:none!important;margin:0!important;padding:0!important;overflow:visible!important}
- .certificate{width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important;margin:0!important;padding:7mm 12mm 5mm!important;border:0!important;box-shadow:none!important;transform:none!important;overflow:hidden!important;break-after:avoid!important;page-break-after:avoid!important}
- .certificate,.certificate *{visibility:visible!important}
- .gem-photo-box input[type=file]{display:none!important}
- .details-table input,.footer-disclaimer textarea,.right-top-title input{border:0!important;background:transparent!important;box-shadow:none!important;outline:0!important}
-}
-
-
-/* ===== Fit every reference-design element inside one A4 landscape page ===== */
-.certificate{
- width:297mm!important;height:210mm!important;min-height:210mm!important;
- padding:5mm 12mm 5mm!important;overflow:hidden!important;
- display:flex!important;flex-direction:column!important
-}
-.cert-header{height:42mm!important;min-height:42mm!important;flex:0 0 42mm!important}
-.logo-area img{height:27mm!important;width:91mm!important}
-.right-top-title{padding-top:29mm!important}
-.cert-middle{height:88mm!important;min-height:88mm!important;flex:0 0 88mm!important}
-.details-table th,.details-table td{padding:1.35mm 1mm!important;font-size:12.5pt!important;line-height:1.1!important}
-.details-table td input{font-size:12.5pt!important;line-height:1.1!important}
-.right-gem-area{padding-right:32mm!important}
-.gem-photo-box{width:49mm!important;height:49mm!important;min-width:49mm!important;min-height:49mm!important}
-.signatures-and-badges{height:42mm!important;min-height:42mm!important;flex:0 0 42mm!important}
-.signatures-area{top:0!important}
-.badges-and-qr{bottom:0!important}
-.lab-logos img{height:18mm!important}
-#qrcode{width:26mm!important;height:26mm!important;min-width:26mm!important;min-height:26mm!important}
-#qrcode img,#qrcode canvas{width:24mm!important;height:24mm!important;max-width:24mm!important;max-height:24mm!important}
-.cert-footer-bottom{
- height:28mm!important;min-height:28mm!important;flex:0 0 28mm!important;
- margin:0!important;padding:2.5mm 0 0!important;overflow:visible!important;
-}
-.cert-footer-bottom:after{
- content:"Trusted Analysis, Authentic Value."!important;
- position:absolute!important;right:0!important;top:-8mm!important;
- font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;
- font-weight:bold!important;color:#111!important;white-space:nowrap!important
-}
-.footer-disclaimer{max-width:61%!important;flex:0 0 61%!important}
-.footer-disclaimer textarea{height:22mm!important;min-height:22mm!important;font-size:9pt!important}
-.footer-company-info{max-width:38%!important;flex:0 0 38%!important}
-.footer-company-info p{font-size:8.5pt!important;line-height:1.08!important;margin:0!important}
-.details-table input,.right-top-title input,.footer-disclaimer textarea{
- pointer-events:auto!important;user-select:text!important;-webkit-user-select:text!important
-}
-@media print{
- @page{size:A4 landscape;margin:0}
- html,body{width:297mm!important;height:210mm!important;margin:0!important;padding:0!important;overflow:hidden!important}
- #app-container{width:297mm!important;height:210mm!important;padding:0!important;margin:0!important;overflow:hidden!important}
- .certificate{
-  width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important;
-  padding:5mm 12mm 5mm!important;margin:0!important;overflow:hidden!important;
-  display:flex!important;flex-direction:column!important
- }
- .cert-header{height:42mm!important;min-height:42mm!important;flex:0 0 42mm!important}
- .cert-middle{height:88mm!important;min-height:88mm!important;flex:0 0 88mm!important}
- .signatures-and-badges{height:42mm!important;min-height:42mm!important;flex:0 0 42mm!important}
- .cert-footer-bottom{height:28mm!important;min-height:28mm!important;flex:0 0 28mm!important;display:flex!important;visibility:visible!important}
- .cert-footer-bottom,.cert-footer-bottom *{visibility:visible!important}
- .footer-company-info,.footer-company-info p,.footer-disclaimer,.footer-disclaimer textarea{display:block!important;visibility:visible!important}
-}
-
 </style>
 
 <!-- QR Code library: loaded before the application code -->
@@ -193,7 +78,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 <div id="login-screen">
  <div class="login-card">
   <h2>Lab Login</h2>
-  <input type="text" id="user-id" placeholder="User name" autocomplete="off">
+  <input type="text" id="user-id" placeholder="User ID (SASIKA)" autocomplete="off">
   <input type="password" id="password" placeholder="Password" autocomplete="new-password">
   <button onclick="handleLogin()">Login</button>
   <p id="error-msg" class="error-msg">වැරදි User ID එකක් හෝ මුරපදයකි!</p>
@@ -221,14 +106,14 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  <div class="certificate">
   <img src="watermark_logo.png" class="watermark" alt="Watermark">
   <div class="cert-header">
-   <div class="logo-area"><img src="main_logo.png" alt="Main Logo"><div class="report-label">GEMSTONE REPORT</div></div>
+   <div class="logo-area"><img src="main_logo.png" alt="Main Logo"></div>
    <div class="right-top-title"><input type="text" id="rep-title-name" value="Natural Blue Sapphire"></div>
   </div>
 
   <div class="cert-middle">
    <div class="left-details">
     <table class="details-table">
-     <tr><th>No.</th><td><input id="display-report-no" type="text" autocomplete="off" oninput="updateQRFromField()" style="background:#fff;font-family:monospace;font-weight:bold"></td></tr>
+     <tr><th>No.</th><td><input id="display-report-no" type="text" readonly style="background:#f8f9fa;font-family:monospace;font-weight:bold"></td></tr>
      <tr><th>Date</th><td><input id="rep-date" type="text"></td></tr>
      <tr><th>Object</th><td><input id="rep-object" type="text" value="One Faceted Gemstone"></td></tr>
      <tr><th>Weight</th><td><input id="rep-weight" type="text" value="5.24 ct"></td></tr>
@@ -313,33 +198,18 @@ function setTodayDate(){
  const d=new Date(),months=["January","February","March","April","May","June","July","August","September","October","November","December"];
  $("rep-date").value=`${String(d.getDate()).padStart(2,"0")}th ${months[d.getMonth()]}, ${d.getFullYear()}`;
 }
-function getTodayStamp(){
- const d=new Date();
- return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
-}
 function makeReportNumber(){
- return `HGL-${getTodayStamp()}-XXX-XX`;
+ const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+ let savedDate=localStorage.getItem("hgl_main_date");
+ let seq=parseInt(localStorage.getItem("hgl_sequence")||"0",10);
+ if(savedDate!==dateStr)seq=1;else seq=Math.max(seq,1);
+ return `HGL-${dateStr}-001-${String(seq).padStart(2,"0")}`;
 }
 function generateNextReportNumber(){
- const field=$("display-report-no");
- if(!field.value || !/^HGL-\d{8}-\d{3}-\d{2}$/.test(field.value)) field.value=makeReportNumber();
- if(/^HGL-\d{8}-\d{3}-\d{2}$/.test(field.value)) updateQRCode(field.value); else $("qrcode").innerHTML="";
+ const reportNo=makeReportNumber();
+ $("display-report-no").value=reportNo;
+ updateQRCode(reportNo);
 }
-function getFollowingReportNumber(reportNo){
- const match=reportNo.match(/^HGL-(\d{8})-(\d{3})-(\d{2})$/);
- if(!match)return "";
- const main=parseInt(match[2],10),sub=parseInt(match[3],10);
- if(sub<99)return `HGL-${match[1]}-${String(main).padStart(3,"0")}-${String(sub+1).padStart(2,"0")}`;
- return `HGL-${match[1]}-${String(main+1).padStart(3,"0")}-01`;
-}
-window.updateQRFromField=function(){
- let value=$("display-report-no").value.trim().toUpperCase();
- if(/^\d{3}-\d{2}$/.test(value)){
-  value=`HGL-${getTodayStamp()}-${value}`;
-  $("display-report-no").value=value;
- }
- if(/^HGL-\d{8}-\d{3}-\d{2}$/.test(value))updateQRCode(value);
-};
 function updateQRCode(reportNo){
  const box=$("qrcode");
  box.innerHTML="";
@@ -373,13 +243,7 @@ function fillReport(data,readOnly=false){
   const file=document.createElement("input");file.type="file";file.id="gem-image-input";file.accept="image/*";file.onchange=previewImage;box.appendChild(file);
  }
  document.querySelectorAll(".certificate input:not([type=file]),.certificate textarea").forEach(el=>{
-  el.readOnly=!!readOnly;
-  el.disabled=false;
- });
- // Hardness, Origin and Comment are editable while creating/editing a report.
- ["rep-hardness","rep-origin","rep-comments-field"].forEach(id=>{
-  const field=$(id);
-  if(field){field.readOnly=!!readOnly;field.disabled=false;}
+  if(el.id==="display-report-no")el.readOnly=true;else el.readOnly=readOnly;
  });
  updateQRCode(data.reportNo);
 }
@@ -403,31 +267,23 @@ window.handleLogin=function(){
   $("login-screen").style.display="none";$("app-container").style.display="block";
   document.querySelector(".action-bar").style.display="flex";
   document.querySelector(".certificate").style.display="flex";
-  setTodayDate();$("display-report-no").value=makeReportNumber();generateNextReportNumber();
+  setTodayDate();generateNextReportNumber();
  }else $("error-msg").style.display="block";
 };
 window.logout=function(){window.location.href=window.location.pathname};
 window.saveReportToFirebase=async function(){
- let reportNo=$("display-report-no").value.trim().toUpperCase();
- // Accept either the full HGL date-number or only the sequence, e.g. 001-01.
- if(/^\d{3}-\d{2}$/.test(reportNo)) reportNo=`HGL-${getTodayStamp()}-${reportNo}`;
- if(!/^HGL-\d{8}-\d{3}-\d{2}$/.test(reportNo)){
-  alert("වාර්තා අංකය HGL-YYYYMMDD-001-01 හෝ 001-01 ලෙස ඇතුළත් කරන්න.");
-  $("display-report-no").focus();return;
- }
- $("display-report-no").value=reportNo;
- const data=getReportData();data.reportNo=reportNo;
+ const reportNo=$("display-report-no").value;
+ if(!reportNo){alert("වාර්තා අංකයක් නැත.");return}
+ const data=getReportData();
  try{
-  const reportRef=doc(db,"gem_reports",reportNo);
-  const existing=await getDoc(reportRef);
-  if(existing.exists()){
-   alert("මෙම වාර්තා අංකය දැනටමත් භාවිතා කර ඇත. වෙනත් අංකයක් ඇතුළත් කරන්න.");
-   $("display-report-no").focus();return;
-  }
-  await setDoc(reportRef,data);
-  $("display-report-no").value=getFollowingReportNumber(reportNo);
-  updateQRCode($("display-report-no").value);
-  alert("වාර්තාව Online Save විය. ඊළඟ වාර්තා අංකය ස්වයංක්‍රීයව සකස් කර ඇත.");
+  await setDoc(doc(db,"gem_reports",reportNo),data);
+  const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+  let seq=parseInt(localStorage.getItem("hgl_sequence")||"0",10);
+  if(localStorage.getItem("hgl_main_date")!==dateStr)seq=0;
+  localStorage.setItem("hgl_main_date",dateStr);
+  localStorage.setItem("hgl_sequence",String(Math.max(seq,1)+1));
+  alert("වාර්තාව Online Save විය. QR Code එක Scan කර පරීක්ෂා කරන්න.");
+  generateNextReportNumber();
  }catch(e){
   console.error(e);
   alert("Save කිරීම අසාර්ථකයි. Firebase Firestore Rules සහ Internet connection පරීක්ෂා කරන්න. "+e.message);
