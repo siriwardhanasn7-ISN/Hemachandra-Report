@@ -197,6 +197,7 @@ const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 let currentImageData="";
 let reportToDelete="";
+let isEditingMode = false; // වාර්තාවක් Edit කරනවාද නැද්ද යන්න පරීක්ෂා කිරීමට
 
 const $=id=>document.getElementById(id);
 const reportFields={
@@ -218,6 +219,7 @@ function makeReportNumber(){
  return `HGL-${dateStr}-001-${String(seq).padStart(2,"0")}`;
 }
 function generateNextReportNumber(){
+ if(isEditingMode) return; // Edit කරන විට අංකය වෙනස් වීම වැළැක්වීමට
  const reportNo=makeReportNumber();
  $("display-report-no").value=reportNo;
  updateQRCode(reportNo);
@@ -281,28 +283,39 @@ window.handleLogin=function(){
   $("login-screen").style.display="none";$("app-container").style.display="block";
   document.querySelector(".action-bar").style.display="flex";
   document.querySelector(".certificate").style.display="flex";
+  isEditingMode = false;
   setTodayDate();generateNextReportNumber();
  }else $("error-msg").style.display="block";
 };
 window.logout=function(){window.location.href=window.location.pathname};
+
 window.saveReportToFirebase=async function(){
  const reportNo=$("display-report-no").value;
  if(!reportNo){alert("වාර්තා අංකයක් නැත.");return}
  const data=getReportData();
  try{
   await setDoc(doc(db,"gem_reports",reportNo),data);
-  const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
-  let seq=parseInt(localStorage.getItem("hgl_sequence")||"0",10);
-  if(localStorage.getItem("hgl_main_date")!==dateStr)seq=0;
-  localStorage.setItem("hgl_main_date",dateStr);
-  localStorage.setItem("hgl_sequence",String(Math.max(seq,1)+1));
+  
+  // අලුත් වාර්තාවක් නම් පමණක් sequence එක ඉදිරියට ගෙන යන්න (Edit කරන විට අංකය වෙනස් නොවේ)
+  if(!isEditingMode){
+   const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+   let seq=parseInt(localStorage.getItem("hgl_sequence")||"0",10);
+   if(localStorage.getItem("hgl_main_date")!==dateStr)seq=0;
+   localStorage.setItem("hgl_main_date",dateStr);
+   localStorage.setItem("hgl_sequence",String(Math.max(seq,1)+1));
+  }
+  
   alert("වාර්තාව Online Save විය. QR Code එක Scan කර පරීක්ෂා කරන්න.");
+  
+  // Save වූ පසු නැවත අලුත් වාර්තා තත්ත්වයට පත් කරන්න
+  isEditingMode = false;
   generateNextReportNumber();
  }catch(e){
   console.error(e);
   alert("Save කිරීම අසාර්ථකයි. Firebase Firestore Rules සහ Internet connection පරීක්ෂා කරන්න. "+e.message);
  }
 };
+
 window.toggleSearch=function(){
  const p=$("search-panel");p.style.display=p.style.display==="block"?"none":"block";
  if(p.style.display==="block")loadAllReportsList();
@@ -324,10 +337,7 @@ function renderSearchRows(rows){
   const actions=document.createElement("div");
   
   const view=document.createElement("button");view.textContent="View";view.onclick=()=>viewReport(data.reportNo);
-  
-  // Edit බොත්තම එකතු කරන ලදී (View සහ Delete අතරට)
   const editBtn=document.createElement("button");editBtn.textContent="Edit";editBtn.style.background="#f39c12";editBtn.onclick=()=>editReport(data.reportNo);
-  
   const del=document.createElement("button");del.textContent="Delete";del.style.background="#e74c3c";del.onclick=()=>promptDelete(data.reportNo);
   
   actions.append(view,editBtn,del);
@@ -343,12 +353,24 @@ window.searchReports=function(){
  }).catch(e=>{$("search-results-list").textContent="Search error: "+e.message});
 };
 async function viewReport(reportNo){
- try{const snap=await getDoc(doc(db,"gem_reports",reportNo));if(snap.exists()){fillReport(snap.data(),true);$("search-panel").style.display="none"}else alert("වාර්තාව හමු නොවීය!")}
- catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
+ try{
+  const snap=await getDoc(doc(db,"gem_reports",reportNo));
+  if(snap.exists()){
+   isEditingMode = true; // View කරන විට අංකය වෙනස් වීම වැළැක්වීමට
+   fillReport(snap.data(),true);
+   $("search-panel").style.display="none";
+  }else alert("වාර්තාව හමු නොවීය!");
+ }catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
 }
 async function editReport(reportNo){
- try{const snap=await getDoc(doc(db,"gem_reports",reportNo));if(snap.exists()){fillReport(snap.data(),false);$("search-panel").style.display="none"}else alert("වාර්තාව හමු නොවීය!")}
- catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
+ try{
+  const snap=await getDoc(doc(db,"gem_reports",reportNo));
+  if(snap.exists()){
+   isEditingMode = true; // Edit කරන විට අංකය වෙනස් වීම වැළැක්වීමට
+   fillReport(snap.data(),false);
+   $("search-panel").style.display="none";
+  }else alert("වාර්තාව හමු නොවීය!");
+ }catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
 }
 async function loadPublicReport(reportNo){
  $("login-screen").style.display="none";$("app-container").style.display="block";
@@ -377,6 +399,7 @@ if(publicReport){await loadPublicReport(publicReport)}
 else{
  $("login-screen").style.display="flex";
  $("app-container").style.display="none";
+ isEditingMode = false;
  generateNextReportNumber();
 }
 </script>
