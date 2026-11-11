@@ -197,7 +197,7 @@ const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 let currentImageData="";
 let reportToDelete="";
-let isEditingMode = false; // වාර්තාවක් Edit කරනවාද නැද්ද යන්න පරීක්ෂා කිරීමට
+let isEditingMode = false;
 
 const $=id=>document.getElementById(id);
 const reportFields={
@@ -214,12 +214,12 @@ function setTodayDate(){
 function makeReportNumber(){
  const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
  let savedDate=localStorage.getItem("hgl_main_date");
- let seq=parseInt(localStorage.getItem("hgl_sequence")||"0",10);
+ let seq=parseInt(localStorage.getItem("hgl_sequence")||"1",10);
  if(savedDate!==dateStr)seq=1;else seq=Math.max(seq,1);
  return `HGL-${dateStr}-001-${String(seq).padStart(2,"0")}`;
 }
 function generateNextReportNumber(){
- if(isEditingMode) return; // Edit කරන විට අංකය වෙනස් වීම වැළැක්වීමට
+ if(isEditingMode) return;
  const reportNo=makeReportNumber();
  $("display-report-no").value=reportNo;
  updateQRCode(reportNo);
@@ -258,7 +258,7 @@ function fillReport(data,readOnly=false){
  }
  
  document.querySelectorAll(".certificate input").forEach(el=>{
-  el.readOnly = readOnly;
+  if(el.id !== "display-report-no") el.readOnly = readOnly;
  });
  $("rep-remarks").contentEditable = readOnly ? "false" : "true";
  
@@ -299,15 +299,14 @@ window.saveReportToFirebase=async function(){
   // අලුත් වාර්තාවක් නම් පමණක් sequence එක ඉදිරියට ගෙන යන්න (Edit කරන විට අංකය වෙනස් නොවේ)
   if(!isEditingMode){
    const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
-   let seq=parseInt(localStorage.getItem("hgl_sequence")||"0",10);
-   if(localStorage.getItem("hgl_main_date")!==dateStr)seq=0;
+   let seq=parseInt(localStorage.getItem("hgl_sequence")||"1",10);
+   if(localStorage.getItem("hgl_main_date")!==dateStr)seq=1;
    localStorage.setItem("hgl_main_date",dateStr);
-   localStorage.setItem("hgl_sequence",String(Math.max(seq,1)+1));
+   localStorage.setItem("hgl_sequence",String(seq+1));
   }
   
   alert("වාර්තාව Online Save විය. QR Code එක Scan කර පරීක්ෂා කරන්න.");
   
-  // Save වූ පසු නැවත අලුත් වාර්තා තත්ත්වයට පත් කරන්න
   isEditingMode = false;
   generateNextReportNumber();
  }catch(e){
@@ -356,7 +355,7 @@ async function viewReport(reportNo){
  try{
   const snap=await getDoc(doc(db,"gem_reports",reportNo));
   if(snap.exists()){
-   isEditingMode = true; // View කරන විට අංකය වෙනස් වීම වැළැක්වීමට
+   isEditingMode = true;
    fillReport(snap.data(),true);
    $("search-panel").style.display="none";
   }else alert("වාර්තාව හමු නොවීය!");
@@ -366,7 +365,7 @@ async function editReport(reportNo){
  try{
   const snap=await getDoc(doc(db,"gem_reports",reportNo));
   if(snap.exists()){
-   isEditingMode = true; // Edit කරන විට අංකය වෙනස් වීම වැළැක්වීමට
+   isEditingMode = true;
    fillReport(snap.data(),false);
    $("search-panel").style.display="none";
   }else alert("වාර්තාව හමු නොවීය!");
