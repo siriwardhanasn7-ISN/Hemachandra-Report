@@ -42,14 +42,15 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .details-table th{width:100px;color:#333;font-weight:600}
 .details-table td input{width:100%;padding:3px 6px;border:1px solid #ddd;border-radius:3px;font-size:13px;background:#fff}
 
-/* දකුණු පැත්තේ ප්‍රදේශය (ගල සහ අත්සන් එකම තීරු රාමුවක) */
+/* දකුණු පැත්තේ ප්‍රදේශය (ගල සහ අත්සන් පැත්තෙන් පැත්තට) */
 .right-gem-area{width:42%;display:flex;flex-direction:column;align-items:center}
 .gem-photo-box{width:210px;height:210px;border:1px solid #333;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff;position:relative}
 .gem-photo-box img{width:100%;height:100%;object-fit:contain}
 .gem-photo-box input[type=file]{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer}
 
-/* අත්සන් සහ තත්වයන් ගලේ පින්තූරයට අඟල් 1.5 - 2 ක් (ආසන්න වශයෙන් 45px - 55px) පහළින් පිහිටුවීම */
-.signatures-area-right{width:100%;margin-top:38px;display:flex;flex-direction:column;gap:12px;font-size:11px;color:#222;text-align:left}
+/* අත්සන් දෙක පැත්තෙන් පැත්තට (Side-by-side) පෙන්වීමට */
+.signatures-area-right{width:100%;margin-top:35px;display:flex;justify-content:space-between;gap:15px;font-size:10.5px;color:#222;text-align:left}
+.sig-person{width:48%}
 .sig-person p{line-height:1.3}.sig-person p:first-child{font-weight:bold}
 
 .signatures-and-badges{display:flex;justify-content:flex-end;align-items:flex-end;width:100%;margin-top:10px;z-index:1;gap:10px}
@@ -146,7 +147,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
     </table>
    </div>
    
-   <!-- දකුණු පැත්තේ පින්තූරය සහ ගලේ පින්තූරයට පහළින් අත්සන් තබා ඇත -->
+   <!-- දකුණු පැත්තේ පින්තූරය සහ අත්සන් දෙක පැත්තෙන් පැත්තට (Side-by-side) -->
    <div class="right-gem-area">
     <div class="gem-photo-box" id="image-box-container">
      <span id="img-placeholder-text" style="color:#aaa;font-size:13px">ඡායාරූපයක් එකතු කරන්න</span>
@@ -154,8 +155,16 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
     </div>
     
     <div class="signatures-area-right">
-     <div class="sig-person"><p>N. Hemachandra G.G, G.J, A.J.A, GIA</p><p>Graduate Gemmologist,</p><p>Gemmological Institute of America (GIA).</p></div>
-     <div class="sig-person"><p>S. Senanayake F.G.A, M.G.A.</p><p>Gem-A Gemmological Association of Great Britain,</p><p>Member Of the Gemmological Association.</p></div>
+     <div class="sig-person">
+      <p>N. Hemachandra G.G, G.J, A.J.A, GIA</p>
+      <p>Graduate Gemmologist,</p>
+      <p>Gemmological Institute of America (GIA).</p>
+     </div>
+     <div class="sig-person">
+      <p>S. Senanayake F.G.A, M.G.A.</p>
+      <p>Gem-A Gemmological Association of Great Britain,</p>
+      <p>Member Of the Gemmological Association.</p>
+     </div>
     </div>
    </div>
   </div>
