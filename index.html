@@ -20,7 +20,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .action-bar h1{font-size:16px;color:var(--text-main)}
 .btn-group{display:flex;gap:10px;flex-wrap:wrap}
 .btn{padding:8px 16px;border:0;border-radius:6px;font-weight:bold;cursor:pointer;color:#fff;font-size:14px}
-.btn-save{background:#27ae60}.btn-print{background:#2980b9}.btn-search-toggle{background:#8e44ad}.btn-logout{background:#c0392b}
+.btn-save{background:#27ae60}.btn-print{background:#2980b9}.btn-search-toggle{background:#8e44ad}.btn-new{background:#16a085}.btn-logout{background:#c0392b}
 #search-panel{background:#fff;padding:20px;border-radius:8px;margin-bottom:15px;display:none;box-shadow:0 2px 10px #0000000d}
 .search-box{display:flex;gap:10px;margin-bottom:15px}
 .search-box input{flex:1;min-width:0;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:15px}
@@ -36,7 +36,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .right-top-title input{font-size:24px;font-weight:bold;border:1px solid #ddd;text-align:center;padding:3px 8px;border-radius:4px;width:100%;background:#fff}
 
 .cert-middle{display:flex;justify-content:space-between;align-items:flex-start;z-index:1;flex:1;margin-top:10px;gap:15px}
-.left-details{width:52%}.details-table{width:100%[span_0](start_span)[span_0](end_span);border-collapse:collapse}
+.left-details{width:52%}.details-table{width:100%;border-collapse:collapse}
 .details-table th,.details-table td{padding:4px 6px;text-align:left;font-size:13px;border:0}
 .details-table th{width:100px;color:#333;font-weight:600}
 .details-table td input{width:100%;padding:3px 6px;border:1px solid #ddd;border-radius:3px;font-size:13px;background:#fff}
@@ -102,6 +102,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
    <button class="btn btn-search-toggle" onclick="toggleSearch()">Search Reports</button>
    <button class="btn btn-save" onclick="saveReportToFirebase()">Save Report</button>
    <button class="btn btn-print" onclick="window.print()">Print Certificate</button>
+   <button class="btn btn-new" onclick="prepareNewReport()">New / Back</button>
    <button class="btn btn-logout" onclick="logout()">Logout</button>
   </div>
  </div>
@@ -233,7 +234,6 @@ async function prepareNewReport(){
  editingOriginalNo = null;
  currentImageData = "";
  
- // සියලු fields හිස් කිරීම
  $("rep-title-name").value = "";
  Object.values(reportFields).forEach(id => {
   if(id !== "rep-date") $(id).value = "";
@@ -243,7 +243,6 @@ async function prepareNewReport(){
  const reportNo = await makeReportNumber();
  $("display-report-no").value = reportNo;
  
- // Image box එක හිස් කිරීම
  const box = $("image-box-container");
  box.innerHTML = "";
  const span = document.createElement("span");
@@ -259,8 +258,15 @@ async function prepareNewReport(){
  file.onchange = previewImage;
  box.appendChild(file);
 
+ document.querySelectorAll(".certificate input").forEach(el=>{
+  el.readOnly = false;
+ });
+ $("rep-remarks").contentEditable = "true";
+
  updateQRCode(reportNo);
+ $("search-panel").style.display = "none";
 }
+window.prepareNewReport = prepareNewReport;
 
 function updateQRCode(reportNo){
  const box=$("qrcode");
@@ -345,7 +351,6 @@ window.saveReportToFirebase=async function(){
   await setDoc(doc(db,"gem_reports",reportNo), data);
   alert("වාර්තාව Online Save විය. QR Code එක Scan කර පරීක්ෂා කරන්න.");
   
-  // Save වූ පසු ස්වයංක්‍රීයව ඊළඟ අලුත් වාර්තාව සඳහා fields හිස් කරයි
   await prepareNewReport();
  }catch(e){
   console.error(e);
