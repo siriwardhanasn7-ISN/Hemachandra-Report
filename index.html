@@ -36,7 +36,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .right-top-title{width:42%;display:flex;justify-content:center;align-items:center}
 .right-top-title input{font-size:24px;font-weight:bold;border:1px solid #ddd;text-align:center;padding:3px 8px;border-radius:4px;width:100%;background:#fff}
 
-/* Readonly අවස්ථාවේදී ඉන්පුට් බෝඩර් සහ පසුබිම සම්පූර්ණයෙන්ම ඉවත් කිරීම */
+/* Readonly අවස්ථාවේදී ඉන්පුට් බෝඩර් සහ පසුබිම ඉවත් කිරීම */
 .right-top-title input:read-only,
 .details-table input:read-only {
  border: none !important;
@@ -46,10 +46,12 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 }
 
 .cert-middle{display:flex;justify-content:space-between;align-items:flex-start;z-index:1;flex:1;margin-top:10px;gap:15px}
-.left-details{width:52%}.details-table{width:100%;border-collapse:collapse}
-.details-table th,.details-table td{padding:4px 6px;text-align:left;font-size:13px;border:0}
-.details-table th{width:100px;color:#333;font-weight:600}
-.details-table td input{width:100%;padding:3px 6px;border:1px solid #ddd;border-radius:3px;font-size:13px;background:#fff}
+.left-details{width:54%}.details-table{width:100%;border-collapse:collapse}
+
+/* වම් පැත්තේ වගුවේ අකුරු සහ පේළි අතර ඉඩ වැඩි කර පිටුව පිරී පෙනෙන සේ සකස් කරන ලදී */
+.details-table th,.details-table td{padding:7px 8px;text-align:left;font-size:14px;border:0}
+.details-table th{width:115px;color:#333;font-weight:600}
+.details-table td input{width:100%;padding:5px 8px;border:1px solid #ddd;border-radius:4px;font-size:14px;background:#fff}
 
 .right-gem-area{width:42%;display:flex;flex-direction:column;align-items:center}
 .gem-photo-box{width:210px;height:210px;border:1px solid #333;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff;position:relative}
