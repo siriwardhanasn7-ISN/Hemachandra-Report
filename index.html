@@ -27,6 +27,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .search-results{max-height:250px;overflow-y:auto;border:1px solid #eee;border-radius:6px}
 .search-item{padding:10px 15px;border-bottom:1px solid #f1f1f1;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .search-item button{padding:5px 10px;background:#2980b9;color:#fff;border:0;border-radius:4px;cursor:pointer;margin-left:5px}
+
 .certificate{background:#fff;width:297mm;min-height:210mm;padding:15mm 20mm;margin:0 auto;box-shadow:0 0 20px #0000001a;position:relative;border:1px solid #ccc;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
 .watermark{position:absolute;top:52%;left:32%;transform:translate(-50%,-50%);width:480px;opacity:.08;pointer-events:none;z-index:0}
 .cert-header{display:flex;justify-content:space-between;align-items:center;z-index:1;margin-bottom:5px;gap:10px}
@@ -40,13 +41,18 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .details-table th,.details-table td{padding:4px 6px;text-align:left;font-size:13px;border:0}
 .details-table th{width:100px;color:#333;font-weight:600}
 .details-table td input{width:100%;padding:3px 6px;border:1px solid #ddd;border-radius:3px;font-size:13px;background:#fff}
+
+/* දකුණු පැත්තේ ප්‍රදේශය (ගල සහ අත්සන් එකම තීරු රාමුවක) */
 .right-gem-area{width:42%;display:flex;flex-direction:column;align-items:center}
 .gem-photo-box{width:210px;height:210px;border:1px solid #333;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff;position:relative}
 .gem-photo-box img{width:100%;height:100%;object-fit:contain}
 .gem-photo-box input[type=file]{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer}
-.signatures-and-badges{display:flex;justify-content:space-between;align-items:flex-end;width:100%;margin-top:15px;z-index:1;gap:10px}
-.signatures-area{display:flex;gap:20px;font-size:11px;color:#222;flex-wrap:wrap}
+
+/* අත්සන් සහ තත්වයන් ගලේ පින්තූරයට අඟල් 1.5 - 2 ක් (ආසන්න වශයෙන් 45px - 55px) පහළින් පිහිටුවීම */
+.signatures-area-right{width:100%;margin-top:38px;display:flex;flex-direction:column;gap:12px;font-size:11px;color:#222;text-align:left}
 .sig-person p{line-height:1.3}.sig-person p:first-child{font-weight:bold}
+
+.signatures-and-badges{display:flex;justify-content:flex-end;align-items:flex-end;width:100%;margin-top:10px;z-index:1;gap:10px}
 .badges-and-qr{display:flex;align-items:center;gap:15px}
 .lab-logos{display:flex;align-items:center;gap:10px}.lab-logos img{height:45px;object-fit:contain}
 #qrcode{background:#fff;padding:8px;border:1px solid #ccc;border-radius:4px;display:flex;justify-content:center;align-items:center;min-width:116px;min-height:116px}
@@ -139,19 +145,22 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
      <tr><th>Comment</th><td><input id="rep-comments-field" type="text"></td></tr>
     </table>
    </div>
+   
+   <!-- දකුණු පැත්තේ පින්තූරය සහ ගලේ පින්තූරයට පහළින් අත්සන් තබා ඇත -->
    <div class="right-gem-area">
     <div class="gem-photo-box" id="image-box-container">
      <span id="img-placeholder-text" style="color:#aaa;font-size:13px">ඡායාරූපයක් එකතු කරන්න</span>
      <input type="file" id="gem-image-input" accept="image/*" onchange="previewImage(event)">
     </div>
+    
+    <div class="signatures-area-right">
+     <div class="sig-person"><p>N. Hemachandra G.G, G.J, A.J.A, GIA</p><p>Graduate Gemmologist,</p><p>Gemmological Institute of America (GIA).</p></div>
+     <div class="sig-person"><p>S. Senanayake F.G.A, M.G.A.</p><p>Gem-A Gemmological Association of Great Britain,</p><p>Member Of the Gemmological Association.</p></div>
+    </div>
    </div>
   </div>
 
   <div class="signatures-and-badges">
-   <div class="signatures-area">
-    <div class="sig-person"><p>N. Senanayake G.G, G.J, A.J.A, GIA</p><p>Graduate Gemmologist,</p><p>Gemmological Institute of America (GIA).</p></div>
-    <div class="sig-person"><p>S. Senanayake F.G.A, M.G.A.</p><p>Gem-A Gemmological Association of Great Britain,</p><p>Member Of the Gemmological Association.</p></div>
-   </div>
    <div class="badges-and-qr">
     <div class="lab-logos"><img src="gia_logo.png" alt="GIA"><img src="gema_logo.png" alt="Gem-A"></div>
     <div id="qrcode" aria-label="Report QR code"></div>
