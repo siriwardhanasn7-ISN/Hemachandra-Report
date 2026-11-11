@@ -32,7 +32,6 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .cert-header{display:flex;justify-content:space-between;align-items:center;z-index:1;margin-bottom:5px;gap:10px}
 .logo-area{display:flex;align-items:flex-start;gap:15px}.logo-area img{width:150px;object-fit:contain}
 
-/* Natural Blue Sapphire එක දකුණු පැත්තේ මැදට වන්නට සකස් කරන ලදී */
 .right-top-title{width:42%;display:flex;justify-content:center;align-items:center}
 .right-top-title input{font-size:24px;font-weight:bold;border:1px solid #ddd;text-align:center;padding:3px 8px;border-radius:4px;width:100%;background:#fff}
 
@@ -52,13 +51,11 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .lab-logos{display:flex;align-items:center;gap:10px}.lab-logos img{height:45px;object-fit:contain}
 #qrcode{background:#fff;padding:8px;border:1px solid #ccc;border-radius:4px;display:flex;justify-content:center;align-items:center;min-width:116px;min-height:116px}
 
-/* QR එකක් පමණක් පෙනෙන සේ සකස් කරන ලදී */
 #qrcode img{width:100px!important;height:100px!important;display:block!important}
 #qrcode canvas{display:none!important}
 
 .cert-footer-bottom{border-top:2px solid var(--primary-orange);padding-top:8px;margin-top:10px;display:flex;justify-content:space-between;align-items:flex-end;z-index:1;gap:10px}
 
-/* Disclaimer එක සම්පූර්ණයෙන් පෙනෙන සේ (textarea ඉවත් කර p tag එකක් ලෙස) සකස් කරන ලදී */
 .footer-disclaimer{font-size:9.5px;color:#555;max-width:62%;font-style:italic;line-height:1.35}
 .footer-disclaimer p{width:100%;border:0;background:transparent;margin:0;padding:0;outline:none;}
 .footer-disclaimer p[contenteditable="true"]:hover{background:#f9f9f9;box-shadow:0 0 0 1px #ddd;}
@@ -325,9 +322,17 @@ function renderSearchRows(rows){
   const row=document.createElement("div");row.className="search-item";
   const label=document.createElement("span");label.textContent=`${data.reportNo||""} - ${data.titleName||""} (${data.weight||""})`;
   const actions=document.createElement("div");
+  
   const view=document.createElement("button");view.textContent="View";view.onclick=()=>viewReport(data.reportNo);
+  
+  // Edit බොත්තම එකතු කරන ලදී (View සහ Delete අතරට)
+  const editBtn=document.createElement("button");editBtn.textContent="Edit";editBtn.style.background="#f39c12";editBtn.onclick=()=>editReport(data.reportNo);
+  
   const del=document.createElement("button");del.textContent="Delete";del.style.background="#e74c3c";del.onclick=()=>promptDelete(data.reportNo);
-  actions.append(view,del);row.append(label,actions);list.appendChild(row);
+  
+  actions.append(view,editBtn,del);
+  row.append(label,actions);
+  list.appendChild(row);
  });
 }
 window.searchReports=function(){
@@ -338,6 +343,10 @@ window.searchReports=function(){
  }).catch(e=>{$("search-results-list").textContent="Search error: "+e.message});
 };
 async function viewReport(reportNo){
+ try{const snap=await getDoc(doc(db,"gem_reports",reportNo));if(snap.exists()){fillReport(snap.data(),true);$("search-panel").style.display="none"}else alert("වාර්තාව හමු නොවීය!")}
+ catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
+}
+async function editReport(reportNo){
  try{const snap=await getDoc(doc(db,"gem_reports",reportNo));if(snap.exists()){fillReport(snap.data(),false);$("search-panel").style.display="none"}else alert("වාර්තාව හමු නොවීය!")}
  catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
 }
