@@ -30,13 +30,14 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 
 .certificate{background:#fff;width:297mm;min-height:210mm;padding:15mm 20mm;margin:0 auto;box-shadow:0 0 20px #0000001a;position:relative;border:1px solid #ccc;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
 .watermark{position:absolute;top:52%;left:32%;transform:translate(-50%,-50%);width:480px;opacity:.08;pointer-events:none;z-index:0}
-.cert-header{display:flex;justify-content:space-between;align-items:center;z-index:1;margin-bottom:5px;gap:10px}
-.logo-area{display:flex;align-items:flex-start;gap:15px}.logo-area img{width:150px;object-fit:contain}
+
+/* Main Logo එක තවත් විශාල කරන ලදී */
+.cert-header{display:flex;justify-content:space-between;align-items:center;z-index:1;margin-bottom:8px;gap:10px}
+.logo-area{display:flex;align-items:flex-start;gap:15px}.logo-area img{width:185px;object-fit:contain}
 
 .right-top-title{width:42%;display:flex;justify-content:center;align-items:center}
 .right-top-title input{font-size:24px;font-weight:bold;border:1px solid #ddd;text-align:center;padding:3px 8px;border-radius:4px;width:100%;background:#fff}
 
-/* Readonly අවස්ථාවේදී ඉන්පුට් බෝඩර් සහ පසුබිම ඉවත් කිරීම */
 .right-top-title input:read-only,
 .details-table input:read-only {
  border: none !important;
@@ -45,10 +46,9 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  padding-left: 0 !important;
 }
 
-.cert-middle{display:flex;justify-content:space-between;align-items:flex-start;z-index:1;flex:1;margin-top:10px;gap:15px}
+/* වම් පැත්තේ විස්තර වගුව තවත් පහළට ගෙන එන ලදී */
+.cert-middle{display:flex;justify-content:space-between;align-items:flex-start;z-index:1;flex:1;margin-top:20px;gap:15px}
 .left-details{width:54%}.details-table{width:100%;border-collapse:collapse}
-
-/* වම් පැත්තේ වගුවේ අකුරු සහ පේළි අතර ඉඩ වැඩි කර පිටුව පිරී පෙනෙන සේ සකස් කරන ලදී */
 .details-table th,.details-table td{padding:7px 8px;text-align:left;font-size:14px;border:0}
 .details-table th{width:115px;color:#333;font-weight:600}
 .details-table td input{width:100%;padding:5px 8px;border:1px solid #ddd;border-radius:4px;font-size:14px;background:#fff}
@@ -58,7 +58,8 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .gem-photo-box img{width:100%;height:100%;object-fit:contain}
 .gem-photo-box input[type=file]{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer}
 
-.signatures-area-right{width:100%;margin-top:65px;display:flex;justify-content:space-between;gap:15px;font-size:10px;color:#222;text-align:left}
+/* අත්සන් ප්‍රදේශය තවත් පහළට දමන ලදී */
+.signatures-area-right{width:100%;margin-top:78px;display:flex;justify-content:space-between;gap:15px;font-size:10px;color:#222;text-align:left}
 .sig-person{width:48%}
 .sig-person p{line-height:1.3}.sig-person p:first-child{font-weight:bold}
 
