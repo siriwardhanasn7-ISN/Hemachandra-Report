@@ -80,11 +80,23 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .details-table th,.details-table td{padding:1.1mm 1mm!important;text-align:left!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;border:0!important;color:#111!important;position:relative!important;z-index:999!important}
 .details-table th{width:39mm!important;font-weight:normal!important}
 
-/* සියලුම input කොටු සඳහා ඉහළම ස්ථරය (z-index) ලබා දී ඇත */
+/* Admin Portal එකේදී දත්ත ඇතුළත් කරන අනෙක් input කොටු */
 .details-table td input{
  width:100%!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;
  padding:3px 6px!important;border:1px dashed #b2bec3!important;border-radius:4px!important;background:#fafafa!important;color:#111!important;
  position:relative!important;z-index:9999!important;cursor:text!important;pointer-events:auto!important;
+}
+
+/* Report No විශේෂිතයි: එය සෑම විටම පිරිසිදුයි, කිසිදු Box එකක් නොපෙන්වයි */
+.details-table td input#display-report-no {
+ border: none !important;
+ background: transparent !important;
+ outline: none !important;
+ padding: 1.1mm 0 !important;
+ cursor: default !important;
+ pointer-events: none !important;
+ font-family: monospace !important;
+ font-weight: normal !important;
 }
 
 .details-table input:read-only {
@@ -122,7 +134,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  padding:0!important;
  position:relative!important;
  z-index:1!important;
- pointer-events: none!important; /* පහළ කොටු වලට ක්ලික් කිරීමට බාධා නොවන සේ සකසා ඇත */
+ pointer-events: none!important;
 }
 
 .gem-photo-box{width:47mm!important;height:47mm!important;min-width:47mm!important;min-height:47mm!important;border:1px solid #333!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;position:relative!important;pointer-events: auto!important;}
@@ -250,7 +262,7 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
   <div class="cert-middle">
    <div class="left-details">
     <table class="details-table">
-     <tr><th>No.</th><td><input id="display-report-no" type="text" style="font-family:monospace;font-weight:normal"></td></tr>
+     <tr><th>No.</th><td><input id="display-report-no" type="text" readonly style="font-family:monospace;font-weight:normal;border:none!important;background:transparent!important;pointer-events:none!important;"></td></tr>
      <tr><th>Date</th><td><input id="rep-date" type="text"></td></tr>
      <tr><th>Object</th><td><input id="rep-object" type="text"></td></tr>
      <tr><th>Weight</th><td><input id="rep-weight" type="text"></td></tr>
@@ -377,7 +389,12 @@ async function prepareNewReport(){
  
  setTodayDate();
  const reportNo = await makeReportNumber();
- $("display-report-no").value = reportNo;
+ const rNoField = $("display-report-no");
+ rNoField.value = reportNo;
+ rNoField.readOnly = true;
+ rNoField.style.border = "none";
+ rNoField.style.background = "transparent";
+ rNoField.style.pointerEvents = "none";
  
  const box = $("image-box-container");
  box.innerHTML = "";
@@ -395,8 +412,10 @@ async function prepareNewReport(){
  box.appendChild(file);
 
  document.querySelectorAll(".certificate input").forEach(el=>{
-  el.readOnly = false;
-  el.style.pointerEvents = "auto";
+  if(el.id !== "display-report-no") {
+   el.readOnly = false;
+   el.style.pointerEvents = "auto";
+  }
  });
  $("rep-remarks").contentEditable = "true";
 
@@ -424,7 +443,13 @@ function getReportData(){
 }
 
 function fillReport(data,readOnly=false){
- $("display-report-no").value=data.reportNo||"";
+ const rNoField = $("display-report-no");
+ rNoField.value = data.reportNo || "";
+ rNoField.readOnly = true;
+ rNoField.style.border = "none";
+ rNoField.style.background = "transparent";
+ rNoField.style.pointerEvents = "none";
+
  Object.entries(reportFields).forEach(([key,id])=>$(id).value=data[key]||"");
  $("rep-remarks").innerText=data.remarks||$("rep-remarks").innerText;
  currentImageData=data.image||"";
