@@ -86,7 +86,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  position:relative!important;z-index:9999!important;cursor:text!important;pointer-events:auto!important;
 }
 
-/* Report No: Edit කරන විට සාමාන්‍ය input එකක් මෙන් පෙනේ, Read-only කළ විට Border නැති වී පිරිසිදු අකුරු බවට පත්වේ */
+/* Report No: Font එක Times New Roman ලෙස සකසා ඇත */
 .details-table td input#display-report-no {
  font-family: "Times New Roman", Times, serif !important;
  font-size: 12pt !important;
@@ -395,7 +395,7 @@ async function prepareNewReport(){
  
  const rNoField = $("display-report-no");
  rNoField.value = reportNo;
- rNoField.readOnly = false; // New report එකේදී අංකය වෙනස් කිරීමට හැකි වන සේ විවෘත කර ඇත
+ rNoField.readOnly = false;
  rNoField.style.pointerEvents = "auto";
  rNoField.style.border = "1px dashed #b2bec3";
  rNoField.style.background = "#fafafa";
@@ -462,7 +462,7 @@ function fillReport(data,readOnly=false){
   rNoField.style.background = "transparent";
   rNoField.style.pointerEvents = "none";
  } else {
-  rNoField.readOnly = false; // Edit කරන විට අංකය වෙනස් කළ හැක
+  rNoField.readOnly = false;
   rNoField.style.border = "1px dashed #b2bec3";
   rNoField.style.background = "#fafafa";
   rNoField.style.pointerEvents = "auto";
