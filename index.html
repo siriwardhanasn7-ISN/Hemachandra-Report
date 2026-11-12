@@ -39,15 +39,13 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 }
 .certificate *{box-sizing:border-box}
 
-/* Watermark H logo */
-.watermark{position:absolute!important;top:57%!important;left:29%!important;transform:translate(-50%,-50%)!important;width:120mm!important;max-width:none!important;opacity:.075!important;z-index:0!important;pointer-events:none}
-
-/* Vertical watermark logo2 style */
-.watermark-vertical{position:absolute!important;top:50%!important;left:85%!important;transform:translate(-50%,-50%) rotate(90deg)!important;width:80mm!important;opacity:.05!important;z-index:0!important;pointer-events:none}
+/* Watermarks & Brand Elements (සාමාන්‍ය අවස්ථාවේදී සඟවා ඇත, Public QR View එකේදී පමණක් පෙන්වයි) */
+.watermark{position:absolute!important;top:57%!important;left:29%!important;transform:translate(-50%,-50%)!important;width:120mm!important;max-width:none!important;opacity:.075!important;z-index:0!important;pointer-events:none;display:none!important}
+.watermark-vertical{position:absolute!important;top:50%!important;left:85%!important;transform:translate(-50%,-50%) rotate(90deg)!important;width:80mm!important;opacity:.05!important;z-index:0!important;pointer-events:none;display:none!important}
 
 .cert-header{height:40mm!important;min-height:40mm!important;flex:0 0 40mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:8mm!important;margin:0!important;z-index:1!important}
 
-.logo-area{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:1mm!important}
+.logo-area{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:1mm!important;visibility:hidden!important}
 .logo-area img{width:91mm!important;height:24mm!important;object-fit:contain!important;object-position:left top!important}
 .report-label{font-family:"Times New Roman",Times,serif!important;font-size:16pt!important;font-weight:bold!important;margin-left:22mm!important;line-height:1.1!important;color:#111!important;letter-spacing:0.5px!important;}
 
@@ -111,13 +109,13 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 
 /* අත්සන් සහ QR කොටස */
 .signatures-and-badges{height:44mm!important;min-height:44mm!important;flex:0 0 44mm!important;width:100%!important;margin:0!important;position:relative!important;display:block!important;z-index:2!important}
-.signatures-area{position:absolute!important;left:55%!important;top:-6mm!important;width:44%!important;display:flex!important;justify-content:space-between!important;gap:5mm!important;flex-wrap:nowrap!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;color:#111!important}
+.signatures-area{position:absolute!important;left:55%!important;top:-6mm!important;width:44%!important;display:none!important;justify-content:space-between!important;gap:5mm!important;flex-wrap:nowrap!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;color:#111!important}
 .sig-person{width:50%!important}
 .sig-person p{font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.12!important;color:#111!important}
 .sig-person p:first-child{font-weight:bold!important}
 
 .badges-and-qr{position:absolute!important;right:0!important;bottom:2mm!important;display:flex!important;align-items:center!important;gap:8mm!important}
-.lab-logos{display:flex!important;align-items:center!important;gap:5mm!important}
+.lab-logos{display:none!important;align-items:center!important;gap:5mm!important}
 .lab-logos img{height:18mm!important;max-width:43mm!important;object-fit:contain!important}
 
 #qrcode{position:relative!important; flex:0 0 26mm!important; width:26mm!important; height:26mm!important;
@@ -131,7 +129,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  height:30mm!important;min-height:30mm!important;flex:0 0 30mm!important;
  margin:0!important;padding:3mm 0 0!important;overflow:visible!important;
  border-top:1.2mm solid #d35400!important;position:relative!important;
- display:flex!important;justify-content:space-between!important;align-items:flex-end!important;gap:10mm!important;z-index:2!important
+ display:none!important;justify-content:space-between!important;align-items:flex-end!important;gap:10mm!important;z-index:2!important
 }
 .cert-footer-bottom:before{content:""!important;position:absolute!important;left:0!important;right:0!important;top:1.8mm!important;border-top:.45mm solid #b7b7b7!important}
 
@@ -140,6 +138,14 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 
 .footer-company-info{display:block!important;flex:0 0 42%!important;width:42%!important;max-width:42%!important;text-align:right!important;font-size:8.5pt!important;color:#111!important;line-height:1.15!important;font-weight:bold!important}
 .footer-company-info p b{color:var(--primary-orange)}
+
+/* ===== PUBLIC QR VIEW ONLY (QR එක Scan කළ විට පමණක් පෙන්වන කොටස්) ===== */
+body.public-view .watermark,
+body.public-view .watermark-vertical { display: block !important; }
+body.public-view .logo-area { visibility: visible !important; }
+body.public-view .signatures-area,
+body.public-view .lab-logos,
+body.public-view .cert-footer-bottom { display: flex !important; }
 
 #modal-overlay{position:fixed;inset:0;width:100%;height:100%;background:#0008;display:none;justify-content:center;align-items:center;z-index:1000000}
 .modal-card{background:#fff;padding:25px;border-radius:8px;width:300px;text-align:center}
@@ -158,20 +164,16 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  @page{size:A4 landscape;margin:0}
  html,body{width:297mm!important;height:210mm!important;margin:0!important;padding:0!important;overflow:hidden!important;background:#fff!important}
  body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
- #login-screen,.action-bar,#search-panel,#modal-overlay,.gem-photo-box input[type=file],.public-note{display:none!important}
+ #login-screen,.action-bar,#search-panel,#modal-overlay,.gem-photo-box input[type=file],.public-note,#img-placeholder-text{display:none!important}
  #app-container{display:block!important;width:297mm!important;height:210mm!important;max-width:none!important;margin:0!important;padding:0!important;overflow:hidden!important}
  .certificate{
   width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important;
   padding:5mm 12mm 5mm!important;margin:0!important;border:0!important;box-shadow:none!important;
   transform:none!important;overflow:hidden!important;display:flex!important;flex-direction:column!important
  }
- .certificate,.certificate *{visibility:visible!important}
  .cert-header{height:40mm!important;min-height:40mm!important;flex:0 0 40mm!important}
  .cert-middle{height:85mm!important;min-height:85mm!important;flex:0 0 85mm!important}
  .signatures-and-badges{height:44mm!important;min-height:44mm!important;flex:0 0 44mm!important}
- .cert-footer-bottom{height:30mm!important;min-height:30mm!important;flex:0 0 30mm!important;display:flex!important;visibility:visible!important}
- .cert-footer-bottom,.cert-footer-bottom *{visibility:visible!important}
- .footer-disclaimer,.footer-disclaimer p,.footer-company-info{display:block!important;visibility:visible!important;background:transparent!important;box-shadow:none!important;}
  .details-table input,.right-top-title input{border:0!important;background:transparent!important;box-shadow:none!important;outline:0!important}
 }
 </style>
@@ -210,7 +212,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  </div>
 
  <div class="certificate">
-  <!-- Watermark Logos දෙක එකතු කර ඇත -->
+  <!-- Watermark Logos දෙක -->
   <img src="watermark_logo.png" class="watermark" alt="Watermark">
   <img src="watermark_logo2.png" class="watermark-vertical" alt="Vertical Watermark">
 
@@ -439,6 +441,7 @@ window.previewImage=async function(event){
 window.handleLogin=async function(){
  const user=$("user-id").value.trim().toUpperCase(),pass=$("password").value.trim();
  if(user==="SASIKA"&&pass==="123"){
+  document.body.classList.remove("public-view");
   $("login-screen").style.display="none";$("app-container").style.display="block";
   document.querySelector(".action-bar").style.display="flex";
   document.querySelector(".certificate").style.display="flex";
@@ -532,6 +535,7 @@ async function editReport(reportNo){
 }
 
 async function loadPublicReport(reportNo){
+ document.body.classList.add("public-view");
  $("login-screen").style.display="none";$("app-container").style.display="block";
  document.querySelector(".action-bar").style.display="none";
  $("search-panel").style.display="none";$("public-note").style.display="block";
