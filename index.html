@@ -39,7 +39,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 }
 .certificate *{box-sizing:border-box}
 
-/* Watermarks (සාමාන්‍ය අවස්ථාවේ සඟවා ඇත, Public QR view එකේදී පෙන්වයි) */
+/* Watermarks */
 .watermark{position:absolute!important;top:57%!important;left:29%!important;transform:translate(-50%,-50%)!important;width:120mm!important;max-width:none!important;opacity:.075!important;z-index:0!important;pointer-events:none!important;display:none!important}
 .watermark-vertical{position:absolute!important;top:50%!important;left:85%!important;transform:translate(-50%,-50%) rotate(90deg)!important;width:80mm!important;opacity:.05!important;z-index:0!important;pointer-events:none!important;display:none!important}
 
@@ -86,15 +86,20 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  position:relative!important;z-index:9999!important;cursor:text!important;pointer-events:auto!important;
 }
 
+/* Report No: Edit කරන විට සාමාන්‍ය input එකක් මෙන් පෙනේ, Read-only කළ විට Border නැති වී පිරිසිදු අකුරු බවට පත්වේ */
 .details-table td input#display-report-no {
+ font-family: "Times New Roman", Times, serif !important;
+ font-size: 12pt !important;
+ font-weight: normal !important;
+}
+.details-table td input#display-report-no:read-only {
  border: none !important;
  background: transparent !important;
  outline: none !important;
+ box-shadow: none !important;
  padding: 1.1mm 0 !important;
  cursor: default !important;
  pointer-events: none !important;
- font-family: monospace !important;
- font-weight: normal !important;
 }
 
 .details-table input:read-only {
@@ -150,7 +155,6 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .lab-logos{display:none!important;align-items:center!important;gap:5mm!important}
 .lab-logos img{height:18mm!important;max-width:43mm!important;object-fit:contain!important}
 
-/* QR Code Box එකේ පැහැදිලි බව උපරිම කර ඇත */
 #qrcode{position:relative!important; flex:0 0 28mm!important; width:28mm!important; height:28mm!important;
  min-width:28mm!important; min-height:28mm!important; padding:1mm!important; margin:0!important;
  overflow:hidden!important; background:#fff!important; display:flex!important; align-items:center!important; justify-content:center!important;}
@@ -172,7 +176,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .footer-company-info{display:block!important;flex:0 0 42%!important;width:42%!important;max-width:42%!important;text-align:right!important;font-size:8.5pt!important;color:#111!important;line-height:1.15!important;font-weight:bold!important}
 .footer-company-info p b{color:var(--primary-orange)}
 
-/* ===== PUBLIC QR VIEW ONLY (QR එක Scan කළ විට පෙන්වන කොටස්) ===== */
+/* ===== PUBLIC QR VIEW ONLY ===== */
 body.public-view .watermark,
 body.public-view .watermark-vertical { display: block !important; }
 body.public-view .logo-area { visibility: visible !important; }
@@ -261,7 +265,7 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
   <div class="cert-middle">
    <div class="left-details">
     <table class="details-table">
-     <tr><th>No.</th><td><input id="display-report-no" type="text" readonly style="font-family:monospace;font-weight:normal;border:none!important;background:transparent!important;pointer-events:none!important;"></td></tr>
+     <tr><th>No.</th><td><input id="display-report-no" type="text"></td></tr>
      <tr><th>Date</th><td><input id="rep-date" type="text"></td></tr>
      <tr><th>Object</th><td><input id="rep-object" type="text"></td></tr>
      <tr><th>Weight</th><td><input id="rep-weight" type="text"></td></tr>
@@ -388,12 +392,13 @@ async function prepareNewReport(){
  
  setTodayDate();
  const reportNo = await makeReportNumber();
+ 
  const rNoField = $("display-report-no");
  rNoField.value = reportNo;
- rNoField.readOnly = true;
- rNoField.style.border = "none";
- rNoField.style.background = "transparent";
- rNoField.style.pointerEvents = "none";
+ rNoField.readOnly = false; // New report එකේදී අංකය වෙනස් කිරීමට හැකි වන සේ විවෘත කර ඇත
+ rNoField.style.pointerEvents = "auto";
+ rNoField.style.border = "1px dashed #b2bec3";
+ rNoField.style.background = "#fafafa";
  
  const box = $("image-box-container");
  box.innerHTML = "";
@@ -411,10 +416,8 @@ async function prepareNewReport(){
  box.appendChild(file);
 
  document.querySelectorAll(".certificate input").forEach(el=>{
-  if(el.id !== "display-report-no") {
-   el.readOnly = false;
-   el.style.pointerEvents = "auto";
-  }
+  el.readOnly = false;
+  el.style.pointerEvents = "auto";
  });
  $("rep-remarks").contentEditable = "true";
 
@@ -433,7 +436,6 @@ function updateQRCode(reportNo){
  const publicUrl=new URL(window.location.pathname,window.location.origin);
  publicUrl.searchParams.set("report",reportNo);
  
- // QR කේතය වඩාත් පැහැදිලිව සහ ඝනකම අඩු කර (Optimized Density) සකසා ඇත
  new QRCode(box,{
   text: publicUrl.href,
   width: 350,
@@ -453,10 +455,18 @@ function getReportData(){
 function fillReport(data,readOnly=false){
  const rNoField = $("display-report-no");
  rNoField.value = data.reportNo || "";
- rNoField.readOnly = true;
- rNoField.style.border = "none";
- rNoField.style.background = "transparent";
- rNoField.style.pointerEvents = "none";
+ 
+ if(readOnly){
+  rNoField.readOnly = true;
+  rNoField.style.border = "none";
+  rNoField.style.background = "transparent";
+  rNoField.style.pointerEvents = "none";
+ } else {
+  rNoField.readOnly = false; // Edit කරන විට අංකය වෙනස් කළ හැක
+  rNoField.style.border = "1px dashed #b2bec3";
+  rNoField.style.background = "#fafafa";
+  rNoField.style.pointerEvents = "auto";
+ }
 
  Object.entries(reportFields).forEach(([key,id])=>$(id).value=data[key]||"");
  $("rep-remarks").innerText=data.remarks||$("rep-remarks").innerText;
@@ -580,7 +590,7 @@ async function viewReport(reportNo){
    fillReport(snap.data(),true);
    $("search-panel").style.display="none";
   }else alert("වාර්තාව හමු නොවීය!");
-}catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
+ }catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
 }
 
 async function editReport(reportNo){
