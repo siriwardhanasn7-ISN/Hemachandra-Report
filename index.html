@@ -39,7 +39,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 }
 .certificate *{box-sizing:border-box}
 
-/* Watermarks & Brand Elements (සාමාන්‍ය අවස්ථාවේදී සඟවා ඇත, Public QR View එකේදී පමණක් පෙන්වයි) */
+/* Watermarks (සාමාන්‍ය අවස්ථාවේ සඟවා ඇත, Public QR view එකේදී පෙන්වයි) */
 .watermark{position:absolute!important;top:57%!important;left:29%!important;transform:translate(-50%,-50%)!important;width:120mm!important;max-width:none!important;opacity:.075!important;z-index:0!important;pointer-events:none;display:none!important}
 .watermark-vertical{position:absolute!important;top:50%!important;left:85%!important;transform:translate(-50%,-50%) rotate(90deg)!important;width:80mm!important;opacity:.05!important;z-index:0!important;pointer-events:none;display:none!important}
 
@@ -101,6 +101,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  flex-direction:column!important;
  align-items:center!important;
  padding:0!important;
+ visibility:hidden!important; /* Admin/Print අවස්ථාවේදී පින්තූරය සහ කොටුව සම්පූර්ණයෙන්ම සඟවයි */
 }
 
 .gem-photo-box{width:47mm!important;height:47mm!important;min-width:47mm!important;min-height:47mm!important;border:1px solid #333!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;position:relative!important}
@@ -139,10 +140,11 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .footer-company-info{display:block!important;flex:0 0 42%!important;width:42%!important;max-width:42%!important;text-align:right!important;font-size:8.5pt!important;color:#111!important;line-height:1.15!important;font-weight:bold!important}
 .footer-company-info p b{color:var(--primary-orange)}
 
-/* ===== PUBLIC QR VIEW ONLY (QR එක Scan කළ විට පමණක් පෙන්වන කොටස්) ===== */
+/* ===== PUBLIC QR VIEW ONLY (QR එක Scan කළ විට පෙන්වන කොටස්) ===== */
 body.public-view .watermark,
 body.public-view .watermark-vertical { display: block !important; }
-body.public-view .logo-area { visibility: visible !important; }
+body.public-view .logo-area,
+body.public-view .right-gem-area { visibility: visible !important; }
 body.public-view .signatures-area,
 body.public-view .lab-logos,
 body.public-view .cert-footer-bottom { display: flex !important; }
