@@ -61,7 +61,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  font-family:"Times New Roman",Times,serif!important;
  font-size:21pt!important; font-weight:bold!important;
  color:#111!important; border:1px dashed #b2bec3!important; background:#fafafa!important; 
- outline:none!important; padding:4px!important; border-radius:4px!important;
+ outline:none!important; padding:4px!important; border-radius:4px!important; z-index:10!important; position:relative!important; cursor:text!important;
 }
 .right-top-title input:read-only {
  border: none !important;
@@ -69,6 +69,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  outline: none !important;
  box-shadow: none !important;
  padding: 0 !important;
+ cursor: default !important;
 }
 
 .cert-middle{height:85mm!important;min-height:85mm!important;flex:0 0 85mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:7mm!important;margin:0!important;z-index:1!important}
@@ -77,10 +78,11 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .details-table th,.details-table td{padding:1.1mm 1mm!important;text-align:left!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;border:0!important;color:#111!important}
 .details-table th{width:39mm!important;font-weight:normal!important}
 
-/* Admin Portal එකේදී දත්ත ඇතුළත් කරන කොටු වලට පැහැදිලි Border එකක් ලබා දීම */
+/* Admin Portal එකේදී දත්ත ඇතුළත් කරන සියලුම කොටු වලට පහසුවෙන් ක්ලික් කර ටයිප් කළ හැකි වන සේ සකසා ඇත */
 .details-table td input{
  width:100%!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;
  padding:3px 6px!important;border:1px dashed #b2bec3!important;border-radius:4px!important;background:#fafafa!important;color:#111!important;
+ position:relative!important;z-index:10!important;cursor:text!important;pointer-events:auto!important;
 }
 
 /* Print හෝ ReadOnly අවස්ථාවේදී කොටු වල Borders සම්පූර්ණයෙන්ම ඉවත් වේ */
@@ -89,6 +91,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  background: transparent !important;
  outline: none !important;
  padding: 1.1mm 0 !important;
+ cursor: default !important;
 }
 
 .details-table td input#rep-comments-field{
@@ -98,12 +101,13 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  background:#fafafa!important; color:#111!important; font-family:"Times New Roman",Times,serif!important;
  font-size:12pt!important; line-height:1.08!important; font-weight:normal!important;
  pointer-events:auto!important; user-select:text!important; -webkit-user-select:text!important;
- cursor:text!important; resize:none!important;
+ cursor:text!important; resize:none!important; z-index:10!important; position:relative!important;
 }
 .details-table td input#rep-comments-field:read-only {
  border: none !important;
  background: transparent !important;
  padding: 1.1mm 0 !important;
+ cursor: default !important;
 }
 
 .right-gem-area{
