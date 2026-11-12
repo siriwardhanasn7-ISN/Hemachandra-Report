@@ -60,14 +60,15 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  margin:0 auto!important; text-align:center!important;
  font-family:"Times New Roman",Times,serif!important;
  font-size:21pt!important; font-weight:bold!important;
- color:#111!important; border:0!important; background:transparent!important; 
- outline:none!important; box-shadow:none!important; padding:0!important;
+ color:#111!important; border:1px dashed #b2bec3!important; background:#fafafa!important; 
+ outline:none!important; padding:4px!important; border-radius:4px!important;
 }
 .right-top-title input:read-only {
  border: none !important;
  background: transparent !important;
  outline: none !important;
  box-shadow: none !important;
+ padding: 0 !important;
 }
 
 .cert-middle{height:85mm!important;min-height:85mm!important;flex:0 0 85mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:7mm!important;margin:0!important;z-index:1!important}
@@ -75,23 +76,34 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .details-table{width:100%!important;border-collapse:collapse!important}
 .details-table th,.details-table td{padding:1.1mm 1mm!important;text-align:left!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;border:0!important;color:#111!important}
 .details-table th{width:39mm!important;font-weight:normal!important}
-.details-table td input{width:100%!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;padding:1.1mm 0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#111!important}
 
+/* Admin Portal එකේදී දත්ත ඇතුළත් කරන කොටු වලට පැහැදිලි Border එකක් ලබා දීම */
+.details-table td input{
+ width:100%!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;
+ padding:3px 6px!important;border:1px dashed #b2bec3!important;border-radius:4px!important;background:#fafafa!important;color:#111!important;
+}
+
+/* Print හෝ ReadOnly අවස්ථාවේදී කොටු වල Borders සම්පූර්ණයෙන්ම ඉවත් වේ */
 .details-table input:read-only {
  border: none !important;
  background: transparent !important;
  outline: none !important;
- padding-left: 0 !important;
+ padding: 1.1mm 0 !important;
 }
 
 .details-table td input#rep-comments-field{
  display:block!important; width:100%!important; min-width:0!important; height:auto!important;
- min-height:0!important; max-height:none!important; padding:1.1mm 0!important; margin:0!important;
- border:0!important; border-radius:0!important; outline:0!important; box-shadow:none!important; 
- background:transparent!important; color:#111!important; font-family:"Times New Roman",Times,serif!important;
+ min-height:0!important; max-height:none!important; padding:3px 6px!important; margin:0!important;
+ border:1px dashed #b2bec3!important; border-radius:4px!important; outline:0!important; 
+ background:#fafafa!important; color:#111!important; font-family:"Times New Roman",Times,serif!important;
  font-size:12pt!important; line-height:1.08!important; font-weight:normal!important;
  pointer-events:auto!important; user-select:text!important; -webkit-user-select:text!important;
  cursor:text!important; resize:none!important;
+}
+.details-table td input#rep-comments-field:read-only {
+ border: none !important;
+ background: transparent !important;
+ padding: 1.1mm 0 !important;
 }
 
 .right-gem-area{
@@ -164,7 +176,7 @@ body.public-view .cert-footer-bottom { display: flex !important; }
  @page{size:A4 landscape;margin:0}
  html,body{width:297mm!important;height:210mm!important;margin:0!important;padding:0!important;overflow:hidden!important;background:#fff!important}
  body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
- #login-screen,.action-bar,#search-panel,#modal-overlay,.gem-photo-box input[type=file],.public-note,#img-placeholder-text,.right-gem-area{display:none!important}
+ #login-screen,.action-bar,#search-panel,#modal-overlay,.gem-photo-box input[type=file],.public-note,#img-placeholder-text{display:none!important}
  #app-container{display:block!important;width:297mm!important;height:210mm!important;max-width:none!important;margin:0!important;padding:0!important;overflow:hidden!important}
  .certificate{
   width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important;
@@ -174,7 +186,7 @@ body.public-view .cert-footer-bottom { display: flex !important; }
  .cert-header{height:40mm!important;min-height:40mm!important;flex:0 0 40mm!important}
  .cert-middle{height:85mm!important;min-height:85mm!important;flex:0 0 85mm!important}
  .signatures-and-badges{height:44mm!important;min-height:44mm!important;flex:0 0 44mm!important}
- .details-table input,.right-top-title input{border:0!important;background:transparent!important;box-shadow:none!important;outline:0!important}
+ .details-table input,.right-top-title input{border:0!important;background:transparent!important;box-shadow:none!important;outline:0!important;padding:0!important;}
 }
 </style>
 
