@@ -43,7 +43,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .watermark{position:absolute!important;top:57%!important;left:29%!important;transform:translate(-50%,-50%)!important;width:120mm!important;max-width:none!important;opacity:.075!important;z-index:0!important;pointer-events:none!important;display:none!important}
 .watermark-vertical{position:absolute!important;top:50%!important;left:85%!important;transform:translate(-50%,-50%) rotate(90deg)!important;width:80mm!important;opacity:.05!important;z-index:0!important;pointer-events:none!important;display:none!important}
 
-.cert-header{height:40mm!important;min-height:40mm!important;flex:0 0 40mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:8mm!important;margin:0!important;z-index:5!important}
+.cert-header{height:40mm!important;min-height:40mm!important;flex:0 0 40mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:8mm!important;margin:0!important;z-index:1!important}
 
 .logo-area{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:1mm!important;visibility:hidden!important}
 .logo-area img{width:91mm!important;height:24mm!important;object-fit:contain!important;object-position:left top!important}
@@ -54,7 +54,6 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  margin:0!important; padding-top:27mm!important;
  text-align:center!important;
  background:transparent!important;
- z-index:5!important;
 }
 .right-top-title input{
  display:block!important; width:100%!important; max-width:100%!important;
@@ -62,7 +61,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  font-family:"Times New Roman",Times,serif!important;
  font-size:21pt!important; font-weight:bold!important;
  color:#111!important; border:1px dashed #b2bec3!important; background:#fafafa!important; 
- outline:none!important; padding:4px!important; border-radius:4px!important; z-index:100!important; position:relative!important; cursor:text!important;
+ outline:none!important; padding:4px!important; border-radius:4px!important; z-index:999!important; position:relative!important; cursor:text!important;
  pointer-events:auto!important;
 }
 .right-top-title input:read-only {
@@ -75,17 +74,17 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  pointer-events: none !important;
 }
 
-.cert-middle{height:85mm!important;min-height:85mm!important;flex:0 0 85mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:7mm!important;margin:0!important;z-index:5!important}
-.left-details{width:47%!important;height:100%!important;padding:0 0 0 3mm!important;position:relative!important;z-index:10!important}
-.details-table{width:100%!important;border-collapse:collapse!important;position:relative!important;z-index:10!important}
-.details-table th,.details-table td{padding:1.1mm 1mm!important;text-align:left!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;border:0!important;color:#111!important;position:relative!important;z-index:10!important}
+.cert-middle{height:85mm!important;min-height:85mm!important;flex:0 0 85mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:7mm!important;margin:0!important;z-index:1!important}
+.left-details{width:47%!important;height:100%!important;padding:0 0 0 3mm!important;position:relative!important;z-index:999!important}
+.details-table{width:100%!important;border-collapse:collapse!important;position:relative!important;z-index:999!important}
+.details-table th,.details-table td{padding:1.1mm 1mm!important;text-align:left!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;border:0!important;color:#111!important;position:relative!important;z-index:999!important}
 .details-table th{width:39mm!important;font-weight:normal!important}
 
-/* සියලුම input කොටු සඳහා ක්ලික් කිරීමේ පහසුව සහ ස්ථර (z-index) නිවැරදි කර ඇත */
+/* සියලුම input කොටු සඳහා ඉහළම ස්ථරය (z-index) ලබා දී ඇත */
 .details-table td input{
  width:100%!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;
  padding:3px 6px!important;border:1px dashed #b2bec3!important;border-radius:4px!important;background:#fafafa!important;color:#111!important;
- position:relative!important;z-index:100!important;cursor:text!important;pointer-events:auto!important;
+ position:relative!important;z-index:9999!important;cursor:text!important;pointer-events:auto!important;
 }
 
 .details-table input:read-only {
@@ -104,7 +103,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  background:#fafafa!important; color:#111!important; font-family:"Times New Roman",Times,serif!important;
  font-size:12pt!important; line-height:1.08!important; font-weight:normal!important;
  pointer-events:auto!important; user-select:text!important; -webkit-user-select:text!important;
- cursor:text!important; resize:none!important; z-index:100!important; position:relative!important;
+ cursor:text!important; resize:none!important; z-index:9999!important; position:relative!important;
 }
 .details-table td input#rep-comments-field:read-only {
  border: none !important;
@@ -122,21 +121,22 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  align-items:center!important;
  padding:0!important;
  position:relative!important;
- z-index:5!important;
+ z-index:1!important;
+ pointer-events: none!important; /* පහළ කොටු වලට ක්ලික් කිරීමට බාධා නොවන සේ සකසා ඇත */
 }
 
-.gem-photo-box{width:47mm!important;height:47mm!important;min-width:47mm!important;min-height:47mm!important;border:1px solid #333!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;position:relative!important}
+.gem-photo-box{width:47mm!important;height:47mm!important;min-width:47mm!important;min-height:47mm!important;border:1px solid #333!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;position:relative!important;pointer-events: auto!important;}
 .gem-photo-box img{width:100%!important;height:100%!important;object-fit:contain!important}
 .gem-photo-box input[type=file]{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer;z-index:10!important}
 
 /* අත්සන් සහ QR කොටස */
-.signatures-and-badges{height:44mm!important;min-height:44mm!important;flex:0 0 44mm!important;width:100%!important;margin:0!important;position:relative!important;display:block!important;z-index:5!important}
+.signatures-and-badges{height:44mm!important;min-height:44mm!important;flex:0 0 44mm!important;width:100%!important;margin:0!important;position:relative!important;display:block!important;z-index:1!important;pointer-events: none!important;}
 .signatures-area{position:absolute!important;left:55%!important;top:-6mm!important;width:44%!important;display:none!important;justify-content:space-between!important;gap:5mm!important;flex-wrap:nowrap!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;color:#111!important}
 .sig-person{width:50%!important}
 .sig-person p{font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;line-height:1.12!important;color:#111!important}
 .sig-person p:first-child{font-weight:bold!important}
 
-.badges-and-qr{position:absolute!important;right:0!important;bottom:2mm!important;display:flex!important;align-items:center!important;gap:8mm!important;z-index:10!important}
+.badges-and-qr{position:absolute!important;right:0!important;bottom:2mm!important;display:flex!important;align-items:center!important;gap:8mm!important;z-index:10!important;pointer-events: auto!important;}
 .lab-logos{display:none!important;align-items:center!important;gap:5mm!important}
 .lab-logos img{height:18mm!important;max-width:43mm!important;object-fit:contain!important}
 
@@ -151,7 +151,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  height:30mm!important;min-height:30mm!important;flex:0 0 30mm!important;
  margin:0!important;padding:3mm 0 0!important;overflow:visible!important;
  border-top:1.2mm solid #d35400!important;position:relative!important;
- display:none!important;justify-content:space-between!important;align-items:flex-end!important;gap:10mm!important;z-index:5!important
+ display:none!important;justify-content:space-between!important;align-items:flex-end!important;gap:10mm!important;z-index:1!important;pointer-events: none!important;
 }
 .cert-footer-bottom:before{content:""!important;position:absolute!important;left:0!important;right:0!important;top:1.8mm!important;border-top:.45mm solid #b7b7b7!important}
 
@@ -168,6 +168,7 @@ body.public-view .logo-area { visibility: visible !important; }
 body.public-view .signatures-area,
 body.public-view .lab-logos,
 body.public-view .cert-footer-bottom { display: flex !important; }
+body.public-view .certificate *, body.public-view { pointer-events: auto !important; }
 
 #modal-overlay{position:fixed;inset:0;width:100%;height:100%;background:#0008;display:none;justify-content:center;align-items:center;z-index:1000000}
 .modal-card{background:#fff;padding:25px;border-radius:8px;width:300px;text-align:center}
