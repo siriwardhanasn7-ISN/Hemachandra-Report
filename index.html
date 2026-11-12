@@ -101,7 +101,6 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  flex-direction:column!important;
  align-items:center!important;
  padding:0!important;
- visibility:hidden!important; /* Admin/Print අවස්ථාවේදී පින්තූරය සහ කොටුව සම්පූර්ණයෙන්ම සඟවයි */
 }
 
 .gem-photo-box{width:47mm!important;height:47mm!important;min-width:47mm!important;min-height:47mm!important;border:1px solid #333!important;border-radius:0!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;position:relative!important}
@@ -143,8 +142,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 /* ===== PUBLIC QR VIEW ONLY (QR එක Scan කළ විට පෙන්වන කොටස්) ===== */
 body.public-view .watermark,
 body.public-view .watermark-vertical { display: block !important; }
-body.public-view .logo-area,
-body.public-view .right-gem-area { visibility: visible !important; }
+body.public-view .logo-area { visibility: visible !important; }
 body.public-view .signatures-area,
 body.public-view .lab-logos,
 body.public-view .cert-footer-bottom { display: flex !important; }
@@ -166,7 +164,7 @@ body.public-view .cert-footer-bottom { display: flex !important; }
  @page{size:A4 landscape;margin:0}
  html,body{width:297mm!important;height:210mm!important;margin:0!important;padding:0!important;overflow:hidden!important;background:#fff!important}
  body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
- #login-screen,.action-bar,#search-panel,#modal-overlay,.gem-photo-box input[type=file],.public-note,#img-placeholder-text{display:none!important}
+ #login-screen,.action-bar,#search-panel,#modal-overlay,.gem-photo-box input[type=file],.public-note,#img-placeholder-text,.right-gem-area{display:none!important}
  #app-container{display:block!important;width:297mm!important;height:210mm!important;max-width:none!important;margin:0!important;padding:0!important;overflow:hidden!important}
  .certificate{
   width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important;
