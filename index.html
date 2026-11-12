@@ -80,14 +80,12 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .details-table th,.details-table td{padding:1.1mm 1mm!important;text-align:left!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;border:0!important;color:#111!important;position:relative!important;z-index:999!important}
 .details-table th{width:39mm!important;font-weight:normal!important}
 
-/* Admin Portal එකේදී දත්ත ඇතුළත් කරන අනෙක් input කොටු */
 .details-table td input{
  width:100%!important;font-family:"Times New Roman",Times,serif!important;font-size:12pt!important;line-height:1.08!important;
  padding:3px 6px!important;border:1px dashed #b2bec3!important;border-radius:4px!important;background:#fafafa!important;color:#111!important;
  position:relative!important;z-index:9999!important;cursor:text!important;pointer-events:auto!important;
 }
 
-/* Report No විශේෂිතයි: එය සෑම විටම පිරිසිදුයි, කිසිදු Box එකක් නොපෙන්වයි */
 .details-table td input#display-report-no {
  border: none !important;
  background: transparent !important;
@@ -141,7 +139,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .gem-photo-box img{width:100%!important;height:100%!important;object-fit:contain!important}
 .gem-photo-box input[type=file]{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer;z-index:10!important}
 
-/* අත්සන් සහ QR කොටස */
+/* අත්සන් සහ QR කොටස - QR එක වඩාත් පැහැදිලිව පෙන්වීමට සකසා ඇත */
 .signatures-and-badges{height:44mm!important;min-height:44mm!important;flex:0 0 44mm!important;width:100%!important;margin:0!important;position:relative!important;display:block!important;z-index:1!important;pointer-events: none!important;}
 .signatures-area{position:absolute!important;left:55%!important;top:-6mm!important;width:44%!important;display:none!important;justify-content:space-between!important;gap:5mm!important;flex-wrap:nowrap!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;color:#111!important}
 .sig-person{width:50%!important}
@@ -152,11 +150,12 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .lab-logos{display:none!important;align-items:center!important;gap:5mm!important}
 .lab-logos img{height:18mm!important;max-width:43mm!important;object-fit:contain!important}
 
-#qrcode{position:relative!important; flex:0 0 26mm!important; width:26mm!important; height:26mm!important;
- min-width:26mm!important; min-height:26mm!important; padding:0!important; margin:0!important;
+/* QR Code Box එකේ පැහැදිලි බව වැඩි කිරීම */
+#qrcode{position:relative!important; flex:0 0 28mm!important; width:28mm!important; height:28mm!important;
+ min-width:28mm!important; min-height:28mm!important; padding:0!important; margin:0!important;
  overflow:hidden!important; background:#fff!important; display:flex!important; align-items:center!important; justify-content:center!important;}
-#qrcode canvas{display:block!important; width:24mm!important; height:24mm!important;
- max-width:24mm!important; max-height:24mm!important;}
+#qrcode canvas{display:block!important; width:28mm!important; height:28mm!important;
+ max-width:28mm!important; max-height:28mm!important; image-rendering: pixelated; image-rendering: crisp-edges;}
 #qrcode img{display:none!important;}
 
 .cert-footer-bottom{
@@ -168,7 +167,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .cert-footer-bottom:before{content:""!important;position:absolute!important;left:0!important;right:0!important;top:1.8mm!important;border-top:.45mm solid #b7b7b7!important}
 
 .footer-disclaimer{display:block!important;flex:0 0 54%!important;width:54%!important;max-width:54%!important;font-family:"Times New Roman",Times,serif!important;font-size:8.5pt!important;line-height:1.12!important;font-style:italic!important;color:#222!important;text-align:left!important}
-.footer-disclaimer p{width:100%!important;max-width:100%!important;height:24mm!important;min-height:24mm!important;font-family:"Times New Roman",Times,serif!important;font-size:8.5pt!important;line-height:1.12!important;font-style:italic!important;border:0!important;background:transparent!important;resize:none!important;color:#222!important;padding:0!important;outline:none;}
+.footer-disclaimer p{width:100%!important;max-width:100%!important;height:24mm!important;min-height:24mm!important.font-family:"Times New Roman",Times,serif!important;font-size:8.5pt!important;line-height:1.12!important;font-style:italic!important;border:0!important;background:transparent!important;resize:none!important;color:#222!important;padding:0!important;outline:none;}
 
 .footer-company-info{display:block!important;flex:0 0 42%!important;width:42%!important;max-width:42%!important;text-align:right!important;font-size:8.5pt!important;color:#111!important;line-height:1.15!important;font-weight:bold!important}
 .footer-company-info p b{color:var(--primary-orange)}
@@ -433,7 +432,16 @@ function updateQRCode(reportNo){
  }
  const publicUrl=new URL(window.location.pathname,window.location.origin);
  publicUrl.searchParams.set("report",reportNo);
- new QRCode(box,{text:publicUrl.href,width:240,height:240,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
+ 
+ // QR කේතය වඩාත් පැහැදිලිව (High Resolution & Crisp Edges) ජනනය කිරීම සඳහා සකසා ඇත
+ new QRCode(box,{
+  text: publicUrl.href,
+  width: 300,
+  height: 300,
+  colorDark: "#000000",
+  colorLight: "#ffffff",
+  correctLevel: QRCode.CorrectLevel.M
+ });
 }
 
 function getReportData(){
@@ -601,6 +609,7 @@ async function loadPublicReport(reportNo){
  }
 }
 
+window.promptDelete=changeReportToDelete=>{}; // placeholder
 window.promptDelete=function(reportNo){reportToDelete=reportNo;$("modal-overlay").style.display="flex";$("modal-pass").value=""};
 window.closeModal=function(){$("modal-overlay").style.display="none";reportToDelete=""};
 window.executeModalAction=async function(){
