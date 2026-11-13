@@ -60,7 +60,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  margin:0 auto!important; text-align:center!important;
  font-family:"Times New Roman",Times,serif!important;
  font-size:21pt!important; font-weight:bold!important;
- color:#111!important; border:1px dashed #b2bec3!important; background:#fafafa!important; 
+ color:#111!important; border:1px dashed #b2bec3!important; background:#fafafa!important;
  outline:none!important; padding:4px!important; border-radius:4px!important; z-index:999!important; position:relative!important; cursor:text!important;
  pointer-events:auto!important;
 }
@@ -86,7 +86,6 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  position:relative!important;z-index:9999!important;cursor:text!important;pointer-events:auto!important;
 }
 
-/* Report No: Font එක Times New Roman ලෙස සකසා ඇත */
 .details-table td input#display-report-no {
  font-family: "Times New Roman", Times, serif !important;
  font-size: 12pt !important;
@@ -114,7 +113,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .details-table td input#rep-comments-field{
  display:block!important; width:100%!important; min-width:0!important; height:auto!important;
  min-height:0!important; max-height:none!important; padding:3px 6px!important; margin:0!important;
- border:1px dashed #b2bec3!important; border-radius:4px!important; outline:0!important; 
+ border:1px dashed #b2bec3!important; border-radius:4px!important; outline:0!important;
  background:#fafafa!important; color:#111!important; font-family:"Times New Roman",Times,serif!important;
  font-size:12pt!important; line-height:1.08!important; font-weight:normal!important;
  pointer-events:auto!important; user-select:text!important; -webkit-user-select:text!important;
@@ -144,7 +143,6 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .gem-photo-box img{width:100%!important;height:100%!important;object-fit:contain!important}
 .gem-photo-box input[type=file]{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer;z-index:10!important}
 
-/* අත්සන් සහ QR කොටස */
 .signatures-and-badges{height:44mm!important;min-height:44mm!important;flex:0 0 44mm!important;width:100%!important;margin:0!important;position:relative!important;display:block!important;z-index:1!important;pointer-events: none!important;}
 .signatures-area{position:absolute!important;left:55%!important;top:-6mm!important;width:44%!important;display:none!important;justify-content:space-between!important;gap:5mm!important;flex-wrap:nowrap!important;font-family:"Times New Roman",Times,serif!important;font-size:9pt!important;color:#111!important}
 .sig-person{width:50%!important}
@@ -176,7 +174,6 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .footer-company-info{display:block!important;flex:0 0 42%!important;width:42%!important;max-width:42%!important;text-align:right!important;font-size:8.5pt!important;color:#111!important;line-height:1.15!important;font-weight:bold!important}
 .footer-company-info p b{color:var(--primary-orange)}
 
-/* ===== PUBLIC QR VIEW ONLY ===== */
 body.public-view .watermark,
 body.public-view .watermark-vertical { display: block !important; }
 body.public-view .logo-area { visibility: visible !important; }
@@ -250,7 +247,6 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
  </div>
 
  <div class="certificate">
-  <!-- Watermark Logos දෙක -->
   <img src="watermark_logo.png" class="watermark" alt="Watermark">
   <img src="watermark_logo2.png" class="watermark-vertical" alt="Vertical Watermark">
 
@@ -364,18 +360,33 @@ function setTodayDate(){
  $("rep-date").value=`${String(d.getDate()).padStart(2,"0")}th ${months[d.getMonth()]}, ${d.getFullYear()}`;
 }
 
+// සංශෝධිත ස්වයංක්‍රීය අංක ජනන ක්‍රමය (Auto Report Number Generator)
 async function makeReportNumber(){
- const d=new Date(),dateStr=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+ const d = new Date();
+ const dateStr = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+ 
  try {
   const snap = await getDocs(collection(db, "gem_reports"));
-  let count = 0;
+  let maxSeq = 0;
+  
   snap.forEach(s => {
    const rNo = s.data().reportNo || "";
-   if(rNo.includes(dateStr)) count++;
+   // උදාහරණයක් ලෙස HGL-20261113-001-02 නම්, එහි අග කොටස (sequence number) ලබා ගැනීම
+   if(rNo.includes(dateStr)) {
+    const parts = rNo.split("-");
+    if(parts.length >= 4) {
+     const seqNum = parseInt(parts[3], 10);
+     if(!isNaN(seqNum) && seqNum > maxSeq) {
+      maxSeq = seqNum;
+     }
+    }
+   }
   });
-  let seq = count + 1;
-  return `HGL-${dateStr}-001-${String(seq).padStart(2,"0")}`;
+  
+  let nextSeq = maxSeq + 1;
+  return `HGL-${dateStr}-001-${String(nextSeq).padStart(2,"0")}`;
  } catch(e) {
+  console.error("Error generating report number:", e);
   let seq = parseInt(localStorage.getItem("hgl_sequence")||"1",10);
   return `HGL-${dateStr}-001-${String(seq).padStart(2,"0")}`;
  }
@@ -391,7 +402,7 @@ async function prepareNewReport(){
  });
  
  setTodayDate();
- const reportNo = await makeReportNumber();
+ const reportNo = await makeReportNumber(); // මෙහිදී අලුත් ඊළඟ අංකය ලබා ගනී
  
  const rNoField = $("display-report-no");
  rNoField.value = reportNo;
@@ -534,8 +545,8 @@ window.saveReportToFirebase=async function(){
 
   await setDoc(doc(db,"gem_reports",reportNo), data);
   alert("වාර්තාව Online Save විය. QR Code එක Scan කර පරීක්ෂා කරන්න.");
-  
-  await prepareNewReport();
+ 
+  await prepareNewReport(); // save කළ පසු ස්වයංක්‍රීයව ඊළඟ අංකයට සූදානම් වේ
  }catch(e){
   console.error(e);
   alert("Save කිරීම අසාර්ථකයි: "+e.message);
@@ -563,11 +574,11 @@ function renderSearchRows(rows){
   const row=document.createElement("div");row.className="search-item";
   const label=document.createElement("span");label.textContent=`${data.reportNo||""} - ${data.titleName||""} (${data.weight||""})`;
   const actions=document.createElement("div");
-  
+ 
   const view=document.createElement("button");view.textContent="View";view.onclick=()=>viewReport(data.reportNo);
   const editBtn=document.createElement("button");editBtn.textContent="Edit";editBtn.style.background="#f39c12";editBtn.onclick=()=>editReport(data.reportNo);
   const del=document.createElement("button");del.textContent="Delete";del.style.background="#e74c3c";del.onclick=()=>promptDelete(data.reportNo);
-  
+ 
   actions.append(view,editBtn,del);
   row.append(label,actions);
   list.appendChild(row);
@@ -599,7 +610,7 @@ async function editReport(reportNo){
   if(snap.exists()){
    editingOriginalNo = reportNo;
    fillReport(snap.data(),false);
-   $("search-panel").style.display="none";
+   $("search-panel".style.display="none";
   }else alert("වාර්තාව හමු නොවීය!");
  }catch(e){alert("වාර්තාව ලබාගැනීමට නොහැකි විය: "+e.message)}
 }
