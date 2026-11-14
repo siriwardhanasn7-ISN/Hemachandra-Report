@@ -195,6 +195,25 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .watermark{position:absolute!important;top:57%!important;left:29%!important;transform:translate(-50%,-50%)!important;width:120mm!important;max-width:none!important;opacity:.075!important;z-index:0!important;pointer-events:none!important;display:none!important}
 .watermark-vertical{position:absolute!important;top:50%!important;left:85%!important;transform:translate(-50%,-50%) rotate(90deg)!important;width:80mm!important;opacity:.05!important;z-index:0!important;pointer-events:none!important;display:none!important}
 
+/* DUPLICATE Watermark for Public QR View */
+.duplicate-badge {
+ position: absolute !important;
+ top: 8mm !important;
+ right: 12mm !important;
+ font-size: 18pt !important;
+ font-weight: bold !important;
+ color: #e74c3c !important;
+ border: 2px dashed #e74c3c !important;
+ padding: 4px 12px !important;
+ border-radius: 6px !important;
+ letter-spacing: 2px !important;
+ display: none !important;
+ z-index: 9999 !important;
+ transform: rotate(5deg);
+ background: rgba(255, 255, 255, 0.9);
+}
+body.public-view .duplicate-badge { display: block !important; }
+
 .cert-header{height:40mm!important;min-height:40mm!important;flex:0 0 40mm!important;display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:8mm!important;margin:0!important;z-index:1!important}
 
 .logo-area{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:1mm!important;visibility:hidden!important}
@@ -461,6 +480,9 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
   <!-- Right Side: Certificate Preview Area -->
   <div class="certificate-main-area">
    <div class="certificate">
+    <!-- DUPLICATE Badge for Public QR View -->
+    <div class="duplicate-badge">DUPLICATE</div>
+
     <img src="watermark_logo.png" class="watermark" alt="Watermark">
     <img src="watermark_logo2.png" class="watermark-vertical" alt="Vertical Watermark">
 
