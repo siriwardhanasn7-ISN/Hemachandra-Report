@@ -220,6 +220,19 @@ body.public-view .duplicate-badge { display: block !important; }
 .logo-area img{width:91mm!important;height:24mm!important;object-fit:contain!important;object-position:left top!important}
 .report-label{font-family:"Times New Roman",Times,serif!important;font-size:16pt!important;font-weight:bold!important;margin-left:22mm!important;line-height:1.1!important;color:#111!important;letter-spacing:0.5px!important;}
 
+/* Gemological Observation & Properties Subtitle for Public QR View */
+.qr-sub-label {
+ font-family: "Times New Roman", Times, serif !important;
+ font-size: 10pt !important;
+ font-weight: bold !important;
+ color: var(--primary-orange) !important;
+ margin-left: 22mm !important;
+ margin-top: 1mm !important;
+ letter-spacing: 0.5px !important;
+ display: none !important;
+}
+body.public-view .qr-sub-label { display: block !important; }
+
 .right-top-title{
  width:50%!important; flex:0 0 50%!important;
  margin:0!important; padding-top:27mm!important;
@@ -491,6 +504,7 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
      <div class="logo-area">
       <img src="main_logo.png" alt="Main Logo">
       <div class="report-label">GEMSTONE REPORT</div>
+      <div class="qr-sub-label">GEMOLOGICAL OBSERVATION &amp; PROPERTIES</div>
      </div>
      <div class="right-top-title"><input type="text" id="rep-title-name" placeholder="Gem Identification" autocomplete="off"></div>
     </div>
