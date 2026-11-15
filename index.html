@@ -390,10 +390,10 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
 <div id="login-screen">
  <div class="login-card">
   <h2>Lab Login</h2>
-  <input type="text" id="user-id" placeholder="User ID" autocomplete="off">
-  <input type="password" id="password" placeholder="Password" autocomplete="new-password">
+  <input type="text" id="user-id" placeholder="Email Address" autocomplete="off">
+  <input type="password" id="password" placeholder="Password" autocomplete="current-password">
   <button onclick="handleLogin()">Login</button>
-  <p id="error-msg" class="error-msg">Incorrect User ID or Password!</p>
+  <p id="error-msg" class="error-msg">Incorrect Email or Password!</p>
  </div>
 </div>
 
@@ -419,7 +419,7 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
   <div style="margin-bottom: 20px;">
    <button class="btn btn-back" onclick="goToDashboard()">Back to Menu</button>
   </div>
-  
+ 
   <div class="status-options-grid">
    <!-- Date Filter Card -->
    <div class="status-card">
@@ -593,6 +593,7 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import {getFirestore,collection,doc,setDoc,getDocs,deleteDoc,getDoc} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import {getAuth, signInWithEmailAndPassword, signOut} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
  apiKey:"AIzaSyCLdE4uREug5mwRYdBVK8tcFfZlM-NAFAo",
@@ -604,6 +605,8 @@ const firebaseConfig = {
 };
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
+const auth=getAuth(app);
+
 let currentImageData="";
 let reportToDelete="";
 let editingOriginalNo = null;
@@ -691,7 +694,7 @@ async function makeReportNumber(){
  try {
   const snap = await getDocs(collection(db, "gem_reports"));
   let maxSeq = 0;
-  
+ 
   snap.forEach(s => {
    const rNo = s.data().reportNo || "";
    if(rNo.includes(dateStr)) {
@@ -704,7 +707,7 @@ async function makeReportNumber(){
     }
    }
   });
-  
+ 
   let nextSeq = maxSeq + 1;
   return `HGL-${dateStr}-001-${String(nextSeq).padStart(2,"0")}`;
  } catch(e) {
@@ -724,16 +727,35 @@ window.handleStockInput = function(){
  }
 };
 
-window.handleLogin = function(){
- const user=$("user-id").value.trim().toUpperCase(),pass=$("password").value.trim();
- if(user==="SASIKA"&&pass==="123"){
+window.handleLogin = async function(){
+ const email = $("user-id").value.trim();
+ const pass = $("password").value.trim();
+ 
+ if(!email || !pass) {
+  $("error-msg").textContent = "Please enter Email and Password!";
+  $("error-msg").style.display = "block";
+  return;
+ }
+
+ try {
+  await signInWithEmailAndPassword(auth, email, pass);
   document.body.classList.remove("public-view");
-  $("login-screen").style.display="none";
-  $("dashboard-screen").style.display="flex";
- }else $("error-msg").style.display="block";
+  $("login-screen").style.display = "none";
+  $("dashboard-screen").style.display = "flex";
+  $("error-msg").style.display = "none";
+ } catch(e) {
+  console.error(e);
+  $("error-msg").textContent = "Incorrect Email or Password!";
+  $("error-msg").style.display = "block";
+ }
 };
 
-window.logout = function(){
+window.logout = async function(){
+ try {
+  await signOut(auth);
+ } catch(e) {
+  console.error(e);
+ }
  window.location.href = window.location.pathname;
 };
 
@@ -870,7 +892,7 @@ window.performSearch = function(){
     }
    }
   });
-  
+ 
   renderSearchRows(rows);
  }).catch(e => {
   list.innerHTML = "<div style='padding:10px; font-size:13px;'>Search error: "+e.message+"</div>";
@@ -898,7 +920,7 @@ function renderSearchRows(rows){
   deleteBtn.className = "delete-btn";
   deleteBtn.title = "Delete Report";
   deleteBtn.onclick=()=> promptDeleteReport(data.reportNo);
-  
+ 
   actions.append(viewBtn, editBtn, deleteBtn);
   row.append(label,actions);
   list.appendChild(row);
@@ -945,7 +967,7 @@ window.calculateStatus = async function(type) {
  
  try {
   const snap = await getDocs(collection(db, "gem_reports"));
-  
+ 
   if(type === 'date') {
    const val = $("stat-date-input").value; // YYYY-MM-DD
    if(!val) { showToast("Please select a date", "error"); return; }
@@ -961,7 +983,7 @@ window.calculateStatus = async function(type) {
     }
    });
    $("result-date").innerHTML = `<b>Date:</b> ${targetDateStr}<br><b>Full Reports:</b> ${fullReportCount} | <b>Memos:</b> ${memoCount}`;
-  } 
+  }
   else if(type === 'range') {
    const fromVal = $("stat-from-date").value;
    const toVal = $("stat-to-date").value;
@@ -1151,10 +1173,20 @@ async function editReport(reportNo){
 const params=new URLSearchParams(window.location.search);
 const publicReport=params.get("report");
 publicReport ? loadPublicReport(publicReport) : (function(){
- $("login-screen").style.display="flex";
- $("dashboard-screen").style.display="none";
- $("app-container").style.display="none";
- $("status-screen").style.display="none";
+ auth.onAuthStateChanged((user) => {
+  if (user) {
+   document.body.classList.remove("public-view");
+   $("login-screen").style.display="none";
+   $("dashboard-screen").style.display="flex";
+   $("app-container").style.display="none";
+   $("status-screen").style.display="none";
+  } else {
+   $("login-screen").style.display="flex";
+   $("dashboard-screen").style.display="none";
+   $("app-container").style.display="none";
+   $("status-screen").style.display="none";
+  }
+ });
  editingOriginalNo = null;
 })();
 
