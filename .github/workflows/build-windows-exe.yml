@@ -1,0 +1,41 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "Hemachandra-GemLab-Desktop-Source.zip"
+      - ".github/workflows/build-windows-exe.yml"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Extract desktop project
+        shell: pwsh
+        run: |
+          Expand-Archive -Path "$env:GITHUB_WORKSPACE\Hemachandra-GemLab-Desktop-Source.zip" -DestinationPath "$env:GITHUB_WORKSPACE\desktop-build" -Force
+
+      - name: Install dependencies
+        working-directory: desktop-build
+        run: npm install
+
+      - name: Build Windows installer
+        working-directory: desktop-build
+        run: npm run dist
+
+      - name: Upload EXE installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hemachandra-Gem-Lab-Windows-Installer
+          path: desktop-build/dist/*.exe
+          if-no-files-found: error
+          retention-days: 30
