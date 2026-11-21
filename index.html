@@ -135,7 +135,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  flex: 1;
  min-width: 0;
  display: flex;
- justify-content: center;
+ justify-content: flex-start;
  overflow-x: auto;
 }
 
@@ -184,12 +184,14 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 
 /* ===== CERTIFICATE LAYOUT (11.44" x 8.27") ===== */
 .certificate{
- width:11.44in!important;height:8.27in!important;min-height:8.27in!important;max-height:8.27in!important;
- box-sizing:border-box!important;padding:5mm 12mm 5mm!important;margin:0 auto!important;
+ width:11.44in!important;height:8.27in!important;min-width:11.44in!important;max-width:11.44in!important;
+ min-height:8.27in!important;max-height:8.27in!important;
+ box-sizing:border-box!important;padding:5mm 12mm 5mm!important;margin:0!important;
  background:#fff!important;border:0!important;box-shadow:0 0 20px #0000001a!important;
  display:flex!important;flex-direction:column!important;justify-content:flex-start!important;
  overflow:hidden!important;position:relative!important;color:#111!important;
- font-family:"Times New Roman",Times,serif!important
+ font-family:"Times New Roman",Times,serif!important;
+ flex-shrink:0!important;
 }
 .certificate *{box-sizing:border-box}
 
@@ -344,12 +346,15 @@ body.public-view .lab-logos,
 body.public-view .cert-footer-bottom { display: flex !important; }
 body.public-view .certificate *, body.public-view { pointer-events: auto !important; }
 
-/* ===== CLEAN MODE FOR JPG EXPORT ===== */
+/* ===== EXACT PRINT / PDF MATCH MODE FOR JPG EXPORT ===== */
 .certificate.exporting-jpg {
  box-shadow: none !important;
  margin: 0 !important;
+ padding: 5mm 12mm 5mm !important;
+ width: 11.44in !important;
+ height: 8.27in !important;
 }
-.certificate.exporting-jpg input {
+.certificate.exporting-jpg .details-table td input {
  border: none !important;
  background: transparent !important;
  box-shadow: none !important;
@@ -357,12 +362,21 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
  padding: 1.1mm 0 !important;
 }
 .certificate.exporting-jpg .right-top-title input {
+ border: none !important;
+ background: transparent !important;
+ box-shadow: none !important;
+ outline: none !important;
  padding: 0 !important;
 }
 .certificate.exporting-jpg .stock-no-container input {
+ border: none !important;
+ background: transparent !important;
+ box-shadow: none !important;
+ outline: none !important;
  padding: 2px 0 !important;
 }
-.certificate.exporting-jpg #img-placeholder-text {
+.certificate.exporting-jpg #img-placeholder-text,
+.certificate.exporting-jpg .gem-photo-box input[type=file] {
  display: none !important;
 }
 .certificate.exporting-jpg .stock-no-container.empty-stock {
@@ -654,30 +668,63 @@ function showToast(message, type = 'success') {
  }, 3500);
 }
 
-// ===== PRINT & SAVE HIGH-QUALITY JPG (11.44" x 8.27") =====
+// ===== EXACT LAYOUT JPG EXPORT (11.44" x 8.27") =====
 window.printAndSaveJPG = async function() {
  const certElement = $("certificate-element");
  const reportNo = $("display-report-no").value.trim() || "Gem_Certificate";
  
- showToast("Generating 11.44\" x 8.27\" High-Quality JPG...", "success");
+ showToast("Generating Exact Layout JPG...", "success");
  
  handleStockInput();
+
+ // Temporarily replace inputs with clean text spans for exact PDF/print positioning
+ const inputs = Array.from(certElement.querySelectorAll("input:not([type=file])"));
+ const replacements = [];
+
+ inputs.forEach((inp) => {
+  const computed = window.getComputedStyle(inp);
+  const span = document.createElement("span");
+  span.className = "jpg-temp-text";
+  span.textContent = inp.value;
+  span.style.display = "block";
+  span.style.width = "100%";
+  span.style.fontFamily = '"Times New Roman", Times, serif';
+  span.style.fontSize = computed.fontSize;
+  span.style.fontWeight = computed.fontWeight;
+  span.style.color = "#111111";
+  span.style.lineHeight = computed.lineHeight;
+  span.style.textAlign = computed.textAlign;
+  span.style.padding = "0";
+  span.style.margin = "0";
+  span.style.background = "transparent";
+  span.style.border = "none";
+
+  replacements.push({ inp, span });
+  inp.style.display = "none";
+  inp.parentNode.insertBefore(span, inp);
+ });
+
  certElement.classList.add("exporting-jpg");
 
- // 96 DPI * 11.44in = 1098.24px; 96 DPI * 8.27in = 793.92px
- const targetWidth = Math.round(11.44 * 96);
- const targetHeight = Math.round(8.27 * 96);
-
  try {
+  // Exact 11.44in x 8.27in aspect ratio at ~288 DPI (scale 3 on 96dpi)
   const canvas = await html2canvas(certElement, {
    scale: 3,
-   width: targetWidth,
-   height: targetHeight,
    useCORS: true,
+   allowTaint: true,
    backgroundColor: "#ffffff",
-   logging: false
+   logging: false,
+   scrollX: 0,
+   scrollY: 0,
+   windowWidth: document.documentElement.scrollWidth,
+   windowHeight: document.documentElement.scrollHeight
   });
 
+  // Restore inputs and remove temporary spans
+  replacements.forEach(({ inp, span }) => {
+   if (span.parentNode) span.parentNode.removeChild(span);
+   inp.style.display = "";
+  });
   certElement.classList.remove("exporting-jpg");
 
   const jpgDataUrl = canvas.toDataURL("image/jpeg", 0.98);
@@ -689,13 +736,17 @@ window.printAndSaveJPG = async function() {
   link.click();
   document.body.removeChild(link);
 
-  showToast(`Saved as ${reportNo}.jpg (11.44" x 8.27")`, "success");
+  showToast(`Saved as ${reportNo}.jpg`, "success");
 
   setTimeout(() => {
    window.print();
   }, 500);
 
  } catch (error) {
+  replacements.forEach(({ inp, span }) => {
+   if (span.parentNode) span.parentNode.removeChild(span);
+   inp.style.display = "";
+  });
   certElement.classList.remove("exporting-jpg");
   console.error("JPG Export Error:", error);
   showToast("JPG Save Failed. Opening Print...", "error");
