@@ -135,8 +135,7 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
  flex: 1;
  min-width: 0;
  display: flex;
- justify-content: flex-start;
- overflow-x: auto;
+ justify-content: center;
 }
 
 .search-tabs{display:flex;gap:6px;margin-bottom:15px}
@@ -182,16 +181,14 @@ body{background:#f4f6f9;color:var(--text-main);line-height:1.4;overflow-x:hidden
 .toast-msg.success { border-left-color: #27ae60 !important; }
 .toast-msg.error { border-left-color: #e74c3c !important; }
 
-/* ===== CERTIFICATE LAYOUT (11.44" x 8.27") ===== */
+/* ===== CERTIFICATE LAYOUT ===== */
 .certificate{
- width:11.44in!important;height:8.27in!important;min-width:11.44in!important;max-width:11.44in!important;
- min-height:8.27in!important;max-height:8.27in!important;
- box-sizing:border-box!important;padding:5mm 12mm 5mm!important;margin:0!important;
+ width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important;
+ box-sizing:border-box!important;padding:5mm 12mm 5mm!important;margin:0 auto!important;
  background:#fff!important;border:0!important;box-shadow:0 0 20px #0000001a!important;
  display:flex!important;flex-direction:column!important;justify-content:flex-start!important;
- overflow:hidden!important;position:relative!important;color:#111!important;
- font-family:"Times New Roman",Times,serif!important;
- flex-shrink:0!important;
+ overflow:visible!important;position:relative!important;color:#111!important;
+ font-family:"Times New Roman",Times,serif!important
 }
 .certificate *{box-sizing:border-box}
 
@@ -346,47 +343,6 @@ body.public-view .lab-logos,
 body.public-view .cert-footer-bottom { display: flex !important; }
 body.public-view .certificate *, body.public-view { pointer-events: auto !important; }
 
-/* ===== EXACT PRINT / PDF MATCH MODE FOR JPG EXPORT ===== */
-.certificate.exporting-jpg {
- box-shadow: none !important;
- margin: 0 !important;
- padding: 5mm 12mm 5mm !important;
- width: 11.44in !important;
- height: 8.27in !important;
-}
-.certificate.exporting-jpg .details-table td input {
- border: none !important;
- background: transparent !important;
- box-shadow: none !important;
- outline: none !important;
- padding: 1.1mm 0 !important;
-}
-.certificate.exporting-jpg .right-top-title input {
- border: none !important;
- background: transparent !important;
- box-shadow: none !important;
- outline: none !important;
- padding: 0 !important;
-}
-.certificate.exporting-jpg .stock-no-container input {
- border: none !important;
- background: transparent !important;
- box-shadow: none !important;
- outline: none !important;
- padding: 2px 0 !important;
-}
-.certificate.exporting-jpg #img-placeholder-text,
-.certificate.exporting-jpg .gem-photo-box input[type=file] {
- display: none !important;
-}
-.certificate.exporting-jpg .stock-no-container.empty-stock {
- display: none !important;
-}
-.certificate.exporting-jpg .gem-photo-box {
- visibility: hidden !important;
- border: none !important;
-}
-
 #modal-overlay{position:fixed;inset:0;width:100%;height:100%;background:#0008;display:none;justify-content:center;align-items:center;z-index:1000000}
 .modal-card{background:#fff;padding:25px;border-radius:8px;width:300px;text-align:center}
 .modal-card input{width:100%;padding:10px;margin:15px 0;border:1px solid #ccc;border-radius:4px}
@@ -401,18 +357,18 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
 }
 
 @media print{
- @page{size:11.44in 8.27in;margin:0}
- html,body{width:11.44in!important;height:8.27in!important;margin:0!important;padding:0!important;overflow:hidden!important;background:#fff!important}
+ @page{size:A4 landscape;margin:0}
+ html,body{width:297mm!important;height:210mm!important;margin:0!important;padding:0!important;overflow:hidden!important;background:#fff!important}
  body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
  #login-screen,#dashboard-screen,#status-screen,.action-bar,.search-sidebar,#modal-overlay,.gem-photo-box input[type=file],.public-note,#img-placeholder-text{display:none!important}
  
  .gem-photo-box{visibility:hidden!important;border:none!important;}
 
- #app-container{display:block!important;width:11.44in!important;height:8.27in!important;max-width:none!important;margin:0!important;padding:0!important;overflow:hidden!important}
+ #app-container{display:block!important;width:297mm!important;height:210mm!important;max-width:none!important;margin:0!important;padding:0!important;overflow:hidden!important}
  .split-workspace{display:block!important}
- .certificate-main-area{display:block!important;width:11.44in!important;height:8.27in!important}
+ .certificate-main-area{display:block!important;width:297mm!important;height:210mm!important}
  .certificate{
-  width:11.44in!important;height:8.27in!important;min-height:8.27in!important;max-height:8.27in!important;
+  width:297mm!important;height:210mm!important;min-height:210mm!important;max-height:210mm!important;
   padding:5mm 12mm 5mm!important;margin:0!important;border:0!important;box-shadow:none!important;
   transform:none!important;overflow:hidden!important;display:flex!important;flex-direction:column!important
  }
@@ -425,7 +381,6 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -512,7 +467,7 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
   <div class="btn-group">
    <button class="btn btn-back" onclick="goToDashboard()">Back to Menu</button>
    <button class="btn btn-save" id="btn-save-report" onclick="saveReportToFirebase()">Save Report</button>
-   <button class="btn btn-print" onclick="printAndSaveJPG()">Print Certificate</button>
+   <button class="btn btn-print" onclick="window.print()">Print Certificate</button>
   </div>
  </div>
 
@@ -538,7 +493,7 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
 
   <!-- Right Side: Certificate Preview Area -->
   <div class="certificate-main-area">
-   <div class="certificate" id="certificate-element">
+   <div class="certificate">
     <!-- DUPLICATE Badge for Public QR View -->
     <div class="duplicate-badge">DUPLICATE</div>
 
@@ -559,16 +514,21 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
       <table class="details-table">
        <tr><th>No.</th><td><input id="display-report-no" type="text" autocomplete="off"></td></tr>
        <tr><th>Date</th><td><input id="rep-date" type="text" autocomplete="off"></td></tr>
+       
        <tr><th>Object</th><td><input id="rep-object" type="text" autocomplete="off"></td></tr>
+       
        <tr><th>Weight</th><td><input id="rep-weight" type="text" autocomplete="off"></td></tr>
        <tr><th>Measurement</th><td><input id="rep-measurement" type="text" autocomplete="off"></td></tr>
+       
        <tr><th>Shape</th><td><input id="rep-shape" type="text" autocomplete="off"></td></tr>
+       
        <tr><th>Color</th><td><input id="rep-color" type="text" autocomplete="off"></td></tr>
        <tr><th>Colour Code</th><td><input id="rep-colour-code" type="text" autocomplete="off"></td></tr>
        <tr><th>RI</th><td><input id="rep-ri" type="text" autocomplete="off"></td></tr>
        <tr><th>SG</th><td><input id="rep-sg" type="text" autocomplete="off"></td></tr>
        <tr><th>Hardness</th><td><input id="rep-hardness" type="text" autocomplete="off"></td></tr>
        <tr><th>Origin</th><td><input id="rep-origin" type="text" autocomplete="off"></td></tr>
+       
        <tr><th>Comment</th><td><input id="rep-comments-field" type="text" autocomplete="off"></td></tr>
       </table>
      </div>
@@ -667,92 +627,6 @@ function showToast(message, type = 'success') {
   setTimeout(() => { container.removeChild(toast); }, 300);
  }, 3500);
 }
-
-// ===== EXACT LAYOUT JPG EXPORT (11.44" x 8.27") =====
-window.printAndSaveJPG = async function() {
- const certElement = $("certificate-element");
- const reportNo = $("display-report-no").value.trim() || "Gem_Certificate";
- 
- showToast("Generating Exact Layout JPG...", "success");
- 
- handleStockInput();
-
- // Temporarily replace inputs with clean text spans for exact PDF/print positioning
- const inputs = Array.from(certElement.querySelectorAll("input:not([type=file])"));
- const replacements = [];
-
- inputs.forEach((inp) => {
-  const computed = window.getComputedStyle(inp);
-  const span = document.createElement("span");
-  span.className = "jpg-temp-text";
-  span.textContent = inp.value;
-  span.style.display = "block";
-  span.style.width = "100%";
-  span.style.fontFamily = '"Times New Roman", Times, serif';
-  span.style.fontSize = computed.fontSize;
-  span.style.fontWeight = computed.fontWeight;
-  span.style.color = "#111111";
-  span.style.lineHeight = computed.lineHeight;
-  span.style.textAlign = computed.textAlign;
-  span.style.padding = "0";
-  span.style.margin = "0";
-  span.style.background = "transparent";
-  span.style.border = "none";
-
-  replacements.push({ inp, span });
-  inp.style.display = "none";
-  inp.parentNode.insertBefore(span, inp);
- });
-
- certElement.classList.add("exporting-jpg");
-
- try {
-  // Exact 11.44in x 8.27in aspect ratio at ~288 DPI (scale 3 on 96dpi)
-  const canvas = await html2canvas(certElement, {
-   scale: 3,
-   useCORS: true,
-   allowTaint: true,
-   backgroundColor: "#ffffff",
-   logging: false,
-   scrollX: 0,
-   scrollY: 0,
-   windowWidth: document.documentElement.scrollWidth,
-   windowHeight: document.documentElement.scrollHeight
-  });
-
-  // Restore inputs and remove temporary spans
-  replacements.forEach(({ inp, span }) => {
-   if (span.parentNode) span.parentNode.removeChild(span);
-   inp.style.display = "";
-  });
-  certElement.classList.remove("exporting-jpg");
-
-  const jpgDataUrl = canvas.toDataURL("image/jpeg", 0.98);
-
-  const link = document.createElement("a");
-  link.download = `${reportNo}.jpg`;
-  link.href = jpgDataUrl;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  showToast(`Saved as ${reportNo}.jpg`, "success");
-
-  setTimeout(() => {
-   window.print();
-  }, 500);
-
- } catch (error) {
-  replacements.forEach(({ inp, span }) => {
-   if (span.parentNode) span.parentNode.removeChild(span);
-   inp.style.display = "";
-  });
-  certElement.classList.remove("exporting-jpg");
-  console.error("JPG Export Error:", error);
-  showToast("JPG Save Failed. Opening Print...", "error");
-  window.print();
- }
-};
 
 const reportFields={
  titleName:"rep-title-name",date:"rep-date",object:"rep-object",weight:"rep-weight",
@@ -1095,7 +969,7 @@ window.calculateStatus = async function(type) {
   const snap = await getDocs(collection(db, "gem_reports"));
  
   if(type === 'date') {
-   const val = $("stat-date-input").value;
+   const val = $("stat-date-input").value; // YYYY-MM-DD
    if(!val) { showToast("Please select a date", "error"); return; }
    const [y, m, d] = val.split("-");
    const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
