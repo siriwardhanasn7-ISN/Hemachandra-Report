@@ -343,6 +343,36 @@ body.public-view .lab-logos,
 body.public-view .cert-footer-bottom { display: flex !important; }
 body.public-view .certificate *, body.public-view { pointer-events: auto !important; }
 
+/* ===== CLEAN MODE FOR JPG EXPORT ===== */
+.certificate.exporting-jpg {
+ box-shadow: none !important;
+ margin: 0 !important;
+}
+.certificate.exporting-jpg input {
+ border: none !important;
+ background: transparent !important;
+ box-shadow: none !important;
+ outline: none !important;
+ padding: 1.1mm 0 !important;
+}
+.certificate.exporting-jpg .right-top-title input {
+ padding: 0 !important;
+}
+.certificate.exporting-jpg .stock-no-container input {
+ padding: 2px 0 !important;
+}
+.certificate.exporting-jpg #img-placeholder-text {
+ display: none !important;
+}
+.certificate.exporting-jpg .stock-no-container.empty-stock {
+ display: none !important;
+}
+/* පහත පේළිය ඉවත් කළහොත් JPG එකේ Gem Photo එක පෙනෙනු ඇත. දැනට Print එකේ මෙන් සඟවා ඇත */
+.certificate.exporting-jpg .gem-photo-box {
+ visibility: hidden !important;
+ border: none !important;
+}
+
 #modal-overlay{position:fixed;inset:0;width:100%;height:100%;background:#0008;display:none;justify-content:center;align-items:center;z-index:1000000}
 .modal-card{background:#fff;padding:25px;border-radius:8px;width:300px;text-align:center}
 .modal-card input{width:100%;padding:10px;margin:15px 0;border:1px solid #ccc;border-radius:4px}
@@ -381,6 +411,8 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- High Quality JPG Export Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -467,7 +499,7 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
   <div class="btn-group">
    <button class="btn btn-back" onclick="goToDashboard()">Back to Menu</button>
    <button class="btn btn-save" id="btn-save-report" onclick="saveReportToFirebase()">Save Report</button>
-   <button class="btn btn-print" onclick="window.print()">Print Certificate</button>
+   <button class="btn btn-print" onclick="printAndSaveJPG()">Print Certificate</button>
   </div>
  </div>
 
@@ -493,7 +525,7 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
 
   <!-- Right Side: Certificate Preview Area -->
   <div class="certificate-main-area">
-   <div class="certificate">
+   <div class="certificate" id="certificate-element">
     <!-- DUPLICATE Badge for Public QR View -->
     <div class="duplicate-badge">DUPLICATE</div>
 
@@ -514,21 +546,16 @@ body.public-view .certificate *, body.public-view { pointer-events: auto !import
       <table class="details-table">
        <tr><th>No.</th><td><input id="display-report-no" type="text" autocomplete="off"></td></tr>
        <tr><th>Date</th><td><input id="rep-date" type="text" autocomplete="off"></td></tr>
-       
        <tr><th>Object</th><td><input id="rep-object" type="text" autocomplete="off"></td></tr>
-       
        <tr><th>Weight</th><td><input id="rep-weight" type="text" autocomplete="off"></td></tr>
        <tr><th>Measurement</th><td><input id="rep-measurement" type="text" autocomplete="off"></td></tr>
-       
        <tr><th>Shape</th><td><input id="rep-shape" type="text" autocomplete="off"></td></tr>
-       
        <tr><th>Color</th><td><input id="rep-color" type="text" autocomplete="off"></td></tr>
        <tr><th>Colour Code</th><td><input id="rep-colour-code" type="text" autocomplete="off"></td></tr>
        <tr><th>RI</th><td><input id="rep-ri" type="text" autocomplete="off"></td></tr>
        <tr><th>SG</th><td><input id="rep-sg" type="text" autocomplete="off"></td></tr>
        <tr><th>Hardness</th><td><input id="rep-hardness" type="text" autocomplete="off"></td></tr>
        <tr><th>Origin</th><td><input id="rep-origin" type="text" autocomplete="off"></td></tr>
-       
        <tr><th>Comment</th><td><input id="rep-comments-field" type="text" autocomplete="off"></td></tr>
       </table>
      </div>
@@ -627,6 +654,57 @@ function showToast(message, type = 'success') {
   setTimeout(() => { container.removeChild(toast); }, 300);
  }, 3500);
 }
+
+// ===== PRINT & SAVE HIGH-QUALITY JPG FUNCTION =====
+window.printAndSaveJPG = async function() {
+ const certElement = $("certificate-element");
+ const reportNo = $("display-report-no").value.trim() || "Gem_Certificate";
+ 
+ showToast("Generating High-Quality JPG...", "success");
+ 
+ // Check if stock no is empty before capturing
+ handleStockInput();
+ 
+ // Add clean export class to hide input borders & placeholders
+ certElement.classList.add("exporting-jpg");
+
+ try {
+  // Capture at 3x resolution (~300 DPI for A4 Landscape)
+  const canvas = await html2canvas(certElement, {
+   scale: 3,
+   useCORS: true,
+   backgroundColor: "#ffffff",
+   logging: false
+  });
+
+  // Remove clean export class immediately after capture
+  certElement.classList.remove("exporting-jpg");
+
+  // Convert canvas to maximum quality JPG (0.98)
+  const jpgDataUrl = canvas.toDataURL("image/jpeg", 0.98);
+
+  // Trigger download
+  const link = document.createElement("a");
+  link.download = `${reportNo}.jpg`;
+  link.href = jpgDataUrl;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  showToast(`Saved as ${reportNo}.jpg`, "success");
+
+  // Open standard print dialog after a short delay
+  setTimeout(() => {
+   window.print();
+  }, 500);
+
+ } catch (error) {
+  certElement.classList.remove("exporting-jpg");
+  console.error("JPG Export Error:", error);
+  showToast("JPG Save Failed. Opening Print...", "error");
+  window.print();
+ }
+};
 
 const reportFields={
  titleName:"rep-title-name",date:"rep-date",object:"rep-object",weight:"rep-weight",
@@ -969,7 +1047,7 @@ window.calculateStatus = async function(type) {
   const snap = await getDocs(collection(db, "gem_reports"));
  
   if(type === 'date') {
-   const val = $("stat-date-input").value; // YYYY-MM-DD
+   const val = $("stat-date-input").value;
    if(!val) { showToast("Please select a date", "error"); return; }
    const [y, m, d] = val.split("-");
    const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
